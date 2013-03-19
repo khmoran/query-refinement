@@ -1,0 +1,1526 @@
+Lateral Ventricles 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Polymorphism, Single Nucleotide 	#relevant: 10; #irrelevant:10
+ 	entropyPresent: 1.0; entropyNotPresent:0.8666915300304635
+Splanchnic Circulation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Liver Diseases 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cerebral Hemorrhage 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Gene Frequency 	#relevant: 9; #irrelevant:8
+ 	entropyPresent: 0.9975025463691153; entropyNotPresent:0.8669291799104188
+Fasting 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Risk Assessment 	#relevant: 22; #irrelevant:21
+ 	entropyPresent: 0.999609836367807; entropyNotPresent:0.8566727035015875
+Enalapril 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cineangiography 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Databases, Factual 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Least-Squares Analysis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Protein Precursors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antidepressive Agents 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Swine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Victoria 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Randomized Controlled Trials as Topic 	#relevant: 5; #irrelevant:9
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8723712029589027
+Blood Proteins 	#relevant: 2; #irrelevant:3
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8729882944709463
+Intercellular Adhesion Molecule-1 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Metabolic Syndrome X 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Depression 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Double-Blind Method 	#relevant: 13; #irrelevant:44
+ 	entropyPresent: 0.7746319868686843; entropyNotPresent:0.8805892593378087
+Area Under Curve 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Social Adjustment 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Body Mass Index 	#relevant: 6; #irrelevant:4
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8686345348453242
+Erythromycin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Mutation, Missense 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Receptors, Cell Surface 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Propionates 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Thrombosis 	#relevant: 27; #irrelevant:56
+ 	entropyPresent: 0.9100534290139191; entropyNotPresent:0.8689518071600058
+Histamine H2 Antagonists 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Antigens, CD14 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Kaplan-Meier Estimate 	#relevant: 11; #irrelevant:5
+ 	entropyPresent: 0.8960382325345575; entropyNotPresent:0.8628648926597106
+Exercise Test 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Adrenergic beta-1 Receptor Antagonists 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Protein C 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blood Transfusion 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Myocardial Revascularization 	#relevant: 2; #irrelevant:5
+ 	entropyPresent: 0.863120568566631; entropyNotPresent:0.8739810481273578
+Statistics, Nonparametric 	#relevant: 1; #irrelevant:6
+ 	entropyPresent: 0.5916727785823274; entropyNotPresent:0.8756633923230397
+Prosthesis Failure 	#relevant: 2; #irrelevant:2
+ 	entropyPresent: 1.0; entropyNotPresent:0.8724923039690912
+Chemokines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antigens, CD40 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Liver Circulation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Immunologic Factors 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Dilatation, Pathologic 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptors, Purinergic P2 	#relevant: 23; #irrelevant:25
+ 	entropyPresent: 0.9987472979361685; entropyNotPresent:0.8574474226758114
+Kidney Failure, Chronic 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Platelet Activation 	#relevant: 27; #irrelevant:120
+ 	entropyPresent: 0.6880476235340796; entropyNotPresent:0.9051667019675904
+Hydrazones 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Valve Prosthesis Implantation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Infant 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Point-of-Care Systems 	#relevant: 23; #irrelevant:13
+ 	entropyPresent: 0.943601631299382; entropyNotPresent:0.8510168585436337
+Individualized Medicine 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Aged, 80 and over 	#relevant: 30; #irrelevant:64
+ 	entropyPresent: 0.9034535552068336; entropyNotPresent:0.869326296744948
+Syndrome 	#relevant: 4; #irrelevant:11
+ 	entropyPresent: 0.8366407419411673; entropyNotPresent:0.8745826591502992
+Glycemic Index 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Brain Ischemia 	#relevant: 1; #irrelevant:15
+ 	entropyPresent: 0.3372900666170139; entropyNotPresent:0.8801299335140247
+Stroke Volume 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Tumor Necrosis Factor-alpha 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Vasculitis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Aneurysm 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Exons 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Combined Modality Therapy 	#relevant: 6; #irrelevant:11
+ 	entropyPresent: 0.9366673818775625; entropyNotPresent:0.8721617883411699
+Stroke 	#relevant: 6; #irrelevant:37
+ 	entropyPresent: 0.5830194167347008; entropyNotPresent:0.8853723770068482
+Diabetes Mellitus 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+Vascular Diseases 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Gastrointestinal Hemorrhage 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Microfilament Proteins 	#relevant: 34; #irrelevant:28
+ 	entropyPresent: 0.9932338197397066; entropyNotPresent:0.8433014543692914
+Heart Arrest 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cardiovascular Agents 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Fibrin Fibrinogen Degradation Products 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Antigens, CD31 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Binding Sites 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Imidazoles 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Prolactin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hematologic Tests 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Polymerase Chain Reaction 	#relevant: 3; #irrelevant:2
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8712907840103599
+Angiography 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blotting, Western 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Purinergic P2 Receptor Agonists 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Embolism, Cholesterol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Amino Acid Chloromethyl Ketones 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Preventive Medicine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Stainless Steel 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Middle Aged 	#relevant: 178; #irrelevant:385
+ 	entropyPresent: 0.9001604097512947; entropyNotPresent:0.77655578544446
+Statistics as Topic 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Treatment Refusal 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Injuries 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Alprostadil 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Genetic Variation 	#relevant: 5; #irrelevant:8
+ 	entropyPresent: 0.961236604722876; entropyNotPresent:0.8718686865520275
+Young Adult 	#relevant: 3; #irrelevant:16
+ 	entropyPresent: 0.6292492238560347; entropyNotPresent:0.8782807750713088
+Probability 	#relevant: 3; #irrelevant:2
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8712907840103599
+Intervention Studies 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cerebral Infarction 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+International Normalized Ratio 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Linear Models 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Salicylates 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Propensity Score 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Europe 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Brain Diseases 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Florida 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Apyrase 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Italy 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Drug Resistance, Multiple 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Asian Continental Ancestry Group 	#relevant: 6; #irrelevant:7
+ 	entropyPresent: 0.9957274520849257; entropyNotPresent:0.8701445291341992
+Alleles 	#relevant: 11; #irrelevant:8
+ 	entropyPresent: 0.9819407868640977; entropyNotPresent:0.8644001688181601
+Antigens 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Pyrimidines 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Veins 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Thromboplastin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Triglycerides 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Nortriptyline 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Adenine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cardiovascular Diseases 	#relevant: 22; #irrelevant:20
+ 	entropyPresent: 0.998363672593813; entropyNotPresent:0.8561378723886796
+Epinephrine 	#relevant: 2; #irrelevant:14
+ 	entropyPresent: 0.5435644431995964; entropyNotPresent:0.8784606962392967
+Amino Acid Substitution 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Lacerations 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Administration, Oral 	#relevant: 3; #irrelevant:13
+ 	entropyPresent: 0.6962122601251458; entropyNotPresent:0.8767788236624523
+Receptors, Purinergic P2Y12 	#relevant: 36; #irrelevant:46
+ 	entropyPresent: 0.9892452969285003; entropyNotPresent:0.8504635766308305
+Ischemic Attack, Transient 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Postoperative Care 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Injections, Intravenous 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Blood Coagulation Tests 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Antigens, Human Platelet 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Cerebral Revascularization 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ischemia 	#relevant: 5; #irrelevant:3
+ 	entropyPresent: 0.954434002924965; entropyNotPresent:0.8693602177300007
+Patient Selection 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Perioperative Period 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Codon, Nonsense 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Base Pairing 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ranitidine 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Platelet Aggregation 	#relevant: 117; #irrelevant:272
+ 	entropyPresent: 0.8822315763194807; entropyNotPresent:0.8646636512357291
+Anesthesia 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptors, Fibrinogen 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Survival Rate 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+ADAM Proteins 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Paris 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Introns 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cell Communication 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Platelet Aggregation Inhibitors 	#relevant: 185; #irrelevant:470
+ 	entropyPresent: 0.8587579130949385; entropyNotPresent:0.9506720926870659
+Antineoplastic Agents, Phytogenic 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Drug-Eluting Stents 	#relevant: 29; #irrelevant:19
+ 	entropyPresent: 0.9684610087601622; entropyNotPresent:0.8457145993236947
+Atherosclerosis 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Evidence-Based Medicine 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Drug Interactions 	#relevant: 9; #irrelevant:43
+ 	entropyPresent: 0.6646953053493418; entropyNotPresent:0.8849118332412933
+Renal Insufficiency 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Fatty Acids, Monounsaturated 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Oligonucleotide Array Sequence Analysis 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Epidemiologic Methods 	#relevant: 2; #irrelevant:1
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8719965742014965
+Aging 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Biological Assay 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Genetic Markers 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cell Separation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Septal Defects, Atrial 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blood Glucose 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Baltimore 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cytosine 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Catecholamines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+beta-Thromboglobulin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+E-Selectin 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Drug Monitoring 	#relevant: 8; #irrelevant:12
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8702104437550897
+Penile Implantation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Quinazolinones 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+P-Selectin 	#relevant: 10; #irrelevant:63
+ 	entropyPresent: 0.5762914612174369; entropyNotPresent:0.8941527072456562
+Immunoassay 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Image Cytometry 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Microsomes, Liver 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Drugs, Generic 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Questionnaires 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Skin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Shock, Cardiogenic 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Simvastatin 	#relevant: 0; #irrelevant:9
+ 	entropyPresent: 0.0; entropyNotPresent:0.8783213978217961
+Dose-Response Relationship, Drug 	#relevant: 27; #irrelevant:68
+ 	entropyPresent: 0.8611247055579297; entropyNotPresent:0.8756633923230397
+Fibrinogen 	#relevant: 1; #irrelevant:15
+ 	entropyPresent: 0.3372900666170139; entropyNotPresent:0.8801299335140247
+Thiazolidinediones 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Outcome Assessment (Health Care) 	#relevant: 2; #irrelevant:1
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8719965742014965
+Longitudinal Studies 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Serotonin Uptake Inhibitors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antithrombins 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Pharmacokinetics 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Protein Isoforms 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Recurrence 	#relevant: 10; #irrelevant:17
+ 	entropyPresent: 0.9509560484549726; entropyNotPresent:0.8702776070039198
+Amlodipine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Therapeutic Equivalency 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Drug Evaluation 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Leptin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Carotid Stenosis 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Prodrugs 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Risk 	#relevant: 2; #irrelevant:7
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8749748157737685
+Cardiopulmonary Bypass 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Confounding Factors (Epidemiology) 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Nitroprusside 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Purinergic P2Y Receptor Antagonists 	#relevant: 8; #irrelevant:11
+ 	entropyPresent: 0.9819407868640977; entropyNotPresent:0.8697020847264081
+Metabolic Detoxication, Drug 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Placebos 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Preoperative Period 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Early Diagnosis 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Individuality 	#relevant: 3; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8702963592796351
+Cell Adhesion 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Diabetic Nephropathies 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Substance Withdrawal Syndrome 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heparin, Low-Molecular-Weight 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Retrospective Studies 	#relevant: 7; #irrelevant:24
+ 	entropyPresent: 0.7706290693639406; entropyNotPresent:0.8775446684170966
+Reoperation 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Aryldialkylphosphatase 	#relevant: 3; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8702963592796351
+Aged 	#relevant: 175; #irrelevant:332
+ 	entropyPresent: 0.9296781583488306; entropyNotPresent:0.7004581412102076
+Intestinal Absorption 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cholesterol, LDL 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hemorrhage 	#relevant: 12; #irrelevant:14
+ 	entropyPresent: 0.9957274520849257; entropyNotPresent:0.8662096453041307
+California 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Intracranial Arteriosclerosis 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Hyperemia 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heterozygote Detection 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Phosphoproteins 	#relevant: 35; #irrelevant:30
+ 	entropyPresent: 0.9957274520849257; entropyNotPresent:0.8429166057652877
+Cytoplasm 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cell Membrane 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Creatine Kinase, MB Form 	#relevant: 3; #irrelevant:10
+ 	entropyPresent: 0.7793498372920851; entropyNotPresent:0.8752790446668852
+Heart-Assist Devices 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Receptor, PAR-1 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Platelet-Derived Growth Factor 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Peptide Hydrolases 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Anticoagulants 	#relevant: 2; #irrelevant:29
+ 	entropyPresent: 0.345117314944953; entropyNotPresent:0.8859671323603007
+Angioplasty, Balloon 	#relevant: 2; #irrelevant:7
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8749748157737685
+Wound Healing 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Protein Processing, Post-Translational 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Respiration, Artificial 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Imines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Mice 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Whole Blood Coagulation Time 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Coronary Thrombosis 	#relevant: 16; #irrelevant:27
+ 	entropyPresent: 0.9522656254366642; entropyNotPresent:0.8678487997935553
+Depressive Disorder 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Incompatibility 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Leg 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Dipyrone 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Verapamil 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Weights and Measures 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Electrodes 	#relevant: 3; #irrelevant:1
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8707934360771348
+Publication Bias 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Stress, Physiological 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Sirolimus 	#relevant: 4; #irrelevant:1
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8695808673992396
+Ventricular Function, Left 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cytoplasmic Granules 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Endpoint Determination 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Preanesthetic Medication 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ireland 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+England 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Constriction, Pathologic 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Nifedipine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ramipril 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Piperazines 	#relevant: 7; #irrelevant:32
+ 	entropyPresent: 0.6789538995185759; entropyNotPresent:0.8816320816601595
+Feasibility Studies 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Lectins, C-Type 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Equipment Failure Analysis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antigens, CD 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+Endarterectomy, Carotid 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Heterozygote 	#relevant: 7; #irrelevant:4
+ 	entropyPresent: 0.9456603046006402; entropyNotPresent:0.8673980420622605
+Sertraline 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ventricular Dysfunction, Left 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cytokines 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Receptors, Adrenergic, beta-2 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Stents 	#relevant: 71; #irrelevant:115
+ 	entropyPresent: 0.9592480511970873; entropyNotPresent:0.8347536773717913
+Monocytes 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Family Health 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Severity of Illness Index 	#relevant: 2; #irrelevant:9
+ 	entropyPresent: 0.6840384356390417; entropyNotPresent:0.8759695775313525
+Platelet Function Tests 	#relevant: 64; #irrelevant:124
+ 	entropyPresent: 0.9252253278054431; entropyNotPresent:0.8536180030989176
+Perfusion 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Electrocardiography, Ambulatory 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Reproducibility of Results 	#relevant: 11; #irrelevant:9
+ 	entropyPresent: 0.9927744539878083; entropyNotPresent:0.864912573570203
+Infusions, Intravenous 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Cardiac Catheterization 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Bayes Theorem 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Neurologic Examination 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Catheterization, Peripheral 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cerebrovascular Circulation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Renal Dialysis 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Endothelial Cells 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Intraoperative Complications 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Pyrroles 	#relevant: 1; #irrelevant:22
+ 	entropyPresent: 0.2580186686648155; entropyNotPresent:0.8836162585236178
+Membrane Proteins 	#relevant: 1; #irrelevant:10
+ 	entropyPresent: 0.4394969869215134; entropyNotPresent:0.877646206427041
+Cell Adhesion Molecules 	#relevant: 34; #irrelevant:28
+ 	entropyPresent: 0.9932338197397066; entropyNotPresent:0.8433014543692914
+Enoxaparin 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Structure-Activity Relationship 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Therapy, Combination 	#relevant: 37; #irrelevant:127
+ 	entropyPresent: 0.77027926225018; entropyNotPresent:0.8966387659090057
+Coronary Disease 	#relevant: 13; #irrelevant:52
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8848052590593072
+Thienopyridines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blood Volume 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Postoperative Complications 	#relevant: 2; #irrelevant:14
+ 	entropyPresent: 0.5435644431995964; entropyNotPresent:0.8784606962392967
+Renal Insufficiency, Chronic 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Clinical Trials, Phase I as Topic 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Norepinephrine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Liver 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Integrin alpha2 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Lipoproteins, LDL 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Germany 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Immunoenzyme Techniques 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Statistical Distributions 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Thrombin 	#relevant: 0; #irrelevant:10
+ 	entropyPresent: 0.0; entropyNotPresent:0.8788157635550624
+Acute Disease 	#relevant: 8; #irrelevant:14
+ 	entropyPresent: 0.9456603046006402; entropyNotPresent:0.8712280196377877
+Disease-Free Survival 	#relevant: 2; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8715011075191181
+Membrane Glycoproteins 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Sex Characteristics 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Sulfonylurea Compounds 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Algorithms 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Fluorobenzenes 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Superoxides 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Integrin beta3 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Models, Biological 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Drug Combinations 	#relevant: 0; #irrelevant:7
+ 	entropyPresent: 0.0; entropyNotPresent:0.8773333493295155
+Diabetic Angiopathies 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+India 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+CD40 Ligand 	#relevant: 1; #irrelevant:13
+ 	entropyPresent: 0.3712323266408757; entropyNotPresent:0.8791357668533336
+Blood Platelets 	#relevant: 59; #irrelevant:155
+ 	entropyPresent: 0.8495266932709813; entropyNotPresent:0.8828668069409906
+Phosphorylation 	#relevant: 24; #irrelevant:20
+ 	entropyPresent: 0.9940302114769565; entropyNotPresent:0.8533728188427888
+Basilar Artery 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Patient Compliance 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Observer Variation 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Myocardial Perfusion Imaging 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Calcium Signaling 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Blood Pressure 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Blood Coagulation Factors 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Infant, Newborn 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Intracranial Embolism 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Tandem Mass Spectrometry 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Thromboxane A2 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Hemostatics 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Paclitaxel 	#relevant: 2; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8715011075191181
+Case-Control Studies 	#relevant: 3; #irrelevant:25
+ 	entropyPresent: 0.4912373418243331; entropyNotPresent:0.8827989171480439
+Dipyridamole 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Mutation 	#relevant: 4; #irrelevant:4
+ 	entropyPresent: 1.0; entropyNotPresent:0.8710785796303488
+Iron 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Receptors, Thrombin 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Prevalence 	#relevant: 2; #irrelevant:5
+ 	entropyPresent: 0.863120568566631; entropyNotPresent:0.8739810481273578
+Immunoglobulin Fab Fragments 	#relevant: 1; #irrelevant:20
+ 	entropyPresent: 0.2761954276479391; entropyNotPresent:0.8826191293664756
+Interleukin-10 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptor, Adenosine A2A 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Vasodilator Agents 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Lipids 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Spain 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Myocardial Ischemia 	#relevant: 14; #irrelevant:19
+ 	entropyPresent: 0.9833761901392237; entropyNotPresent:0.8662394040907714
+Thromboxane B2 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Yohimbine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Pilot Projects 	#relevant: 8; #irrelevant:20
+ 	entropyPresent: 0.863120568566631; entropyNotPresent:0.8742874299907579
+Thiophenes 	#relevant: 7; #irrelevant:31
+ 	entropyPresent: 0.6892019851173655; entropyNotPresent:0.8811203453197268
+Receptors, G-Protein-Coupled 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ambulatory Care 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Perioperative Care 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Aprotinin 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Guanine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Circadian Rhythm 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Creatine Kinase 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Delayed-Action Preparations 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Oxidative Stress 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Valve Prosthesis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Injections, Subcutaneous 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Monitoring, Intraoperative 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Treatment Outcome 	#relevant: 69; #irrelevant:141
+ 	entropyPresent: 0.913460145256963; entropyNotPresent:0.856448935581468
+Flow Cytometry 	#relevant: 14; #irrelevant:59
+ 	entropyPresent: 0.7051819722888516; entropyNotPresent:0.887299833201413
+Time Factors 	#relevant: 37; #irrelevant:77
+ 	entropyPresent: 0.9092730127456317; entropyNotPresent:0.866920926252688
+Myocardial Infarction 	#relevant: 38; #irrelevant:82
+ 	entropyPresent: 0.9007196798623593; entropyNotPresent:0.868415909214383
+Angioplasty, Balloon, Laser-Assisted 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Free Radicals 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hemoglobin A, Glycosylated 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Mortality 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Heart Failure 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Hypericum 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Postoperative Hemorrhage 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Tomography, X-Ray Computed 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Troponin 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Exercise 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Child, Preschool 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Erythrocyte Deformability 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Registries 	#relevant: 7; #irrelevant:3
+ 	entropyPresent: 0.8812908992306927; entropyNotPresent:0.8668936705568642
+Genotype 	#relevant: 36; #irrelevant:21
+ 	entropyPresent: 0.9494520153879485; entropyNotPresent:0.8363618238226983
+Protein Tyrosine Phosphatases 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Biomarkers, Pharmacological 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Diabetes Mellitus, Type 1 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Phenprocoumon 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Diabetes Mellitus, Type 2 	#relevant: 4; #irrelevant:17
+ 	entropyPresent: 0.7024665512903903; entropyNotPresent:0.8775961348598761
+Tablets, Enteric-Coated 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Age Factors 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Calcium 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Cell Size 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Purinergic P2 Receptor Antagonists 	#relevant: 19; #irrelevant:28
+ 	entropyPresent: 0.9733854352299558; entropyNotPresent:0.8644506377999959
+Embolization, Therapeutic 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Heptanoic Acids 	#relevant: 1; #irrelevant:22
+ 	entropyPresent: 0.2580186686648155; entropyNotPresent:0.8836162585236178
+Tablets 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Disease Models, Animal 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Tyrosine 	#relevant: 4; #irrelevant:27
+ 	entropyPresent: 0.5547781633412735; entropyNotPresent:0.8826374180270025
+Models, Statistical 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Arteriosclerosis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Intracranial Hemorrhages 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Angina, Stable 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Fluorescein-5-isothiocyanate 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Patient Readmission 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cause of Death 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+France 	#relevant: 6; #irrelevant:1
+ 	entropyPresent: 0.5916727785823274; entropyNotPresent:0.8671271388262167
+Puerto Rico 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Stress, Mechanical 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Plasminogen Activator Inhibitor 1 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Data Interpretation, Statistical 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Data Collection 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Coronary Artery Bypass, Off-Pump 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Kidney Diseases 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cyclooxygenase 1 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cyclooxygenase 2 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Erythrocyte Transfusion 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Administration Schedule 	#relevant: 8; #irrelevant:24
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8763323974734215
+Homozygote 	#relevant: 5; #irrelevant:4
+ 	entropyPresent: 0.9910760598382221; entropyNotPresent:0.8698613551764555
+GTP-Binding Protein alpha Subunits, Gi-Go 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Recombinant Proteins 	#relevant: 0; #irrelevant:11
+ 	entropyPresent: 0.0; entropyNotPresent:0.8793103533940485
+Safety 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Platelet Transfusion 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Cross-Sectional Studies 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+New York City 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Erythropoietin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Methacrylates 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Factor VIIa 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Practice Guidelines as Topic 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Intermittent Claudication 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Long-Term Care 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Peptides 	#relevant: 2; #irrelevant:14
+ 	entropyPresent: 0.5435644431995964; entropyNotPresent:0.8784606962392967
+Tetrazoles 	#relevant: 6; #irrelevant:15
+ 	entropyPresent: 0.863120568566631; entropyNotPresent:0.8741834006784388
+Thrombelastography 	#relevant: 7; #irrelevant:10
+ 	entropyPresent: 0.9774178175281716; entropyNotPresent:0.870430427579523
+World Health 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Plasma Substitutes 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Adenosine 	#relevant: 5; #irrelevant:3
+ 	entropyPresent: 0.954434002924965; entropyNotPresent:0.8693602177300007
+Edetic Acid 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hypertension 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Sensitivity and Specificity 	#relevant: 10; #irrelevant:8
+ 	entropyPresent: 0.9910760598382221; entropyNotPresent:0.8656696788942857
+Intracranial Thrombosis 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Analysis of Variance 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Death 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Angioplasty 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Humans 	#relevant: 217; #irrelevant:522
+ 	entropyPresent: 0.8733770390582867; entropyNotPresent:0.8960382325345575
+Angina Pectoris 	#relevant: 8; #irrelevant:23
+ 	entropyPresent: 0.8238116333123173; entropyNotPresent:0.8758207656911294
+Hemodynamics 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Tranexamic Acid 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Aortic Valve 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Linkage Disequilibrium 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Cerebrovascular Disorders 	#relevant: 2; #irrelevant:3
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8729882944709463
+Chromatography, High Pressure Liquid 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Adrenergic Agonists 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Surgical Procedures, Elective 	#relevant: 6; #irrelevant:4
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8686345348453242
+Thionucleotides 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Necrosis 	#relevant: 4; #irrelevant:9
+ 	entropyPresent: 0.8904916402194915; entropyNotPresent:0.8735801803849625
+Hospitals, University 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Isoenzymes 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Acetylcysteine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptors, Purinergic P2Y1 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Mitogen-Activated Protein Kinase 3 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Caffeine 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptors, Purinergic P2Y2 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Anti-Inflammatory Agents, Non-Steroidal 	#relevant: 1; #irrelevant:5
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8751682894376966
+Mixed Function Oxygenases 	#relevant: 3; #irrelevant:1
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8707934360771348
+Signal Transduction 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Receptors, Cytoplasmic and Nuclear 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Nadroparin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+ROC Curve 	#relevant: 16; #irrelevant:5
+ 	entropyPresent: 0.7918583525674836; entropyNotPresent:0.8563403351034221
+Amputation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Reference Standards 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ultrasonography, Doppler, Transcranial 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Enzyme Inhibitors 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Korea 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Prothrombin 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Intracranial Aneurysm 	#relevant: 2; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8715011075191181
+Protein Phosphatase 2 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Blood Coagulation 	#relevant: 1; #irrelevant:10
+ 	entropyPresent: 0.4394969869215134; entropyNotPresent:0.877646206427041
+Brachytherapy 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Medication Adherence 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Anxiety Disorders 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hospitalization 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Glomerular Filtration Rate 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Transfection 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Muscle, Smooth, Vascular 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Logistic Models 	#relevant: 10; #irrelevant:11
+ 	entropyPresent: 0.998363672593813; entropyNotPresent:0.8672029196322075
+Fatty Acids, Omega-3 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cytochrome P-450 Enzyme System 	#relevant: 3; #irrelevant:14
+ 	entropyPresent: 0.672294817075638; entropyNotPresent:0.8772792363173106
+DNA 	#relevant: 2; #irrelevant:2
+ 	entropyPresent: 1.0; entropyNotPresent:0.8724923039690912
+Incidence 	#relevant: 8; #irrelevant:5
+ 	entropyPresent: 0.961236604722876; entropyNotPresent:0.8666580853659396
+Russia 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Up-Regulation 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Atrial Fibrillation 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Atenolol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Female 	#relevant: 195; #irrelevant:415
+ 	entropyPresent: 0.904024556108604; entropyNotPresent:0.6934687977176179
+Republic of Korea 	#relevant: 5; #irrelevant:1
+ 	entropyPresent: 0.6500224216483541; entropyNotPresent:0.8683587934693187
+Regression Analysis 	#relevant: 4; #irrelevant:4
+ 	entropyPresent: 1.0; entropyNotPresent:0.8710785796303488
+Cytochrome P-450 CYP1A2 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Principal Component Analysis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Calcium Channel Blockers 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Automation 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Diagnostic Techniques, Cardiovascular 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Fluorescent Dyes 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Angioplasty, Balloon, Coronary 	#relevant: 106; #irrelevant:138
+ 	entropyPresent: 0.9875572424026962; entropyNotPresent:0.7727552374048188
+Multivariate Analysis 	#relevant: 14; #irrelevant:12
+ 	entropyPresent: 0.9957274520849257; entropyNotPresent:0.8626019270698041
+Half-Life 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Single-Blind Method 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Platelet Factor 4 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Light 	#relevant: 2; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8715011075191181
+Genetic Predisposition to Disease 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Drug Synergism 	#relevant: 0; #irrelevant:12
+ 	entropyPresent: 0.0; entropyNotPresent:0.8798051646343885
+Breath Tests 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Blood Viscosity 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Diabetes Complications 	#relevant: 5; #irrelevant:9
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8723712029589027
+Myocardium 	#relevant: 6; #irrelevant:9
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8711526047420781
+Arterial Occlusive Diseases 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Heart 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Reagent Kits, Diagnostic 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Reference Values 	#relevant: 3; #irrelevant:11
+ 	entropyPresent: 0.74959525725948; entropyNotPresent:0.8757787252044349
+Hyperlipidemias 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Pakistan 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Coronary Vessels 	#relevant: 2; #irrelevant:7
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8749748157737685
+Predictive Value of Tests 	#relevant: 38; #irrelevant:26
+ 	entropyPresent: 0.9744894033980525; entropyNotPresent:0.8360769771246059
+Adrenergic alpha-Antagonists 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Cerebral Arterial Diseases 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Pyridines 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Hydroxymethylglutaryl-CoA Reductase Inhibitors 	#relevant: 1; #irrelevant:24
+ 	entropyPresent: 0.2422921890824148; entropyNotPresent:0.8846141807837697
+Platelet Membrane Glycoproteins 	#relevant: 0; #irrelevant:9
+ 	entropyPresent: 0.0; entropyNotPresent:0.8783213978217961
+Coronary Stenosis 	#relevant: 8; #irrelevant:15
+ 	entropyPresent: 0.9321115676166747; entropyNotPresent:0.8717372315743699
+Endothelium, Vascular 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+Aryl Hydrocarbon Hydroxylases 	#relevant: 51; #irrelevant:26
+ 	entropyPresent: 0.9225641366401653; entropyNotPresent:0.8147658848086414
+C-Reactive Protein 	#relevant: 3; #irrelevant:13
+ 	entropyPresent: 0.6962122601251458; entropyNotPresent:0.8767788236624523
+Models, Cardiovascular 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Lipoproteins 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cohort Studies 	#relevant: 13; #irrelevant:25
+ 	entropyPresent: 0.926819063964577; entropyNotPresent:0.8706411922651338
+Dual Specificity Phosphatase 2 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Insulin Resistance 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Neovascularization, Pathologic 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Withholding Treatment 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Angina, Unstable 	#relevant: 1; #irrelevant:16
+ 	entropyPresent: 0.3227569588973983; entropyNotPresent:0.8806273464691663
+Sulfonamides 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Serbia 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Outpatients 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Preoperative Care 	#relevant: 2; #irrelevant:6
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8744778064328287
+Antigens, CD151 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+alpha 1-Antitrypsin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Disease Progression 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Recovery of Function 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Omeprazole 	#relevant: 3; #irrelevant:9
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8747796133807485
+Health 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Fibrinolytic Agents 	#relevant: 1; #irrelevant:12
+ 	entropyPresent: 0.39124356362925566; entropyNotPresent:0.8786390187062357
+Blood Donors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Equipment Failure 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Dihydropyridines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Comorbidity 	#relevant: 2; #irrelevant:7
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8749748157737685
+Collagen 	#relevant: 3; #irrelevant:26
+ 	entropyPresent: 0.4798320236161285; entropyNotPresent:0.8833020078120724
+Platelet Adhesiveness 	#relevant: 0; #irrelevant:7
+ 	entropyPresent: 0.0; entropyNotPresent:0.8773333493295155
+Graft Occlusion, Vascular 	#relevant: 9; #irrelevant:5
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8654036268680917
+P-Glycoprotein 	#relevant: 5; #irrelevant:3
+ 	entropyPresent: 0.954434002924965; entropyNotPresent:0.8693602177300007
+Hemoglobins 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Biotransformation 	#relevant: 4; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8700798286478357
+Vasodilation 	#relevant: 2; #irrelevant:1
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8719965742014965
+Inflammation Mediators 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hematocrit 	#relevant: 2; #irrelevant:3
+ 	entropyPresent: 0.9709505944546688; entropyNotPresent:0.8729882944709463
+Gene Expression Regulation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antithrombin III 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Heparin 	#relevant: 1; #irrelevant:13
+ 	entropyPresent: 0.3712323266408757; entropyNotPresent:0.8791357668533336
+China 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Hemorheology 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Thrombolytic Therapy 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Obesity 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Clinical Trials, Phase III as Topic 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+DNA Mutational Analysis 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cyclic AMP 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Electric Impedance 	#relevant: 3; #irrelevant:5
+ 	entropyPresent: 0.954434002924965; entropyNotPresent:0.8727844313515928
+Postoperative Period 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Protein Binding 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Anterior Wall Myocardial Infarction 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cyclic GMP 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Phosphatidylserines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cerebral Angiography 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Antifibrinolytic Agents 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Platelet Glycoprotein GPIIb-IIIa Complex 	#relevant: 6; #irrelevant:53
+ 	entropyPresent: 0.4743454375622397; entropyNotPresent:0.8935711016541907
+Cells, Cultured 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Risk Factors 	#relevant: 45; #irrelevant:37
+ 	entropyPresent: 0.9931231770192239; entropyNotPresent:0.8312419630849373
+Coronary Artery Bypass 	#relevant: 4; #irrelevant:14
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8760882842387466
+Confidence Intervals 	#relevant: 3; #irrelevant:3
+ 	entropyPresent: 1.0; entropyNotPresent:0.8717884007665554
+Prosthesis Design 	#relevant: 3; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8702963592796351
+Fish Oils 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Follow-Up Studies 	#relevant: 25; #irrelevant:39
+ 	entropyPresent: 0.9652016987500656; entropyNotPresent:0.8622993232019533
+Patient Discharge 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Atherectomy 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Carbon Isotopes 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Anti-Inflammatory Agents 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Treatment Failure 	#relevant: 6; #irrelevant:8
+ 	entropyPresent: 0.9852281360342516; entropyNotPresent:0.8706484272344589
+Chi-Square Distribution 	#relevant: 9; #irrelevant:5
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8654036268680917
+African Americans 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Resistance 	#relevant: 39; #irrelevant:69
+ 	entropyPresent: 0.943601631299382; entropyNotPresent:0.8592969373168149
+Child 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Thymine 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cell Proliferation 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Chromosome Mapping 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Insulin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Thromboembolism 	#relevant: 0; #irrelevant:5
+ 	entropyPresent: 0.0; entropyNotPresent:0.8763462289152606
+Pharmacogenetics 	#relevant: 7; #irrelevant:4
+ 	entropyPresent: 0.9456603046006402; entropyNotPresent:0.8673980420622605
+Leukocyte Count 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Body Weight 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Pravastatin 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+Platelet Membrane Glycoprotein IIb 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Proton Pump Inhibitors 	#relevant: 5; #irrelevant:13
+ 	entropyPresent: 0.8524051786494786; entropyNotPresent:0.8743839295628468
+European Continental Ancestry Group 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Electrocardiography 	#relevant: 6; #irrelevant:18
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8757023690938077
+Thrombospondins 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Nephelometry and Turbidimetry 	#relevant: 3; #irrelevant:5
+ 	entropyPresent: 0.954434002924965; entropyNotPresent:0.8727844313515928
+Enzyme-Linked Immunosorbent Assay 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Adolescent 	#relevant: 1; #irrelevant:13
+ 	entropyPresent: 0.3712323266408757; entropyNotPresent:0.8791357668533336
+Hirudins 	#relevant: 0; #irrelevant:8
+ 	entropyPresent: 0.0; entropyNotPresent:0.8778272588664752
+Pain, Postoperative 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Male 	#relevant: 197; #irrelevant:435
+ 	entropyPresent: 0.8951362064000372; entropyNotPresent:0.7283846722688454
+Arachidonic Acid 	#relevant: 7; #irrelevant:13
+ 	entropyPresent: 0.9340680553754911; entropyNotPresent:0.8719504731434135
+Tomography, Emission-Computed, Single-Photon 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Ticlopidine 	#relevant: 200; #irrelevant:460
+ 	entropyPresent: 0.8849636363831529; entropyNotPresent:0.7807536250860868
+Peripheral Vascular Diseases 	#relevant: 3; #irrelevant:8
+ 	entropyPresent: 0.8453509366224365; entropyNotPresent:0.87428043389938
+Sex Factors 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Receptors, Thromboxane 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Prognosis 	#relevant: 13; #irrelevant:14
+ 	entropyPresent: 0.9990102708804813; entropyNotPresent:0.8649297409917668
+Clinical Trials as Topic 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Cholesterol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hetastarch 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Reverse Transcriptase Polymerase Chain Reaction 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Likelihood Functions 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Serotonin 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Clopidol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Calcinosis 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Carotid Arteries 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Rate 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Adenosine Diphosphate 	#relevant: 48; #irrelevant:109
+ 	entropyPresent: 0.8881857715967196; entropyNotPresent:0.8699708363846013
+Length of Stay 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Deamino Arginine Vasopressin 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Cardiac Surgical Procedures 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Collagen Type I 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Clinical Protocols 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Biological Markers 	#relevant: 9; #irrelevant:41
+ 	entropyPresent: 0.6800770457282799; entropyNotPresent:0.8838762051088375
+Cricetinae 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Proportional Hazards Models 	#relevant: 5; #irrelevant:8
+ 	entropyPresent: 0.961236604722876; entropyNotPresent:0.8718686865520275
+Platelet Count 	#relevant: 4; #irrelevant:19
+ 	entropyPresent: 0.6665783579949205; entropyNotPresent:0.8786025690394752
+United States 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Mass Spectrometry 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cell Degranulation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Coronary Angiography 	#relevant: 12; #irrelevant:19
+ 	entropyPresent: 0.9629004147713268; entropyNotPresent:0.8687926039401955
+Switzerland 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Indoles 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Peptide Fragments 	#relevant: 1; #irrelevant:19
+ 	entropyPresent: 0.2863969571159562; entropyNotPresent:0.8821208697765706
+Time 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Down-Regulation 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Aspirin 	#relevant: 78; #irrelevant:211
+ 	entropyPresent: 0.8413156413640996; entropyNotPresent:0.8920307048246674
+Carotid Artery, Internal 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Adult 	#relevant: 34; #irrelevant:127
+ 	entropyPresent: 0.7437324568563772; entropyNotPresent:0.9005327799041709
+Tomography, Optical Coherence 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Death, Sudden, Cardiac 	#relevant: 3; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8702963592796351
+Hypercholesterolemia 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Hypothermia, Induced 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Epitopes 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Survival Analysis 	#relevant: 5; #irrelevant:4
+ 	entropyPresent: 0.9910760598382221; entropyNotPresent:0.8698613551764555
+Antigens, CD63 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Illinois 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Polymorphism, Genetic 	#relevant: 34; #irrelevant:23
+ 	entropyPresent: 0.9729661265889025; entropyNotPresent:0.8405173853594898
+Anesthesia, General 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Normal Distribution 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Punctures 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Metoprolol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Citalopram 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Inflammation 	#relevant: 5; #irrelevant:9
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8723712029589027
+Nitric Oxide 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Tolerance 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Crotalid Venoms 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Naphthalenes 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Prospective Studies 	#relevant: 68; #irrelevant:105
+ 	entropyPresent: 0.9667481550357653; entropyNotPresent:0.8336158971235663
+Myocardial Contraction 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Kinetics 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Bleeding Time 	#relevant: 0; #irrelevant:9
+ 	entropyPresent: 0.0; entropyNotPresent:0.8783213978217961
+Blood Vessel Prosthesis Implantation 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Asian Americans 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Interleukin-6 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Substrate Specificity 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Japan 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Coronary Artery Disease 	#relevant: 61; #irrelevant:103
+ 	entropyPresent: 0.9521585174765742; entropyNotPresent:0.844915263155669
+Animals 	#relevant: 0; #irrelevant:4
+ 	entropyPresent: 0.0; entropyNotPresent:0.8758530231626831
+Kidney Function Tests 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Odds Ratio 	#relevant: 9; #irrelevant:5
+ 	entropyPresent: 0.9402859586706309; entropyNotPresent:0.8654036268680917
+Troponin T 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Endovascular Procedures 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Research Design 	#relevant: 2; #irrelevant:9
+ 	entropyPresent: 0.6840384356390417; entropyNotPresent:0.8759695775313525
+Drug Administration Routes 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Receptors, Adrenergic, alpha-2 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Rifampin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Smoking 	#relevant: 1; #irrelevant:7
+ 	entropyPresent: 0.5435644431995964; entropyNotPresent:0.8761587380191469
+Equipment Design 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Hypoglycemic Agents 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Placebo Effect 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Infarction, Middle Cerebral Artery 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Hemostasis 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Blood Vessel Prosthesis 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Anti-Ulcer Agents 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Angiotensin-Converting Enzyme Inhibitors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Magnetic Resonance Angiography 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Troponin I 	#relevant: 2; #irrelevant:6
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8744778064328287
+Chemotherapy, Adjuvant 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Ohio 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Delivery Systems 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Leukocytes, Mononuclear 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Diseases 	#relevant: 3; #irrelevant:3
+ 	entropyPresent: 1.0; entropyNotPresent:0.8717884007665554
+Clinical Trials, Phase II as Topic 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blood Platelet Disorders 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Citric Acid 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Vertebral Artery 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Coronary Circulation 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Fibrinolysis 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Antihypertensive Agents 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Prosthesis Implantation 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Platelet-Rich Plasma 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Coronary Restenosis 	#relevant: 7; #irrelevant:10
+ 	entropyPresent: 0.9774178175281716; entropyNotPresent:0.870430427579523
+Esomeprazole Sodium 	#relevant: 2; #irrelevant:4
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8734845433269156
+Ethnic Groups 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Acute Coronary Syndrome 	#relevant: 46; #irrelevant:63
+ 	entropyPresent: 0.9823817086382354; entropyNotPresent:0.8449523829203736
+Chromatography, Liquid 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Phosphodiesterase 3 Inhibitors 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Platelet Activating Factor 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Tissue Fixation 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Microscopy, Electron, Scanning 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Magnetic Resonance Imaging 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Diagnostic Tests, Routine 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Thrombophilia 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Platelet Glycoprotein GPIb-IX Complex 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Chromosomes, Human, Pair 10 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cell Shape 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Monitoring, Physiologic 	#relevant: 4; #irrelevant:4
+ 	entropyPresent: 1.0; entropyNotPresent:0.8710785796303488
+Nitric Oxide Donors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Genome-Wide Association Study 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Phenotype 	#relevant: 11; #irrelevant:5
+ 	entropyPresent: 0.8960382325345575; entropyNotPresent:0.8628648926597106
+Demography 	#relevant: 1; #irrelevant:1
+ 	entropyPresent: 1.0; entropyNotPresent:0.8731903557182241
+Antibodies, Monoclonal 	#relevant: 1; #irrelevant:20
+ 	entropyPresent: 0.2761954276479391; entropyNotPresent:0.8826191293664756
+Transcription Factors 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Haplotypes 	#relevant: 1; #irrelevant:3
+ 	entropyPresent: 0.8112781244591328; entropyNotPresent:0.8741788221024157
+Cytochrome P-450 CYP3A 	#relevant: 6; #irrelevant:16
+ 	entropyPresent: 0.8453509366224365; entropyNotPresent:0.8746894650504143
+Vasoconstrictor Agents 	#relevant: 0; #irrelevant:3
+ 	entropyPresent: 0.0; entropyNotPresent:0.8753600570785401
+Adrenergic beta-Antagonists 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+CHO Cells 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Sample Size 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Cardiovascular Surgical Procedures 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+2-Pyridinylmethylsulfinylbenzimidazoles 	#relevant: 2; #irrelevant:9
+ 	entropyPresent: 0.6840384356390417; entropyNotPresent:0.8759695775313525
+Captopril 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Adenosine Monophosphate 	#relevant: 2; #irrelevant:7
+ 	entropyPresent: 0.7642045065086203; entropyNotPresent:0.8749748157737685
+Cell Count 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Optical Rotation 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Antiplatyhelmintic Agents 	#relevant: 1; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8726965039103791
+Leukocytes 	#relevant: 0; #irrelevant:9
+ 	entropyPresent: 0.0; entropyNotPresent:0.8783213978217961
+Arteriovenous Shunt, Surgical 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Blood Loss, Surgical 	#relevant: 1; #irrelevant:2
+ 	entropyPresent: 0.9182958340544896; entropyNotPresent:0.8736844625785524
+Anticholesteremic Agents 	#relevant: 0; #irrelevant:6
+ 	entropyPresent: 0.0; entropyNotPresent:0.8768396718198517
+Warfarin 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Immunosuppressive Agents 	#relevant: 2; #irrelevant:0
+ 	entropyPresent: 0.0; entropyNotPresent:0.8715011075191181
+Blood 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Bisoprolol 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Phosphodiesterase Inhibitors 	#relevant: 0; #irrelevant:2
+ 	entropyPresent: 0.0; entropyNotPresent:0.8748673331490475
+Singapore 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Premedication 	#relevant: 2; #irrelevant:9
+ 	entropyPresent: 0.6840384356390417; entropyNotPresent:0.8759695775313525
+Cross-Over Studies 	#relevant: 5; #irrelevant:19
+ 	entropyPresent: 0.7382848661434507; entropyNotPresent:0.8774107208141264
+von Willebrand Factor 	#relevant: 1; #irrelevant:9
+ 	entropyPresent: 0.4689955935892812; entropyNotPresent:0.8771501476567316
+Chronic Disease 	#relevant: 1; #irrelevant:4
+ 	entropyPresent: 0.7219280948873623; entropyNotPresent:0.8746734318714753
+Protamines 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Carotid Artery Diseases 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Drug Antagonism 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258
+Heart Defects, Congenital 	#relevant: 0; #irrelevant:1
+ 	entropyPresent: 0.0; entropyNotPresent:0.8743748538305258

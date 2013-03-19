@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.control.cell.*?>
+<?import fxmltableview.*?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+<GridPane id="tab" fx:id="tab"
+    fx:controller="edu.tufts.cs.ebm.refinement.query.controller.TabController"
+	stylesheets="query.css" xmlns:fx="http://javafx.com/fxml" alignment="center"
+	hgap="10" vgap="10" onKeyPressed="#transferFocus">
+
+	<Text styleClass="prompt" text="Enter query" GridPane.columnIndex="0"
+		GridPane.rowIndex="2" GridPane.columnSpan="2" focusTraversable="false" />
+
+	<HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="5"
+		GridPane.rowIndex="4" focusTraversable="false">
+		<Button text="Submit" onAction="#handleSubmitButtonAction" />
+		<Button text="Clear" onAction="#handleClearButtonAction" />
+	</HBox>
+
+	<HBox spacing="10" alignment="CENTER_RIGHT" GridPane.columnIndex="5"
+		GridPane.rowIndex="9" GridPane.rowSpan="1" GridPane.columnSpan="1" focusTraversable="false">
+		<Text styleClass="info" fx:id="numArticles" text="0" focusTraversable="false" />
+	</HBox>
+	<Region GridPane.rowIndex="10" prefHeight="10" focusTraversable="false"/>
+	
+
+	<TableView fx:id="articleTable" GridPane.columnIndex="0"
+		GridPane.rowIndex="5" GridPane.columnSpan="6" GridPane.rowSpan="4"
+		onMouseClicked="#handleLoadArticleClickAction">
+		<columns>
+			<TableColumn prefWidth="85.0" text="PubMed id" fx:id="pmidCol" />
+			<TableColumn prefWidth="50.0" text="Year" fx:id="dateCol" />
+			<TableColumn prefWidth="400.0" text="Title" fx:id="titleCol" />
+			<TableColumn prefWidth="200.0" text="Authors" fx:id="authorsCol" />
+			<TableColumn prefWidth="85.0" text="Similarity" fx:id="similarityCol" />
+		</columns>
+
+		<contextMenu>
+			<ContextMenu>
+				<items>
+				    <MenuItem text="Show details" onAction="#handleCitationAction" />
+				    <SeparatorMenuItem />
+					<MenuItem text="Mark relevant" onAction="#handleMarkRelevantAction" />
+					<MenuItem text="Mark irrelevant" onAction="#handleMarkIrrelevantAction" />
+				</items>
+			</ContextMenu>
+		</contextMenu>
+	</TableView>
+
+	<StackPane GridPane.columnIndex="0" GridPane.rowIndex="3"
+		GridPane.columnSpan="6" GridPane.rowSpan="1" fx:id="stack" focusTraversable="false" onMouseClicked="#transferFocus" onKeyPressed="#transferFocus">
+		<TextField fx:id="queryBox" onKeyReleased="#handleSubmitButtonKeyReleased"
+			prefHeight="25" />
+		<HBox spacing="10" alignment="CENTER_RIGHT" focusTraversable="false">
+			<padding>
+				<Insets top="10" right="10" bottom="10" left="10" />
+			</padding>
+			<Ellipse id="timer" fx:id="timer" centerX="6" centerY="6"
+				radiusX="6" radiusY="6" focusTraversable="false" />
+			<Button id="cancel" fx:id="cancel" onAction="#handleCancelButtonAction" />
+		</HBox>
+	</StackPane>
+</GridPane>

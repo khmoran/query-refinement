@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.control.cell.*?>
+<?import fxmltableview.*?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+<GridPane fx:id="shell"
+	fx:controller="edu.tufts.cs.ebm.refinement.query.controller.QueryController"
+	stylesheets="query.css" xmlns:fx="http://javafx.com/fxml" alignment="center"
+	hgap="10" vgap="10" prefHeight="625.0" prefWidth="925.0">
+	<padding>
+		<Insets top="20" right="15" bottom="20" left="15" />
+	</padding>
+
+	<Text styleClass="title" text="Active review: "
+		GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="1" />
+
+	<Text styleClass="title" id="name" fx:id="nameText" text="" GridPane.columnIndex="1"
+		GridPane.rowIndex="0" GridPane.columnSpan="1" />
+
+    <TabPane fx:id="tabPane" GridPane.columnIndex="0" prefWidth="875"
+        GridPane.rowIndex="1" GridPane.columnSpan="2">
+        <tabs>
+            <Tab text="Population" id="populationTab" fx:id="pTab" content="$tab" closable="false" />
+            <Tab text="Intervention" id="interventionTab" fx:id="icTab" content="$tab" closable="false" />
+            <Tab text="Outcome" id="outcomeTab" fx:id="oTab" content="$tab" closable="false" />
+        </tabs>
+    </TabPane>
+</GridPane>
+

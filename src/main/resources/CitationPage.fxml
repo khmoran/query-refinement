@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.control.cell.*?>
+<?import fxmltableview.*?>
+
+<ScrollPane id="citationDetails" fx:id="content"
+	fx:controller="edu.tufts.cs.ebm.refinement.query.controller.CitationController"
+	stylesheets="query.css" xmlns:fx="http://javafx.com/fxml" prefHeight="605.0"
+	prefWidth="300.0" hbarPolicy="NEVER">
+
+	<GridPane hgap="10" vgap="10" alignment="center">
+		<padding>
+			<Insets top="15" right="15" bottom="15" left="15" />
+		</padding>
+
+        <HBox styleClass="shaded" spacing="10" alignment="CENTER_RIGHT" GridPane.columnIndex="0"
+            GridPane.rowIndex="0" GridPane.columnSpan="1" >
+            <padding>
+                <Insets top="0" right="10" bottom="0" left="10" />
+            </padding>
+		   <Text styleClass="subtitle" text="Details"/>
+        </HBox>
+
+		<Text styleClass="h1" text="Title:" GridPane.columnIndex="0"
+			GridPane.rowIndex="2" GridPane.columnSpan="1" />
+
+		<Text styleClass="h2" fx:id="titleContent" text=""
+			GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="1"
+			wrappingWidth="250" />
+
+        <Text styleClass="h1" text="Authors:" GridPane.columnIndex="0"
+            GridPane.rowIndex="4" GridPane.columnSpan="1" />
+
+        <Text styleClass="para" fx:id="authorsContent" text="" GridPane.columnIndex="0"
+            GridPane.rowIndex="5" GridPane.columnSpan="1" wrappingWidth="250" />
+
+		<Text styleClass="h1" text="Date created:" GridPane.columnIndex="0"
+			GridPane.rowIndex="6" GridPane.columnSpan="1" />
+
+		<Text styleClass="para" fx:id="dateContent" text="" GridPane.columnIndex="0"
+			GridPane.rowIndex="7" GridPane.columnSpan="1" wrappingWidth="250" />
+
+        <Text styleClass="h1" text="Journal:" GridPane.columnIndex="0"
+            GridPane.rowIndex="8" GridPane.columnSpan="1" />
+
+        <Text styleClass="para" fx:id="journalContent" text="" GridPane.columnIndex="0"
+            GridPane.rowIndex="9" GridPane.columnSpan="1" wrappingWidth="250" />
+
+		<Text styleClass="h1" text="Abstract:" GridPane.columnIndex="0"
+			GridPane.rowIndex="10" GridPane.columnSpan="1" />
+
+		<Text styleClass="para" fx:id="abstractContent" text=""
+			GridPane.columnIndex="0" GridPane.rowIndex="11" GridPane.columnSpan="1"
+			wrappingWidth="250" />
+
+        <Text styleClass="h1" text="PubMed id:" GridPane.columnIndex="0"
+            GridPane.rowIndex="12" GridPane.columnSpan="1" />
+
+        <Text styleClass="para" fx:id="pmidContent" text=""
+            GridPane.columnIndex="0" GridPane.rowIndex="13" GridPane.columnSpan="1"
+            wrappingWidth="250" />
+
+        <Text styleClass="h1" text="MeSH terms:" GridPane.columnIndex="0"
+            GridPane.rowIndex="14" GridPane.columnSpan="1" />
+
+        <Text styleClass="para" fx:id="meshContent" text="" GridPane.columnIndex="0"
+            GridPane.rowIndex="15" GridPane.columnSpan="1" wrappingWidth="250" />
+	</GridPane>
+</ScrollPane>

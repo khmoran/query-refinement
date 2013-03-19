@@ -1,0 +1,763 @@
+0.438734 	 (+): Aryldialkylphosphatase  IC
+0.438734 	 (+): Death, Sudden, Cardiac  O
+0.438734 	 (+): Individuality
+0.438734 	 (+): Prosthesis Design
+0.438132 	 (+): Disease-Free Survival   O
+0.438132 	 (+): Immunosuppressive Agents
+0.438132 	 (+): Intracranial Aneurysm
+0.438132 	 (+): Light
+0.438132 	 (+): Paclitaxel
+0.437534 	 (+): Adrenergic Agonists
+0.437534 	 (+): Angina, Stable  P
+0.437534 	 (+): Anterior Wall Myocardial Infarction P
+0.437534 	 (+): Anti-Inflammatory Agents
+0.437534 	 (+): Antineoplastic Agents, Phytogenic
+0.437534 	 (+): Antiplatyhelmintic Agents
+0.437534 	 (+): Atherosclerosis P
+0.437534 	 (+): Automation
+0.437534 	 (+): Basilar Artery
+0.437534 	 (+): Biological Assay
+0.437534 	 (+): California
+0.437534 	 (+): Cause of Death
+0.437534 	 (+): Cell Proliferation
+0.437534 	 (+): Chromosomes, Human, Pair 10
+0.437534 	 (+): Cineangiography
+0.437534 	 (+): Codon, Nonsense
+0.437534 	 (+): Cytokines
+0.437534 	 (+): Cytosine
+0.437534 	 (+): DNA Mutational Analysis
+0.437534 	 (+): E-Selectin
+0.437534 	 (+): Early Diagnosis
+0.437534 	 (+): Endovascular Procedures P
+0.437534 	 (+): England
+0.437534 	 (+): Ethnic Groups
+0.437534 	 (+): Europe
+0.437534 	 (+): Genetic Markers
+0.437534 	 (+): Genome-Wide Association Study
+0.437534 	 (+): Heart
+0.437534 	 (+): Heart Arrest    O
+0.437534 	 (+): Heart Injuries
+0.437534 	 (+): Hospitalization
+0.437534 	 (+): Hypothermia, Induced
+0.437534 	 (+): Immunoassay
+0.437534 	 (+): Immunologic Factors
+0.437534 	 (+): Intracranial Hemorrhages
+0.437534 	 (+): Iron
+0.437534 	 (+): Italy
+0.437534 	 (+): Kidney Diseases
+0.437534 	 (+): Kidney Function Tests
+0.437534 	 (+): Likelihood Functions
+0.437534 	 (+): Longitudinal Studies
+0.437534 	 (+): Mass Spectrometry
+0.437534 	 (+): Microsomes, Liver
+0.437534 	 (+): Mitogen-Activated Protein Kinase 3
+0.437534 	 (+): Mortality
+0.437534 	 (+): Muscle, Smooth, Vascular
+0.437534 	 (+): Oligonucleotide Array Sequence Analysis
+0.437534 	 (+): Optical Rotation
+0.437534 	 (+): Outpatients
+0.437534 	 (+): Paris
+0.437534 	 (+): Patient Discharge
+0.437534 	 (+): Phosphodiesterase 3 Inhibitors
+0.437534 	 (+): Placebo Effect
+0.437534 	 (+): Preoperative Period
+0.437534 	 (+): Protein Isoforms
+0.437534 	 (+): Quinazolinones
+0.437534 	 (+): Receptors, Purinergic P2Y2
+0.437534 	 (+): Renal Insufficiency, Chronic
+0.437534 	 (+): Reoperation
+0.437534 	 (+): Sample Size
+0.437534 	 (+): Social Adjustment
+0.437534 	 (+): Stainless Steel
+0.437534 	 (+): Substrate Specificity
+0.437534 	 (+): Switzerland
+0.437534 	 (+): Thromboxane A2
+0.437534 	 (+): Thymine
+0.437534 	 (+): Time
+0.437534 	 (+): Tomography, Optical Coherence
+0.437534 	 (+): Ventricular Function, Left
+0.437534 	 (+): Vertebral Artery
+0.437534 	 (+): Victoria
+0.437534 	 (+): Whole Blood Coagulation Time    O
+0.436695 	 (-): ADAM Proteins
+0.436695 	 (-): Acetylcysteine
+0.436695 	 (-): Adenine
+0.436695 	 (-): Adrenergic beta-1 Receptor Antagonists
+0.436695 	 (-): African Americans
+0.436695 	 (-): Aging
+0.436695 	 (-): Ambulatory Care
+0.436695 	 (-): Amino Acid Chloromethyl Ketones
+0.436695 	 (-): Amlodipine
+0.436695 	 (-): Amputation
+0.436695 	 (-): Anesthesia
+0.436695 	 (-): Anesthesia, General
+0.436695 	 (-): Aneurysm
+0.436695 	 (-): Angiography
+0.436695 	 (-): Angioplasty, Balloon, Laser-Assisted
+0.436695 	 (-): Angiotensin-Converting Enzyme Inhibitors
+0.436695 	 (-): Antidepressive Agents
+0.436695 	 (-): Antifibrinolytic Agents
+0.436695 	 (-): Antigens
+0.436695 	 (-): Antigens, CD14
+0.436695 	 (-): Antigens, CD151
+0.436695 	 (-): Antigens, CD31
+0.436695 	 (-): Antihypertensive Agents
+0.436695 	 (-): Anxiety Disorders
+0.436695 	 (-): Aortic Valve
+0.436695 	 (-): Arteriosclerosis
+0.436695 	 (-): Arteriovenous Shunt, Surgical
+0.436695 	 (-): Asian Americans
+0.436695 	 (-): Atenolol
+0.436695 	 (-): Baltimore
+0.436695 	 (-): Base Pairing
+0.436695 	 (-): Binding Sites
+0.436695 	 (-): Bisoprolol
+0.436695 	 (-): Blood
+0.436695 	 (-): Blood Donors
+0.436695 	 (-): Blood Volume
+0.436695 	 (-): Brachytherapy
+0.436695 	 (-): Brain Diseases
+0.436695 	 (-): CHO Cells
+0.436695 	 (-): Caffeine
+0.436695 	 (-): Calcinosis
+0.436695 	 (-): Captopril
+0.436695 	 (-): Carbon Isotopes
+0.436695 	 (-): Cardiopulmonary Bypass
+0.436695 	 (-): Carotid Arteries
+0.436695 	 (-): Carotid Artery Diseases
+0.436695 	 (-): Catecholamines
+0.436695 	 (-): Catheterization, Peripheral
+0.436695 	 (-): Cell Communication
+0.436695 	 (-): Cell Count
+0.436695 	 (-): Cell Degranulation
+0.436695 	 (-): Cell Membrane
+0.436695 	 (-): Cell Separation
+0.436695 	 (-): Cell Shape
+0.436695 	 (-): Cerebral Angiography
+0.436695 	 (-): Cerebral Arterial Diseases
+0.436695 	 (-): Cerebral Hemorrhage
+0.436695 	 (-): Cerebral Revascularization
+0.436695 	 (-): Cerebrovascular Circulation
+0.436695 	 (-): Chemokines
+0.436695 	 (-): Child
+0.436695 	 (-): Cholesterol
+0.436695 	 (-): Cholesterol, LDL
+0.436695 	 (-): Chromosome Mapping
+0.436695 	 (-): Citalopram
+0.436695 	 (-): Citric Acid
+0.436695 	 (-): Clinical Protocols
+0.436695 	 (-): Clinical Trials, Phase I as Topic
+0.436695 	 (-): Clinical Trials, Phase II as Topic
+0.436695 	 (-): Clopidol
+0.436695 	 (-): Collagen Type I
+0.436695 	 (-): Confounding Factors (Epidemiology)
+0.436695 	 (-): Cricetinae
+0.436695 	 (-): Crotalid Venoms
+0.436695 	 (-): Cyclic AMP
+0.436695 	 (-): Cyclic GMP
+0.436695 	 (-): Cyclooxygenase 1
+0.436695 	 (-): Cyclooxygenase 2
+0.436695 	 (-): Cytochrome P-450 CYP1A2
+0.436695 	 (-): Cytoplasm
+0.436695 	 (-): Cytoplasmic Granules
+0.436695 	 (-): Data Collection
+0.436695 	 (-): Data Interpretation, Statistical
+0.436695 	 (-): Deamino Arginine Vasopressin
+0.436695 	 (-): Delayed-Action Preparations
+0.436695 	 (-): Depressive Disorder
+0.436695 	 (-): Diabetes Mellitus, Type 1
+0.436695 	 (-): Diabetic Nephropathies
+0.436695 	 (-): Diagnostic Techniques, Cardiovascular
+0.436695 	 (-): Dihydropyridines
+0.436695 	 (-): Dilatation, Pathologic
+0.436695 	 (-): Dipyrone
+0.436695 	 (-): Disease Models, Animal
+0.436695 	 (-): Drug Administration Routes
+0.436695 	 (-): Drug Antagonism
+0.436695 	 (-): Drug Delivery Systems
+0.436695 	 (-): Drug Incompatibility
+0.436695 	 (-): Edetic Acid
+0.436695 	 (-): Electrocardiography, Ambulatory
+0.436695 	 (-): Embolism, Cholesterol
+0.436695 	 (-): Enalapril
+0.436695 	 (-): Epitopes
+0.436695 	 (-): Equipment Failure
+0.436695 	 (-): Equipment Failure Analysis
+0.436695 	 (-): Erythrocyte Transfusion
+0.436695 	 (-): Erythromycin
+0.436695 	 (-): European Continental Ancestry Group
+0.436695 	 (-): Exercise
+0.436695 	 (-): Exons
+0.436695 	 (-): Family Health
+0.436695 	 (-): Fatty Acids, Omega-3
+0.436695 	 (-): Fish Oils
+0.436695 	 (-): Florida
+0.436695 	 (-): Fluorescein-5-isothiocyanate
+0.436695 	 (-): Free Radicals
+0.436695 	 (-): GTP-Binding Protein alpha Subunits, Gi-Go
+0.436695 	 (-): Gene Expression Regulation
+0.436695 	 (-): Glycemic Index
+0.436695 	 (-): Guanine
+0.436695 	 (-): Half-Life
+0.436695 	 (-): Health
+0.436695 	 (-): Heart Defects, Congenital
+0.436695 	 (-): Heart Rate
+0.436695 	 (-): Heart Septal Defects, Atrial
+0.436695 	 (-): Heart Valve Prosthesis
+0.436695 	 (-): Heart Valve Prosthesis Implantation
+0.436695 	 (-): Hemodynamics
+0.436695 	 (-): Heparin, Low-Molecular-Weight
+0.436695 	 (-): Hetastarch
+0.436695 	 (-): Heterozygote Detection
+0.436695 	 (-): Hospitals, University
+0.436695 	 (-): Hydrazones
+0.436695 	 (-): Hyperemia
+0.436695 	 (-): Hypericum
+0.436695 	 (-): Hyperlipidemias
+0.436695 	 (-): Illinois
+0.436695 	 (-): Image Cytometry
+0.436695 	 (-): Imidazoles
+0.436695 	 (-): Imines
+0.436695 	 (-): Infant
+0.436695 	 (-): Infant, Newborn
+0.436695 	 (-): Infarction, Middle Cerebral Artery
+0.436695 	 (-): Inflammation Mediators
+0.436695 	 (-): Injections, Subcutaneous
+0.436695 	 (-): Insulin Resistance
+0.436695 	 (-): Interleukin-10
+0.436695 	 (-): Intermittent Claudication
+0.436695 	 (-): Intervention Studies
+0.436695 	 (-): Intestinal Absorption
+0.436695 	 (-): Introns
+0.436695 	 (-): Ireland
+0.436695 	 (-): Lacerations
+0.436695 	 (-): Lateral Ventricles
+0.436695 	 (-): Least-Squares Analysis
+0.436695 	 (-): Lectins, C-Type
+0.436695 	 (-): Leg
+0.436695 	 (-): Length of Stay
+0.436695 	 (-): Leptin
+0.436695 	 (-): Leukocytes, Mononuclear
+0.436695 	 (-): Lipids
+0.436695 	 (-): Lipoproteins
+0.436695 	 (-): Lipoproteins, LDL
+0.436695 	 (-): Liver Circulation
+0.436695 	 (-): Liver Diseases
+0.436695 	 (-): Magnetic Resonance Angiography
+0.436695 	 (-): Magnetic Resonance Imaging
+0.436695 	 (-): Medication Adherence
+0.436695 	 (-): Membrane Glycoproteins
+0.436695 	 (-): Metabolic Detoxication, Drug
+0.436695 	 (-): Metabolic Syndrome X
+0.436695 	 (-): Methacrylates
+0.436695 	 (-): Metoprolol
+0.436695 	 (-): Mice
+0.436695 	 (-): Microscopy, Electron, Scanning
+0.436695 	 (-): Models, Cardiovascular
+0.436695 	 (-): Monitoring, Intraoperative
+0.436695 	 (-): Myocardial Contraction
+0.436695 	 (-): Myocardial Perfusion Imaging
+0.436695 	 (-): Nadroparin
+0.436695 	 (-): Naphthalenes
+0.436695 	 (-): Neovascularization, Pathologic
+0.436695 	 (-): Neurologic Examination
+0.436695 	 (-): New York City
+0.436695 	 (-): Nifedipine
+0.436695 	 (-): Nitric Oxide
+0.436695 	 (-): Nitric Oxide Donors
+0.436695 	 (-): Nitroprusside
+0.436695 	 (-): Norepinephrine
+0.436695 	 (-): Normal Distribution
+0.436695 	 (-): Nortriptyline
+0.436695 	 (-): Obesity
+0.436695 	 (-): Ohio
+0.436695 	 (-): Oxidative Stress
+0.436695 	 (-): Pain, Postoperative
+0.436695 	 (-): Pakistan
+0.436695 	 (-): Patient Readmission
+0.436695 	 (-): Penile Implantation
+0.436695 	 (-): Perioperative Care
+0.436695 	 (-): Perioperative Period
+0.436695 	 (-): Phenprocoumon
+0.436695 	 (-): Phosphatidylserines
+0.436695 	 (-): Plasma Substitutes
+0.436695 	 (-): Plasminogen Activator Inhibitor 1
+0.436695 	 (-): Platelet Factor 4
+0.436695 	 (-): Preanesthetic Medication
+0.436695 	 (-): Preventive Medicine
+0.436695 	 (-): Principal Component Analysis
+0.436695 	 (-): Prolactin
+0.436695 	 (-): Propensity Score
+0.436695 	 (-): Propionates
+0.436695 	 (-): Protamines
+0.436695 	 (-): Protein Binding
+0.436695 	 (-): Protein C
+0.436695 	 (-): Protein Precursors
+0.436695 	 (-): Publication Bias
+0.436695 	 (-): Puerto Rico
+0.436695 	 (-): Punctures
+0.436695 	 (-): Questionnaires
+0.436695 	 (-): Ramipril
+0.436695 	 (-): Receptor, Adenosine A2A
+0.436695 	 (-): Receptors, Adrenergic, beta-2
+0.436695 	 (-): Receptors, Cell Surface
+0.436695 	 (-): Receptors, Cytoplasmic and Nuclear
+0.436695 	 (-): Receptors, Fibrinogen
+0.436695 	 (-): Receptors, G-Protein-Coupled
+0.436695 	 (-): Receptors, Thromboxane
+0.436695 	 (-): Reference Standards
+0.436695 	 (-): Respiration, Artificial
+0.436695 	 (-): Reverse Transcriptase Polymerase Chain Reaction
+0.436695 	 (-): Russia
+0.436695 	 (-): Safety
+0.436695 	 (-): Salicylates
+0.436695 	 (-): Serbia
+0.436695 	 (-): Serotonin Uptake Inhibitors
+0.436695 	 (-): Sertraline
+0.436695 	 (-): Sex Characteristics
+0.436695 	 (-): Shock, Cardiogenic
+0.436695 	 (-): Singapore
+0.436695 	 (-): Skin
+0.436695 	 (-): Splanchnic Circulation
+0.436695 	 (-): Statistical Distributions
+0.436695 	 (-): Stress, Physiological
+0.436695 	 (-): Stroke Volume
+0.436695 	 (-): Structure-Activity Relationship
+0.436695 	 (-): Substance Withdrawal Syndrome
+0.436695 	 (-): Sulfonylurea Compounds
+0.436695 	 (-): Superoxides
+0.436695 	 (-): Swine
+0.436695 	 (-): Thiazolidinediones
+0.436695 	 (-): Thienopyridines
+0.436695 	 (-): Thionucleotides
+0.436695 	 (-): Thrombospondins
+0.436695 	 (-): Tissue Fixation
+0.436695 	 (-): Tomography, Emission-Computed, Single-Photon
+0.436695 	 (-): Tranexamic Acid
+0.436695 	 (-): Transcription Factors
+0.436695 	 (-): Transfection
+0.436695 	 (-): Treatment Refusal
+0.436695 	 (-): Tumor Necrosis Factor-alpha
+0.436695 	 (-): Vasculitis
+0.436695 	 (-): Veins
+0.436695 	 (-): Ventricular Dysfunction, Left
+0.436695 	 (-): Verapamil
+0.436695 	 (-): Weights and Measures
+0.436695 	 (-): Withholding Treatment
+0.436695 	 (-): World Health
+0.436695 	 (-): Wound Healing
+0.436695 	 (-): Yohimbine
+0.436695 	 (-): alpha 1-Antitrypsin
+0.436449 	 (-): Adrenergic alpha-Antagonists
+0.436449 	 (-): Adrenergic beta-Antagonists
+0.436449 	 (-): Antithrombins
+0.436449 	 (-): Blood Pressure
+0.436449 	 (-): Breath Tests
+0.436449 	 (-): Cardiovascular Surgical Procedures
+0.436449 	 (-): Child, Preschool
+0.436449 	 (-): Chromatography, Liquid
+0.436449 	 (-): Circadian Rhythm
+0.436449 	 (-): Clinical Trials, Phase III as Topic
+0.436449 	 (-): Depression
+0.436449 	 (-): Diagnostic Tests, Routine
+0.436449 	 (-): Down-Regulation
+0.436449 	 (-): Drugs, Generic
+0.436449 	 (-): Endothelial Cells
+0.436449 	 (-): Erythropoietin
+0.436449 	 (-): Factor VIIa
+0.436449 	 (-): Fasting
+0.436449 	 (-): Fibrin Fibrinogen Degradation Products
+0.436449 	 (-): Fibrinolysis
+0.436449 	 (-): Fluorescent Dyes
+0.436449 	 (-): Heart-Assist Devices
+0.436449 	 (-): Hematologic Tests
+0.436449 	 (-): Hemoglobin A, Glycosylated
+0.436449 	 (-): Histamine H2 Antagonists
+0.436449 	 (-): Hypercholesterolemia
+0.436449 	 (-): Hypertension
+0.436449 	 (-): Immunoenzyme Techniques
+0.436449 	 (-): Insulin
+0.436449 	 (-): International Normalized Ratio
+0.436449 	 (-): Intracranial Embolism
+0.436449 	 (-): Intraoperative Complications
+0.436449 	 (-): Kidney Failure, Chronic
+0.436449 	 (-): Models, Biological
+0.436449 	 (-): Observer Variation
+0.436449 	 (-): Perfusion
+0.436449 	 (-): Phosphodiesterase Inhibitors
+0.436449 	 (-): Placebos
+0.436449 	 (-): Platelet Activating Factor
+0.436449 	 (-): Platelet Transfusion
+0.436449 	 (-): Postoperative Care
+0.436449 	 (-): Purinergic P2 Receptor Agonists
+0.436449 	 (-): Ranitidine
+0.436449 	 (-): Receptor, PAR-1
+0.436449 	 (-): Receptors, Adrenergic, alpha-2
+0.436449 	 (-): Renal Dialysis
+0.436449 	 (-): Rifampin
+0.436449 	 (-): Spain
+0.436449 	 (-): Stress, Mechanical
+0.436449 	 (-): Tablets
+0.436449 	 (-): Tablets, Enteric-Coated
+0.436449 	 (-): Tandem Mass Spectrometry
+0.436449 	 (-): Thromboplastin
+0.436449 	 (-): Tomography, X-Ray Computed
+0.436449 	 (-): Triglycerides
+0.436449 	 (-): United States
+0.436449 	 (-): Up-Regulation
+0.436449 	 (-): Vascular Diseases
+0.436449 	 (-): Warfarin
+0.436449 	 (-): beta-Thromboglobulin
+0.436203 	 (-): Antithrombin III
+0.436203 	 (-): Atherectomy
+0.436203 	 (-): Bayes Theorem
+0.436203 	 (-): Blood Platelet Disorders
+0.436203 	 (-): Calcium Signaling
+0.436203 	 (-): Cell Size
+0.436203 	 (-): China
+0.436203 	 (-): Creatine Kinase
+0.436203 	 (-): Databases, Factual
+0.436203 	 (-): Endarterectomy, Carotid
+0.436203 	 (-): Enoxaparin
+0.436203 	 (-): Enzyme Inhibitors
+0.436203 	 (-): Evidence-Based Medicine
+0.436203 	 (-): Exercise Test
+0.436203 	 (-): Hemostasis
+0.436203 	 (-): Hypoglycemic Agents
+0.436203 	 (-): Intracranial Arteriosclerosis
+0.436203 	 (-): Monocytes
+0.436203 	 (-): Peptide Hydrolases
+0.436203 	 (-): Protein Phosphatase 2
+0.436203 	 (-): Protein Tyrosine Phosphatases
+0.436203 	 (-): Receptors, Purinergic P2Y1
+0.436203 	 (-): Recovery of Function
+0.436203 	 (-): Survival Rate
+0.436203 	 (-): Therapeutic Equivalency
+0.436203 	 (-): Thrombophilia
+0.436203 	 (-): Ultrasonography, Doppler, Transcranial
+0.436203 	 (-): Vasoconstrictor Agents
+0.435956 	 (-): Animals
+0.435956 	 (-): Antigens, CD40
+0.435956 	 (-): Antigens, CD63
+0.435956 	 (-): Antigens, Human Platelet
+0.435956 	 (-): Blood Coagulation Factors
+0.435956 	 (-): Blood Vessel Prosthesis Implantation
+0.435956 	 (-): Calcium
+0.435956 	 (-): Cell Adhesion
+0.435956 	 (-): Dipyridamole
+0.435956 	 (-): Drug Evaluation
+0.435956 	 (-): Dual Specificity Phosphatase 2
+0.435956 	 (-): Fluorobenzenes
+0.435956 	 (-): Hemorheology
+0.435956 	 (-): Platelet Membrane Glycoprotein IIb
+0.435956 	 (-): Pyrimidines
+0.435956 	 (-): Serotonin
+0.43571 	 (-): Algorithms
+0.43571 	 (-): Cerebral Infarction
+0.43571 	 (-): Heart Failure
+0.43571 	 (-): Postoperative Hemorrhage
+0.43571 	 (-): Pyridines
+0.43571 	 (-): Thromboembolism
+0.43571 	 (-): Thromboxane B2
+0.435463 	 (-): Anticholesteremic Agents
+0.435463 	 (-): Calcium Channel Blockers
+0.435463 	 (-): Interleukin-6
+0.435463 	 (-): Patient Selection
+0.435463 	 (-): Postoperative Period
+0.435463 	 (-): Prothrombin
+0.435463 	 (-): Receptors, Thrombin
+0.435463 	 (-): Sex Factors
+0.435463 	 (-): Single-Blind Method
+0.435216 	 (-): Drug Combinations
+0.435216 	 (-): Platelet Adhesiveness
+0.434969 	 (-): Antigens, CD
+0.434969 	 (-): Cross-Sectional Studies
+0.434969 	 (-): Diabetes Mellitus
+0.434969 	 (-): Diabetic Angiopathies
+0.434969 	 (-): Endothelium, Vascular
+0.434969 	 (-): Hirudins
+0.434969 	 (-): Pravastatin
+0.434722 	 (-): Bleeding Time
+0.434722 	 (-): Leukocytes
+0.434722 	 (-): Platelet Membrane Glycoproteins
+0.434722 	 (-): Simvastatin
+0.434475 	 (-): Thrombin
+0.434227 	 (-): Recombinant Proteins
+0.43398 	 (-): Drug Synergism
+0.310429 	 (-): Hydroxymethylglutaryl-CoA Reductase Inhibitors
+0.303065 	 (-): Heptanoic Acids
+0.303065 	 (-): Pyrroles
+0.294475 	 (-): Antibodies, Monoclonal
+0.294475 	 (-): Immunoglobulin Fab Fragments
+0.289624 	 (-): Peptide Fragments
+0.27219 	 (-): Angina, Unstable
+0.265173 	 (-): Brain Ischemia
+0.265173 	 (-): Fibrinogen
+0.25834 	 (-): Anticoagulants
+0.248699 	 (-): Adolescent
+0.248699 	 (-): CD40 Ligand
+0.248699 	 (-): Heparin
+0.238941 	 (-): Fibrinolytic Agents
+0.215311 	 (-): Blood Coagulation
+0.215311 	 (-): Membrane Proteins
+0.20081 	 (-): von Willebrand Factor
+0.192316 	 (-): Collagen
+0.189924 	 (-): Platelet Glycoprotein GPIIb-IIIa Complex
+0.186864 	 (-): Case-Control Studies
+0.164021 	 (-): Smoking
+0.16287 	 (-): Epinephrine
+0.16287 	 (-): Peptides
+0.16287 	 (-): Postoperative Complications
+0.155175 	 (-): Tyrosine
+0.144483 	 (+): France
+0.140215 	 (-): Statistics, Nonparametric
+0.139687 	 (-): Stroke
+0.138661 	 (-): P-Selectin
+0.120118 	 (-): Young Adult
+0.114692 	 (+): Republic of Korea
+0.111287 	 (-): Alprostadil
+0.111287 	 (-): Analysis of Variance
+0.111287 	 (-): Anti-Inflammatory Agents, Non-Steroidal
+0.111287 	 (-): Integrin beta3
+0.111287 	 (-): Liver
+0.111287 	 (-): Statistics as Topic
+0.101292 	 (-): Platelet Count
+0.099096 	 (-): Cytochrome P-450 Enzyme System
+0.099079 	 (-): Drug Interactions
+0.093879 	 (-): 2-Pyridinylmethylsulfinylbenzimidazoles
+0.093879 	 (-): Premedication
+0.093879 	 (-): Research Design
+0.093879 	 (-): Severity of Illness Index
+0.09359 	 (-): Piperazines
+0.091906 	 (-): Biological Markers
+0.088721 	 (-): Thiophenes
+0.087387 	 (-): Administration, Oral
+0.087387 	 (-): C-Reactive Protein
+0.083851 	 (-): Diabetes Mellitus, Type 2
+0.078128 	 (+): Sirolimus
+0.077642 	 (-): Flow Cytometry
+0.077275 	 (-): Platelet Activation
+0.075582 	 (-): Age Factors
+0.075582 	 (-): Angioplasty
+0.075582 	 (-): Arterial Occlusive Diseases
+0.075582 	 (-): Blood Glucose
+0.075582 	 (-): Blood Vessel Prosthesis
+0.075582 	 (-): Chronic Disease
+0.075582 	 (-): Fatty Acids, Monounsaturated
+0.075582 	 (-): Indoles
+0.075582 	 (-): Ischemic Attack, Transient
+0.075582 	 (-): Patient Compliance
+0.075582 	 (-): Sulfonamides
+0.075582 	 (-): Vasodilator Agents
+0.075136 	 (-): Female
+0.070516 	 (-): Coronary Disease
+0.066035 	 (-): Cross-Over Studies
+0.062122 	 (-): Male
+0.061196 	 (-): Reference Values
+0.058814 	 (-): Aged
+0.054293 	 (-): Adenosine Monophosphate
+0.054293 	 (-): Angioplasty, Balloon
+0.054293 	 (-): Comorbidity
+0.054293 	 (-): Coronary Vessels
+0.054293 	 (-): Risk
+0.053736 	 (-): Coronary Artery Bypass
+0.05175 	 (-): Adult
+0.049796 	 (-): Retrospective Studies
+0.049783 	 (+): ROC Curve
+0.046568 	 (-): Creatine Kinase, MB Form
+0.046272 	 (-): Double-Blind Method
+0.041024 	 (-): Ticlopidine
+0.040424 	 (-): Drug Therapy, Combination
+0.035525 	 (-): Middle Aged
+0.032847 	 (+): Electrodes
+0.032847 	 (+): Mixed Function Oxygenases
+0.031154 	 (-): Area Under Curve
+0.031154 	 (-): Atrial Fibrillation
+0.031154 	 (-): Blood Transfusion
+0.031154 	 (-): Body Weight
+0.031154 	 (-): Cardiac Surgical Procedures
+0.031154 	 (-): Carotid Stenosis
+0.031154 	 (-): Cells, Cultured
+0.031154 	 (-): Disease Progression
+0.031154 	 (-): Endpoint Determination
+0.031154 	 (-): Enzyme-Linked Immunosorbent Assay
+0.031154 	 (-): Haplotypes
+0.031154 	 (-): Hemostatics
+0.031154 	 (-): Infusions, Intravenous
+0.031154 	 (-): Isoenzymes
+0.031154 	 (-): Kinetics
+0.031154 	 (-): Leukocyte Count
+0.031154 	 (-): Platelet Glycoprotein GPIb-IX Complex
+0.031154 	 (-): Thrombolytic Therapy
+0.031005 	 (-): Preoperative Care
+0.031005 	 (-): Troponin I
+0.030854 	 (-): Omeprazole
+0.030392 	 (-): Electrocardiography
+0.030077 	 (-): Drug Administration Schedule
+0.024066 	 (-): Angina Pectoris
+0.018271 	 (-): Syndrome
+0.014067 	 (-): Peripheral Vascular Diseases
+0.013862 	 (-): Cytochrome P-450 CYP3A
+0.010488 	 (-): Proton Pump Inhibitors
+0.007686 	 (-): Blood Platelets
+0.007209 	 (-): Aspirin
+0.005489 	 (-): Dose-Response Relationship, Drug
+0.005332 	 (-): Myocardial Revascularization
+0.005332 	 (-): Prevalence
+0.005231 	 (-): Tetrazoles
+0.005218 	 (+): Aryl Hydrocarbon Hydroxylases
+0.005179 	 (-): Pilot Projects
+4.35E-4 	 (-): Platelet Aggregation
+0.0 	 (-): Acute Coronary Syndrome
+0.0 	 (-): Acute Disease
+0.0 	 (+): Adenosine
+0.0 	 (-): Adenosine Diphosphate
+0.0 	 (-): Aged, 80 and over
+0.0 	 (+): Alleles
+0.0 	 (-): Amino Acid Substitution
+0.0 	 (-): Angioplasty, Balloon, Coronary
+0.0 	 (-): Anti-Ulcer Agents
+0.0 	 (-): Aprotinin
+0.0 	 (-): Apyrase
+0.0 	 (-): Arachidonic Acid
+0.0 	 (-): Asian Continental Ancestry Group
+0.0 	 (-): Biomarkers, Pharmacological
+0.0 	 (+): Biotransformation
+0.0 	 (-): Blood Coagulation Tests
+0.0 	 (-): Blood Loss, Surgical
+0.0 	 (-): Blood Proteins
+0.0 	 (-): Blood Viscosity
+0.0 	 (-): Blotting, Western
+0.0 	 (+): Body Mass Index
+0.0 	 (-): Cardiac Catheterization
+0.0 	 (-): Cardiovascular Agents
+0.0 	 (+): Cardiovascular Diseases
+0.0 	 (-): Carotid Artery, Internal
+0.0 	 (+): Cell Adhesion Molecules
+0.0 	 (-): Cerebrovascular Disorders
+0.0 	 (-): Chemotherapy, Adjuvant
+0.0 	 (+): Chi-Square Distribution
+0.0 	 (-): Chromatography, High Pressure Liquid
+0.0 	 (-): Clinical Trials as Topic
+0.0 	 (-): Cohort Studies
+0.0 	 (-): Combined Modality Therapy
+0.0 	 (-): Confidence Intervals
+0.0 	 (-): Constriction, Pathologic
+0.0 	 (-): Coronary Angiography
+0.0 	 (-): Coronary Artery Bypass, Off-Pump
+0.0 	 (-): Coronary Artery Disease
+0.0 	 (-): Coronary Circulation
+0.0 	 (-): Coronary Restenosis
+0.0 	 (-): Coronary Stenosis
+0.0 	 (-): Coronary Thrombosis
+0.0 	 (-): DNA
+0.0 	 (-): Death
+0.0 	 (-): Demography
+0.0 	 (-): Diabetes Complications
+0.0 	 (-): Drug Monitoring
+0.0 	 (-): Drug Resistance
+0.0 	 (-): Drug Resistance, Multiple
+0.0 	 (-): Drug Tolerance
+0.0 	 (+): Drug-Eluting Stents
+0.0 	 (-): Electric Impedance
+0.0 	 (-): Embolization, Therapeutic
+0.0 	 (+): Epidemiologic Methods
+0.0 	 (-): Equipment Design
+0.0 	 (-): Erythrocyte Deformability
+0.0 	 (-): Esomeprazole Sodium
+0.0 	 (-): Feasibility Studies
+0.0 	 (-): Follow-Up Studies
+0.0 	 (-): Gastrointestinal Hemorrhage
+0.0 	 (+): Gene Frequency
+0.0 	 (-): Genetic Predisposition to Disease
+0.0 	 (-): Genetic Variation
+0.0 	 (+): Genotype
+0.0 	 (-): Germany
+0.0 	 (-): Glomerular Filtration Rate
+0.0 	 (+): Graft Occlusion, Vascular
+0.0 	 (-): Heart Diseases
+0.0 	 (-): Hematocrit
+0.0 	 (-): Hemoglobins
+0.0 	 (-): Hemorrhage
+0.0 	 (+): Heterozygote
+0.0 	 (+): Homozygote
+0.0 	 (-): Humans
+0.0 	 (+): Incidence
+0.0 	 (-): India
+0.0 	 (-): Individualized Medicine
+0.0 	 (-): Inflammation
+0.0 	 (-): Injections, Intravenous
+0.0 	 (-): Integrin alpha2
+0.0 	 (-): Intercellular Adhesion Molecule-1
+0.0 	 (-): Intracranial Thrombosis
+0.0 	 (+): Ischemia
+0.0 	 (-): Japan
+0.0 	 (+): Kaplan-Meier Estimate
+0.0 	 (-): Korea
+0.0 	 (-): Linear Models
+0.0 	 (-): Linkage Disequilibrium
+0.0 	 (-): Logistic Models
+0.0 	 (-): Long-Term Care
+0.0 	 (+): Microfilament Proteins
+0.0 	 (-): Models, Statistical
+0.0 	 (-): Monitoring, Physiologic
+0.0 	 (+): Multivariate Analysis
+0.0 	 (-): Mutation
+0.0 	 (-): Mutation, Missense
+0.0 	 (-): Myocardial Infarction
+0.0 	 (-): Myocardial Ischemia
+0.0 	 (-): Myocardium
+0.0 	 (-): Necrosis
+0.0 	 (-): Nephelometry and Turbidimetry
+0.0 	 (+): Odds Ratio
+0.0 	 (+): Outcome Assessment (Health Care)
+0.0 	 (+): P-Glycoprotein
+0.0 	 (+): Pharmacogenetics
+0.0 	 (-): Pharmacokinetics
+0.0 	 (+): Phenotype
+0.0 	 (+): Phosphoproteins
+0.0 	 (+): Phosphorylation
+0.0 	 (-): Platelet Aggregation Inhibitors
+0.0 	 (-): Platelet Function Tests
+0.0 	 (-): Platelet-Derived Growth Factor
+0.0 	 (-): Platelet-Rich Plasma
+0.0 	 (+): Point-of-Care Systems
+0.0 	 (+): Polymerase Chain Reaction
+0.0 	 (+): Polymorphism, Genetic
+0.0 	 (-): Polymorphism, Single Nucleotide
+0.0 	 (-): Practice Guidelines as Topic
+0.0 	 (+): Predictive Value of Tests
+0.0 	 (+): Probability
+0.0 	 (-): Prodrugs
+0.0 	 (-): Prognosis
+0.0 	 (-): Proportional Hazards Models
+0.0 	 (-): Prospective Studies
+0.0 	 (-): Prosthesis Failure
+0.0 	 (-): Prosthesis Implantation
+0.0 	 (-): Protein Processing, Post-Translational
+0.0 	 (-): Purinergic P2 Receptor Antagonists
+0.0 	 (-): Purinergic P2Y Receptor Antagonists
+0.0 	 (-): Randomized Controlled Trials as Topic
+0.0 	 (-): Reagent Kits, Diagnostic
+0.0 	 (-): Receptors, Purinergic P2
+0.0 	 (-): Receptors, Purinergic P2Y12
+0.0 	 (-): Recurrence
+0.0 	 (+): Registries
+0.0 	 (-): Regression Analysis
+0.0 	 (-): Renal Insufficiency
+0.0 	 (+): Reproducibility of Results
+0.0 	 (+): Risk Assessment
+0.0 	 (+): Risk Factors
+0.0 	 (+): Sensitivity and Specificity
+0.0 	 (-): Signal Transduction
+0.0 	 (-): Stents
+0.0 	 (+): Surgical Procedures, Elective
+0.0 	 (+): Survival Analysis
+0.0 	 (-): Thrombelastography
+0.0 	 (-): Thrombosis
+0.0 	 (-): Time Factors
+0.0 	 (-): Treatment Failure
+0.0 	 (-): Treatment Outcome
+0.0 	 (-): Troponin
+0.0 	 (-): Troponin T
+0.0 	 (+): Vasodilation

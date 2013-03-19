@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+
+
+<GridPane fx:id="content"
+	fx:controller="edu.tufts.cs.ebm.refinement.query.controller.ReviewDetailsController"
+	stylesheets="query.css" xmlns:fx="http://javafx.com/fxml" prefHeight="550.0"
+	prefWidth="400.0" hgap="10" vgap="10">
+	<padding>
+		<Insets top="25" right="25" bottom="15" left="25" />
+	</padding>
+
+	<HBox styleClass="shaded" spacing="10" alignment="CENTER_RIGHT"
+		GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="1">
+		<padding>
+			<Insets top="0" right="10" bottom="0" left="10" />
+		</padding>
+		<Text styleClass="subtitle" text="Active review details" />
+	</HBox>
+
+	<Text styleClass="h1" text="Name:" GridPane.columnIndex="0"
+		GridPane.rowIndex="2" GridPane.columnSpan="1" />
+
+	<Text styleClass="para" fx:id="nameContent" text=""
+		GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="1"
+		wrappingWidth="375" />
+
+	<Text styleClass="h1" text="Date created:" GridPane.columnIndex="0"
+		GridPane.rowIndex="4" GridPane.columnSpan="1" />
+
+	<Text styleClass="para" fx:id="createdOnContent" text=""
+		GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="1"
+		wrappingWidth="375" />
+
+	<Text styleClass="h1" text="Creator:" GridPane.columnIndex="0"
+		GridPane.rowIndex="6" GridPane.columnSpan="1" />
+
+	<Text styleClass="para" fx:id="creatorContent" text=""
+		GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="1"
+		wrappingWidth="375" />
+
+	<TabPane GridPane.columnIndex="0" GridPane.rowIndex="9"
+		GridPane.columnSpan="1" prefHeight="300">
+		<tabs>
+			<Tab text="Seeds" closable="false" fx:id="seedTab">
+				<content>
+					<ScrollPane>
+						<Text text="" fx:id="seeds" />
+					</ScrollPane>
+				</content>
+			</Tab>
+			<Tab text="Relevant" closable="false" fx:id="relevantTab">
+				<content>
+					<ScrollPane>
+						<Text text="" fx:id="relevant" />
+					</ScrollPane>
+				</content>
+			</Tab>
+			<Tab text="Irrelevant" closable="false" fx:id="irrelevantTab">
+				<content>
+					<ScrollPane>
+						<Text text="" fx:id="irrelevant" />
+					</ScrollPane>
+				</content>
+			</Tab>
+		</tabs>
+	</TabPane>
+
+	<Region GridPane.rowIndex="11" prefHeight="10" />
+	<HBox spacing="10" alignment="CENTER" GridPane.columnIndex="0"
+		GridPane.rowIndex="12" GridPane.columnSpan="1">
+		<padding>
+			<Insets top="10" right="10" bottom="10" left="10" />
+		</padding>
+		<Button text="Done" onAction="#handleDoneButtonAction" />
+	</HBox>
+	<Region GridPane.rowIndex="13" prefHeight="10" />
+</GridPane>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+
+<BorderPane fx:id="view"
+	fx:controller="edu.tufts.cs.ebm.refinement.query.controller.MainController"
+	xmlns:fx="http://javafx.com/fxml" stylesheets="query.css" prefHeight="750.0" prefWidth="500.0">
+	<top>
+		<MenuBar>
+			<Menu text="File">
+				<MenuItem text="Home" onAction="#handleMenuHomeAction" />
+				<MenuItem text="New review" onAction="#handleCreateReviewButtonAction" />
+				<MenuItem text="Exit" onAction="#handleMenuExitAction" />
+			</Menu>
+            <Menu fx:id="reviewMenu" text="Active Review" disable="true">
+                <MenuItem text="Details" onAction="#handleMenuDetailsAction" />
+                <MenuItem text="Update" onAction="#handleMenuConfigureAction" />
+            </Menu>
+		</MenuBar>
+	</top>
+	<center>
+		<GridPane fx:id="content" alignment="center" hgap="10" vgap="10"
+			prefHeight="650.0" prefWidth="450.0">
+			<padding>
+				<Insets top="25" right="25" bottom="25" left="25" />
+			</padding>
+
+			<Text styleClass="title" fx:id="welcomeText"
+				text="Welcome to the PubMed Query Refiner" GridPane.columnIndex="0"
+				GridPane.rowIndex="0" GridPane.columnSpan="4" wrappingWidth="450" />
+
+			<Text styleClass="prompt"
+				text="To begin, create a new systematic review or select an existing one from the table below."
+				GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="4"
+				wrappingWidth="450" />
+
+			<Text styleClass="h1" fx:id="createReviewText"
+				text="1. Create new systematic review" GridPane.columnIndex="0"
+				GridPane.rowIndex="3" GridPane.columnSpan="3" />
+
+			<HBox spacing="10" alignment="bottom_right"
+				GridPane.columnIndex="3" GridPane.rowIndex="3">
+				<Button fx:id="createButton" text="Create"
+					onAction="#handleCreateReviewButtonAction" />
+			</HBox>
+
+			<Text styleClass="h1" fx:id="loadReviewText"
+				text="2. Load existing systematic review" GridPane.columnIndex="0"
+				GridPane.rowIndex="5" GridPane.columnSpan="3" />
+
+			<TableView fx:id="loadTable" GridPane.columnIndex="0"
+				GridPane.rowIndex="7" GridPane.columnSpan="4" GridPane.rowSpan="4"
+				onMouseClicked="#handleLoadReviewClickAction">
+				<columns>
+					<TableColumn prefWidth="225" text="Name" fx:id="nameCol">
+						<cellValueFactory>
+							<PropertyValueFactory property="name" />
+						</cellValueFactory>
+					</TableColumn>
+					<TableColumn prefWidth="225" text="Created on" fx:id="createdOnCol">
+						<cellValueFactory>
+							<PropertyValueFactory property="createdOn" />
+						</cellValueFactory>
+					</TableColumn>
+				</columns>
+				<contextMenu>
+					<ContextMenu>
+						<items>
+							<MenuItem text="Delete" onAction="#handleDeleteReviewAction" />
+						</items>
+					</ContextMenu>
+				</contextMenu>
+			</TableView>
+
+			<HBox spacing="10" alignment="bottom_right"
+				GridPane.columnIndex="3" GridPane.rowIndex="11">
+				<Button fx:id="loadButton" text="Load"
+					onAction="#handleLoadReviewButtonAction" />
+			</HBox>
+		</GridPane>
+	</center>
+</BorderPane>

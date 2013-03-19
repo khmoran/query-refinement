@@ -1,0 +1,204 @@
+/** Color scheme:
+ * White: #FFFFFF OR 255,255,255;
+ * Red: #CC0000 OR 255,0,0;
+ * Very light grey: #e8e8e8 OR 232,232,232
+ * Light grey: #CCCCCC OR 204,204,204;
+ * Dark grey: #404040 OR 64,64,64;
+ * Very dark grey: #202020 OR 32,32,32;
+ * Blue: #1b91e0 OR 27,145,244;
+ */
+
+/** The entire stage. */
+.root {
+    /* -fx-background-image: url("images/spectral.jpg"); */
+    /* -fx-background-image: url("images/dark-blue.jpg"); */
+    /* -fx-background-image: url("images/dark-orange.jpg"); */
+    /* -fx-background-image: url("images/light-orange.jpg"); */
+    -fx-background-image: url("images/light-blue-dots.png");
+    -fx-background-repeat: repeat;
+    -fx-background-position: left center;
+}
+
+/** The content pane. */
+#content {
+    /*-fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-background-insets: 15;
+    -fx-background-radius: 15;*/
+}
+
+/** The outer tab pane area. */
+.tab-pane, *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: rgba(120,187,234, 0.5);
+}
+
+.tab:selected {
+    -fx-background-color: rgba(158,203,234, 0.75);
+}
+
+/** The tab content area. */
+.tab-content-area { /** similar to #content but no insets */
+    -fx-background-color: rgba(255,255,255, 0.25);
+    -fx-background-insets: 0;
+    -fx-background-radius: 15;
+}
+
+.tab *.tab-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(255,255,255);
+    -fx-effect: dropshadow( gaussian , rgba(200,200,200,0.2) , 2,0,0,1 );
+}
+
+/** Default label styling. */
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(32,32,32);
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+/** Pane titles. */
+.title {
+   -fx-font-size: 28px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: rgb(32,32,32);
+   -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.25) , 2,0,0,1 );
+}
+
+/** Sub-pane titles. */
+.shaded {
+   -fx-background-color: rgba(255,255,255, 0.25);
+}
+
+/** Pane subtitles. */
+.subtitle {
+   -fx-font-size: 22px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #000000;
+}
+
+/** Major headers. */
+.h1 {
+   -fx-font-size: 16px;
+   -fx-font-family: "Arial Black";
+   -fx-fill:rgb(32,32,32);
+   -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 2,0,0,1 );
+}
+
+/** Major headers. */
+.h2 {
+   -fx-font-size: 14px;
+   -fx-font-family: "Arial Black";
+   -fx-fill:rgb(64,64,64);
+   -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 2,0,0,1 );
+}
+
+/** Info description text. */
+.info {
+   -fx-font-size: 12px;
+   -fx-font-weight: bold;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #ffffff;
+   -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 2,0,0,1 );
+}
+
+/** Paragraph text. */
+.para {
+   -fx-font-size: 14px;
+   -fx-font-family: "Arial";
+   -fx-font-weight: bold;
+   -fx-fill:rgb(255,255,255);
+}
+
+/** Menu labels. */
+.menu .label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+/** Error text. */
+.error {
+   -fx-font-size: 14px;
+   -fx-font-family: "Arial Black";
+   -fx-fill:rgb(255,0,0);
+  -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 2,0,0,1 );
+}
+
+/** Prompt text. */
+.prompt {
+   -fx-font-size: 14px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: rgb(255,255,255);
+   -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 2,0,0,1 );
+}
+
+/** "Name" item. */
+#name {
+   -fx-font-size: 28px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: rgb(255,255,255);
+}
+
+/** Default button style. */
+.button {
+    -fx-background-color:
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 15 3 15;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial Black";
+}
+
+/** Default hover button style. */
+.button:hover {
+    -fx-effect: innershadow( three-pass-box , rgba(.5,0,0,.5) , 6, 0.0 , 0 , 2 );
+}
+
+/** The timer shape. */
+#timer {
+    -fx-fill: transparent;
+    -fx-stroke: linear-gradient(from 50% 0% to 50% 100%,
+        rgb(203,206,232) 0%,
+        rgb(59,60,91) 100%);
+    -fx-stroke-width: 3;
+}
+
+/** The cancel query button. */
+.button #cancel {
+    -fx-background-color:
+        rgba(255,0,0,0.08),
+        linear-gradient(#FF0000, #F20000),
+        linear-gradient(#FF0000 0%, #F20000 50%, #E00000 51%, #D60000 100%);
+    -fx-padding: -1 7 -1 8;
+    -fx-background-radius: 3,2,3,2;
+    -fx-background-insets: 0,2,2,0;
+    -fx-effect: dropshadow( gaussian, rgba(323,323,323,0.6) , 1, 0.0 , 0 , 1 );
+}
+
+/** For the citation details window. */
+#citationDetails {
+    -fx-background-image: url("images/dark-blue-dots.png");
+}
+
+#citationDetails .h2 {
+   -fx-fill:rgb(255,255,255);
+}
+
+#citationDetails .para {
+   -fx-fill:rgb(255,255,255);
+   -fx-font-weight: normal;
+}
+
+.tab-content-area .scroll-pane {
+   -fx-padding: 10 10 10 10;
+   -fx-background-color: rgba(255,255,255, 0.25);
+   -fx-background-insets: 0;    -fx-background-radius: 15;
+}
