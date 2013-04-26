@@ -25,7 +25,8 @@ public class SimulateReviewProtonBeam extends SimulateReview {
     super.setUp();
 
     this.statsFile = "stats-pb.csv";
-    this.paperRankFile = "ranks-pb.xlsx";
+    this.paperRankFile = "ranks-pb.csv";
+    this.paperProbFile = "probs-pb.csv";
   }
 
   /**

@@ -43,10 +43,8 @@ public class PubmedSearcher extends PubmedService implements Runnable {
   public static final String QUERY_COMPLETE = "QUERY COMPLETE";
   /** The search. */
   protected BooleanProperty searchInProg = new SimpleBooleanProperty( false );
-  /** The title TF-IDF instance. */
-  protected static TfIdfDistance titleTfIdf;
-  /** The abstract TF-IDF instance. */
-  protected static TfIdfDistance abstrTfIdf;
+  /** The TF-IDF instance. */
+  protected static TfIdfDistance tfIdf;
   /** Citations pertaining to this query. */
   protected ListProperty<Citation> citations = new SimpleListProperty<>(
       FXCollections.observableList( new ArrayList<Citation>() ) );
@@ -110,13 +108,14 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     this.compareTo.addAll( activeReview.getSeedCitations() );
 
     TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
-    titleTfIdf = new TfIdfDistance( tokenizerFactory );
-    abstrTfIdf = new TfIdfDistance( tokenizerFactory );
+    tfIdf = new TfIdfDistance( tokenizerFactory );
 
     // train the classifier
     for ( Citation seed : compareTo ) {
-      titleTfIdf.handle( seed.getTitle() );
-      abstrTfIdf.handle( seed.getAbstr() );
+      tfIdf.handle( seed.getTitle() );
+      tfIdf.handle( seed.getAbstr() );
+      tfIdf.handle( seed.getMeshTerms().toString() );
+      System.out.println( seed.getMeshTerms().toString() );
     }
   }
 
@@ -226,7 +225,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
       if ( c != null ) {
         for ( Citation cit : c ) {
           CosineSimilarity cs = new CosineSimilarity(
-              titleTfIdf, abstrTfIdf, cit, compareTo );
+              tfIdf, cit, compareTo, activeReview );
           cit.setSimilarity( cs.calculateSimilarity() );
           meshes.addAll( cit.getMeshTerms() );
         }

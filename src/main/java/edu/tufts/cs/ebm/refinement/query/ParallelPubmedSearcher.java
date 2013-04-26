@@ -45,7 +45,7 @@ public class ParallelPubmedSearcher extends PubmedService
   /** The default number of documents to retrieve per fetch. */
   protected static final int DEFAULT_FETCH_SIZE = 100;
   /** The number of threads to fork off at a time. */
-  protected static final int NUM_FORKS = 14;
+  protected static final int NUM_FORKS = 8;
   /** The number of minutes after which to time out the request. */
   protected static final int TIMEOUT_MINS = 120;
   /** The maximum number of documents to fetch. */
@@ -55,9 +55,7 @@ public class ParallelPubmedSearcher extends PubmedService
   /** The search. */
   protected BooleanProperty searchInProg = new SimpleBooleanProperty( false );
   /** The title TF-IDF instance. */
-  protected static TfIdfDistance titleTfIdf;
-  /** The abstract TF-IDF instance. */
-  protected static TfIdfDistance abstrTfIdf;
+  protected static TfIdfDistance tfIdf;
   /** Citations pertaining to this query. */
   protected Set<Citation> citations = new CopyOnWriteArraySet<>();
   /** The current MeSH terms associated with the Review. */
@@ -111,13 +109,13 @@ public class ParallelPubmedSearcher extends PubmedService
 
     TokenizerFactory tokenizerFactory = new EnglishStopTokenizerFactory(
         IndoEuropeanTokenizerFactory.INSTANCE );
-    titleTfIdf = new TfIdfDistance( tokenizerFactory );
-    abstrTfIdf = new TfIdfDistance( tokenizerFactory );
+    tfIdf = new TfIdfDistance( tokenizerFactory );
 
     // train the classifier
     for ( Citation seed : compareTo ) {
-      titleTfIdf.handle( seed.getTitle() );
-      abstrTfIdf.handle( seed.getAbstr() );
+      tfIdf.handle( seed.getTitle() );
+      tfIdf.handle( seed.getAbstr() );
+      //tfIdf.handle( seed.getMeshTerms().toString() );
     }
 
   }
@@ -284,8 +282,8 @@ public class ParallelPubmedSearcher extends PubmedService
     Citation c = super.articleToCitation( articleType );
 
     if ( c != null ) {
-      CosineSimilarity cs = new CosineSimilarity(
-          titleTfIdf, abstrTfIdf, c, compareTo );
+      CosineSimilarity cs = new CosineSimilarity( defaultCache,
+          tfIdf, c, compareTo, activeReview );
       c.setSimilarity( cs.calculateSimilarity() );
       meshes.addAll( c.getMeshTerms() );
     }
@@ -300,8 +298,8 @@ public class ParallelPubmedSearcher extends PubmedService
       Citation c = (Citation) arg;
       this.citations.add( c );
 
-      CosineSimilarity cs = new CosineSimilarity(
-          titleTfIdf, abstrTfIdf, c, compareTo );
+      CosineSimilarity cs = new CosineSimilarity( defaultCache,
+          tfIdf, c, compareTo, activeReview );
       c.setSimilarity( cs.calculateSimilarity( ) );
     }
   }
@@ -317,8 +315,8 @@ public class ParallelPubmedSearcher extends PubmedService
     // parallelized
     ExecutorService executorService = Executors.newFixedThreadPool( NUM_FORKS );
     for ( Citation c : citations ) {
-      CosineSimilarity cs = new CosineSimilarity(
-          defaultCache, titleTfIdf, abstrTfIdf, c, compareTo );
+      CosineSimilarity cs = new CosineSimilarity( defaultCache,
+          tfIdf, c, compareTo, activeReview );
       executorService.submit( cs );
     }
 

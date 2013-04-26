@@ -51,7 +51,9 @@ public class Util {
    * @return
    */
   public static Citation getCitation( PubmedId id ) {
-    return Ebean.find( Citation.class, id.longValue() );
+    Citation c = Ebean.find( Citation.class, id.longValue() );
+
+    return c;
   }
 
   /**

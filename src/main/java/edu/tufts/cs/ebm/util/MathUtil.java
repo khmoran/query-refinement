@@ -10,9 +10,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.common.collect.TreeMultimap;
 
 public class MathUtil {
+  /** The Logger for this class. */
+  protected static final Log LOG = LogFactory.getLog(
+      MathUtil.class );
   /** The random number generator. */
   protected static final Random RND = new Random();
 
@@ -62,7 +68,7 @@ public class MathUtil {
   }
 
   /**
-   * Generate a random number from 0..n according to a 1/r^2 distribution.
+   * Generate a random number from 0..n according to a 1/r distribution.
    * @param n
    * @return
    */
@@ -188,7 +194,7 @@ public class MathUtil {
     }
 
     eq += " = " + total;
-    System.out.println( eq );
+    LOG.trace( eq );
 
     return total > 0 ? total : 0;
   }

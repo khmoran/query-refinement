@@ -25,7 +25,8 @@ public class SimulateReviewClopidogrel extends SimulateReview {
     super.setUp();
 
     this.statsFile = "stats-cl.csv";
-    this.paperRankFile = "ranks-cl.xlsx";
+    this.paperRankFile = "ranks-cl.csv";
+    this.paperProbFile = "probs-cl.csv";
   }
 
   /**

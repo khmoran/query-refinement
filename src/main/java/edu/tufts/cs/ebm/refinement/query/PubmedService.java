@@ -58,7 +58,7 @@ public abstract class PubmedService extends Observable {
   /** The cache name. */
   protected static final String DEFAULT_CACHE_NAME = "default";
   /** The data cache. */
-  protected JCS defaultCache;
+  protected static JCS defaultCache;
 
   /**
    * Initialize the services.
@@ -70,8 +70,8 @@ public abstract class PubmedService extends Observable {
     eFetchService = new EFetchPubmedServiceStub();
 
     try {
-      this.defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
-      this.defaultCache.clear();
+      defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
+//      this.defaultCache.clear();
     } catch ( CacheException e ) {
       LOG.error( "Error intitializing prefetching cache.", e );
       e.printStackTrace();

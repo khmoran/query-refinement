@@ -32,6 +32,8 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
       SimulateReviewWithMesh.class );
   /** The number of MeSH terms to propose to the expert per iteration. */
   protected static final int MESH_PROPOSALS_PER_ITERATION = 10;
+  /** The threshold for information gain being "useful". */
+  protected static final double INFO_GAIN_THRESHOLD = 0.4;
   /** The file containing the ranking of MeSH terms by info gain. */
   protected static final String MESH_RANKING =
       "src/test/resources/meshRanking.out";

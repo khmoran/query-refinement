@@ -12,6 +12,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.avaje.ebean.validation.Length;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
 
 import edu.tufts.cs.ebm.util.PubmedDate;
 
@@ -58,6 +61,9 @@ public class Citation implements Comparable<Citation>, Serializable {
   /** The journal. */
   @Length( max = 5000 )
   protected String journal;
+  /** The MeSH terms. */
+  @Length( max = 5000 )
+  protected String meshStr;
   /** The MeSH terms. */
   @Transient
   protected Set<String> meshTerms = new HashSet<>();
@@ -229,11 +235,33 @@ public class Citation implements Comparable<Citation>, Serializable {
   }
 
   /**
+   * Get the MeSH string.
+   * @return
+   */
+  public String getMeshStr() {
+    return this.meshStr;
+  }
+
+  /**
    * Set the MeSH terms.
    * @param terms
    */
   public void setMeshTerms( ObservableSet<String> terms ) {
     this.meshTerms = terms;
+    Joiner joiner = Joiner.on( ',' ).skipNulls();
+    this.meshStr = joiner.join( terms );
+  }
+
+  /**
+   * Set the MeSH string.
+   * @param mesh
+   */
+  public void setMeshStr( String mesh ) {
+    this.meshStr = mesh;
+    this.meshTerms = Sets.newHashSet( Splitter.on( ',' )
+      .trimResults()
+      .omitEmptyStrings()
+      .split( mesh ) );
   }
 
   /**

@@ -1,7 +1,6 @@
 package edu.tufts.cs.ebm.review.systematic;
 
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,17 +10,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.jcs.JCS;
+import org.apache.jcs.access.exception.CacheException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import com.aliasi.spell.TfIdfDistance;
+import com.aliasi.tokenizer.EnglishStopTokenizerFactory;
+import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
+import com.aliasi.tokenizer.TokenizerFactory;
 import com.avaje.ebean.Ebean;
 import com.google.common.collect.TreeMultimap;
 
@@ -30,6 +34,7 @@ import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
 import edu.tufts.cs.ebm.util.MathUtil;
+import edu.tufts.cs.similarity.CosineSimilarity;
 
 /**
  * Test the MeshWalker class.
@@ -38,30 +43,34 @@ public class SimulateReview extends AbstractTest {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog(
       SimulateReview.class );
+  /** The number of minutes after which to time out the request. */
+  protected static final int TIMEOUT_MINS = 60;
+  /** The number of threads to fork off at a time. */
+  protected static final int NUM_FORKS = 8;
   /** The number of papers to propose to the expert per iteration. */
   protected static final int PAPER_PROPOSALS_PER_ITERATION = 5;
-  /** The threshold for information gain being "useful". */
-  protected static final double INFO_GAIN_THRESHOLD = 0.4;
+  /** The title TF-IDF instance. */
+  protected static TfIdfDistance tfIdf;
+  /** The cache name. */
+  protected static final String DEFAULT_CACHE_NAME = "default";
+  /** The data cache. */
+  protected static JCS defaultCache;
   /** The file containing the recall statistics. */
   protected String statsFile;
   /** The file containing the rankings of the papers. */
   protected String paperRankFile;
-  /** The prior for the number of papers returned by the query. */
-  //protected int n;
-  /** The csv printer. */
-  protected SXSSFWorkbook workbook;
-  /** The first sheet of the workbook. */
-  protected Sheet sheet;
-  /** The second sheet of the workbook. */
-  protected Sheet sheet2;
-  /** The map from citation to row in the workbook. */
-  protected Map<PubmedId, Integer> rankMap = new HashMap<>();
-  /** The maximum row in the workbook. */
-  protected int maxRow = 0;
-  /** The maximum column in the workbook. */
-  protected int maxCol = 4;
+  /** The file containing the probabilities of the papers. */
+  protected String paperProbFile;
+  /** The rankings output. */
+  protected Map<PubmedId, String> rankOutput = new HashMap<>();
+  /** The observations output. */
+  protected Map<PubmedId, String> observOutput = new HashMap<>();
+  /** The probabilities output. */
+  protected Map<PubmedId, String> probOutput = new HashMap<>();
   /** The iteration. */
-  protected int iteration = 0;
+  protected long iteration = 0;
+  /** The z value for probability calculations. */
+  protected double z = -1;
   /** The active review. */
   protected SystematicReview activeReview;
 
@@ -239,58 +248,35 @@ public class SimulateReview extends AbstractTest {
       Set<Citation> expertIrrelevantPapers ) {
 
     // get probability information
-    double z = 0;
-    for ( int i = 1; i <= cosineMap.values().size(); i++ ) {
-      z += 1/(double) ( i );
-      //z += 1/(double) ( i * i );
+    if ( z == -1 ) {
+      z = calcZ( cosineMap.values().size() );
     }
-
-    Row r = sheet.getRow( 0 );
-    if ( r == null ) r = sheet.createRow( 0 );
-    Cell cell = r.createCell( maxCol );
-    cell.setCellValue( iteration );
 
     int rank = 1;
     for ( Double sim : cosineMap.keySet().descendingSet() ) {
       for ( Citation c : cosineMap.get( sim ) ) {
         PubmedId pmid = c.getPmid();
-        int row;
-        if ( rankMap.keySet().contains( pmid ) ) {
-          row = rankMap.get( pmid );
-          r = sheet.getRow( row );
+        
+        String rankStr = rankOutput.get( pmid );
+        if ( rankStr == null ) {
+          rankStr = "";
         } else {
-          row = ++maxRow;
-          rankMap.put( pmid, row );  // give it a row
-
-          r = sheet.getRow( row );
-          if ( r == null ) r = sheet.createRow( row );
-          cell = r.createCell( 0 );
-          cell.setCellValue( pmid.toString() );
-
-          boolean level1 = false, level2 = false;
-          if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
-            level1 = true;
-
-            if ( activeReview.getRelevantLevel2().contains( pmid ) ) {
-              level2 = true;
-            }
-          }
-
-          cell = r.createCell( 1 );
-          cell.setCellValue( level1 );
-          cell = r.createCell( 2 );
-          cell.setCellValue( level2 );
+          rankStr += ",";
         }
+        rankStr += String.valueOf( rank );
+        rankOutput.put( pmid, rankStr );
 
-        cell = r.createCell( maxCol );
-        cell.setCellValue( rank );
+        double prob = (double) 1/ (double) rank / z;
+        prob = MathUtil.round( prob, 7 );
 
-        Row r2 = sheet2.getRow( row );
-        if ( r2 == null ) r2 = sheet2.createRow( row );
-        Cell cell2 = r2.createCell( maxCol );
-        double prob = ( (double) 1/ (double) rank ) / (double) z;
-        //double prob = ( (double) 1/ (double) rank*rank ) / (double) z;
-        cell2.setCellValue( prob );
+        String probStr = probOutput.get( pmid );
+        if ( probStr == null ) {
+          probStr = "";
+        } else {
+          probStr += ",";
+        }
+        probStr += String.valueOf( prob );
+        probOutput.put( pmid, probStr );
 
         rank++;
       }
@@ -300,17 +286,15 @@ public class SimulateReview extends AbstractTest {
     allObserved.addAll( expertRelevantPapers );
     allObserved.addAll( expertIrrelevantPapers );
     for ( Citation c : allObserved ) {
-      int row = rankMap.get( c.getPmid() );
-      r = sheet.getRow( row );
-
-      if ( r.getCell( 3 ) == null ) {
-        cell = r.createCell( 3 );
-        cell.setCellValue( iteration );
+      // only record the first time you see this
+      String observStr = observOutput.get( c.getPmid() );
+      if ( observStr == null ) {
+        observStr = String.valueOf( iteration );
+        observOutput.put( c.getPmid(), observStr );
       }
     }
 
     iteration++;
-    maxCol++;
   }
 
   /**
@@ -378,11 +362,11 @@ public class SimulateReview extends AbstractTest {
   public void setUp() throws Exception {
     super.setUp();
 
-    if ( this.getClass().getSimpleName().equals(
-        "SimulateReviewProtonBeam" ) ) {
+    if ( this.getClass().getSimpleName().contains(
+        "ProtonBeam" ) ) {
       this.activeReview = protonBeamReview;
-    } else if ( this.getClass().getSimpleName().equals(
-        "SimulateReviewClopidogrel" ) ) {
+    } else if ( this.getClass().getSimpleName().contains(
+        "Clopidogrel" ) ) {
       this.activeReview = clopidogrelReview;
     } else {
       LOG.error( "Could not determine review. Exiting." );
@@ -402,19 +386,39 @@ public class SimulateReview extends AbstractTest {
       Ebean.find( PubmedId.class, pmid.getValue() );
     }
 
-    workbook = new SXSSFWorkbook( 29000 );
-    sheet = workbook.createSheet( "ranks" );
-    sheet2 = workbook.createSheet( "probabilities" );
+    TokenizerFactory tokenizerFactory = new EnglishStopTokenizerFactory(
+        IndoEuropeanTokenizerFactory.INSTANCE );
+    tfIdf = new TfIdfDistance( tokenizerFactory );
 
-    Row r = sheet.createRow( 0 );
-    Cell pmidHeader = r.createCell( 0 );
-    pmidHeader.setCellValue( "pmid" );
-    Cell level1Header = r.createCell( 1 );
-    level1Header.setCellValue( "level 1 inclusion" );
-    Cell level2Header = r.createCell( 2 );
-    level2Header.setCellValue( "level 2 inclusion" );
-    Cell itObservedHeader = r.createCell( 3 );
-    itObservedHeader.setCellValue( "iteration observed" );
+    // train the classifier
+    for ( Citation seed : activeReview.getSeedCitations() ) {
+      tfIdf.handle( seed.getTitle() );
+      tfIdf.handle( seed.getAbstr() );
+      //tfIdf.handle( seed.getMeshTerms().toString() );
+    }
+
+    // initialize the cache
+    try {
+      defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
+//      this.defaultCache.clear();
+    } catch ( CacheException e ) {
+      LOG.error( "Error intitializing prefetching cache.", e );
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Calculate z.
+   * @param n
+   * @return
+   */
+  protected double calcZ( int n ) {
+    double z = 0;
+    for ( int i = 1; i <= n; i++ ) {
+      z += 1/(double) ( i );
+    }
+    
+    return z;
   }
 
   /**
@@ -459,6 +463,7 @@ public class SimulateReview extends AbstractTest {
     int i = 0;
     int papersProposed = 0;
     boolean papersRemaining = true;
+    Map<String, InfoMeasure> im = null;
     while ( papersRemaining ) {
       LOG.info(  "\n\nIteration " + ++i + ":\n" );
 
@@ -488,11 +493,14 @@ public class SimulateReview extends AbstractTest {
         cosineMap = rank(
           searcher, expertRelevantPapers, expertIrrelevantPapers );
       }
-      Map<String, InfoMeasure> im = evaluateQuery( searcher, cosineMap,
-        expertRelevantPapers, expertIrrelevantPapers );
+      if ( expertRelevantPapers.size() > numRelevant || im == null ) {
+        im = evaluateQuery( searcher, cosineMap,
+          expertRelevantPapers, expertIrrelevantPapers );
+      }
 
       if ( im != null ) {
         // write out the current stats
+        System.out.println( "Writing L2 recall: " + im.get( "L2" ).getRecall() );
         double costL1 = papersProposed + activeReview
             .getRelevantLevel1().size() - im.get( "L1" ).getTruePositives();
         double costL2 = papersProposed + activeReview
@@ -518,12 +526,60 @@ public class SimulateReview extends AbstractTest {
    */
   @AfterSuite
   public void tearDown() throws IOException {
-    FileOutputStream out = new FileOutputStream( paperRankFile );
+    FileWriter fstreamRanks = new FileWriter( paperRankFile );
+    BufferedWriter outRanks = new BufferedWriter( fstreamRanks );
 
-    workbook.write( out );
-    out.close();
+    FileWriter fstreamProbs = new FileWriter( paperProbFile );
+    BufferedWriter outProbs = new BufferedWriter( fstreamProbs );
 
-    // dispose of temp files
-    workbook.dispose();
+    StringBuffer header = new StringBuffer(
+        "pmid,L1 inclusion,L2 inclusion,iteration(s) observed," );
+    for ( int i = 1; i <= iteration; i++ ) {
+      header.append( i + "," );
+    }
+    outRanks.append( header.toString() + "\n" );
+    outProbs.append( header.toString() + "\n" );
+    
+    for ( PubmedId pmid : rankOutput.keySet() ) {
+      String observ = observOutput.get( pmid );
+      String rankStr = rankOutput.get( pmid );
+      String observStr = ( observ == null ) ? "" : observ;
+      String l1 = activeReview.getRelevantLevel1().contains( pmid ) ? "true" : "false";
+      String l2 = activeReview.getRelevantLevel2().contains( pmid ) ? "true" : "false";
+      outRanks.append( pmid + "," + l1 + "," + l2 + ",\"" + observStr + "\"," + rankStr + "\n" );
+      
+      String prob = probOutput.get( pmid );
+      String probStr = ( prob == null ) ? "" : prob;
+      outProbs.append( pmid + ",,,," + probStr + "\n" );
+    }
+    
+    outRanks.close();
+    outProbs.close();
   }
+  
+
+  /**
+   * Update the similarity values.
+   */
+  public void updateSimilarities( Set<Citation> citations, Set<Citation> relevant ) {
+    LOG.debug( "Comparing " + citations.size() + " citations to " +
+        relevant.size() + " papers for similarity." );
+
+    // parallelized
+    ExecutorService executorService = Executors.newFixedThreadPool( NUM_FORKS );
+    for ( Citation c : citations ) {
+      CosineSimilarity cs = new CosineSimilarity( defaultCache,
+          tfIdf, c, relevant, activeReview );
+      executorService.submit( cs );
+    }
+
+    executorService.shutdown();
+
+    try {
+      executorService.awaitTermination( TIMEOUT_MINS, TimeUnit.MINUTES );
+    } catch ( InterruptedException e ) {
+      LOG.error( e );
+    }
+  }
+
 }
