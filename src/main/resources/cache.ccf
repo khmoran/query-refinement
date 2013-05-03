@@ -1,7 +1,7 @@
 # sets the default aux value for any non configured caches
 jcs.default=DC
 jcs.default.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
-jcs.default.cacheattributes.MaxObjects=0
+jcs.default.cacheattributes.MaxObjects=1000
 jcs.default.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
 jcs.default.elementattributes.IsEternal=true
 jcs.default.elementattributes.IsSpool=true

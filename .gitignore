@@ -1,0 +1,18 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Logging #
+logs/
+target/
+
+# Caching #
+cache/
+
+# Eclipse #
+.project
+.classpath
+.settings/
