@@ -336,24 +336,6 @@ public class SimulateReview extends AbstractTest {
   }
 
   /**
-   * Perform the search and rank the results.
-   * @param searcher
-   * @return
-   * @throws InterruptedException
-   */
-  protected void search( ParallelPubmedSearcher searcher ) {
-    try {
-      LOG.info( "Performing search..." );
-      Thread t = new Thread( searcher );
-      t.start();
-      t.join();
-    } catch ( InterruptedException e ) {
-      LOG.error( "Could not complete query on PubMed. Exiting.", e );
-      System.exit( 1 );
-    }
-  }
-
-  /**
    * Set up the test suite.
    * @throws IOException
    * @throws BiffException

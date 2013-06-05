@@ -14,6 +14,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.TreeMultimap;
+import com.google.common.primitives.Ints;
+
+import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
 
 public class MathUtil {
   /** The Logger for this class. */
@@ -149,6 +152,16 @@ public class MathUtil {
     }
 
     return result;
+  }
+
+  /**
+   * Calculate entropy with the frequency values for each class.
+   * @param freqMap
+   * @return
+   */
+  public static Double calculateShannonEntropy( List<Integer> frequencies ) {
+    int[] freqs = Ints.toArray( frequencies );
+    return calculateShannonEntropy( freqs );
   }
 
   /**

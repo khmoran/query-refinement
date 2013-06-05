@@ -152,6 +152,7 @@
 			<artifactId>guava</artifactId>
 			<version>14.0-rc1</version>
 		</dependency>
+
 		<!-- Caching -->
 		<dependency>
 			<groupId>org.apache.jcs</groupId>
