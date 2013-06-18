@@ -1,6 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,10 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,10 +19,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import com.aliasi.spell.TfIdfDistance;
-import com.aliasi.tokenizer.EnglishStopTokenizerFactory;
-import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
-import com.aliasi.tokenizer.TokenizerFactory;
 import com.avaje.ebean.Ebean;
 import com.google.common.collect.TreeMultimap;
 
@@ -34,7 +27,11 @@ import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
 import edu.tufts.cs.ebm.util.MathUtil;
-import edu.tufts.cs.similarity.CosineSimilarity;
+import edu.tufts.cs.ml.FeatureVector;
+import edu.tufts.cs.ml.UnlabeledFeatureVector;
+import edu.tufts.cs.ml.text.BagOfWords;
+import edu.tufts.cs.ml.text.CosineSimilarity;
+import edu.tufts.cs.similarity.CachedCosineSimilarity;
 
 /**
  * Test the MeshWalker class.
@@ -49,8 +46,6 @@ public class SimulateReview extends AbstractTest {
   protected static final int NUM_FORKS = 8;
   /** The number of papers to propose to the expert per iteration. */
   protected static final int PAPER_PROPOSALS_PER_ITERATION = 5;
-  /** The title TF-IDF instance. */
-  protected static TfIdfDistance tfIdf;
   /** The cache name. */
   protected static final String DEFAULT_CACHE_NAME = "default";
   /** The data cache. */
@@ -73,6 +68,14 @@ public class SimulateReview extends AbstractTest {
   protected double z = -1;
   /** The active review. */
   protected SystematicReview activeReview;
+  /** The Bag of Words. */
+  protected BagOfWords<Integer> bow;
+  /** The Cosine Similarity. */
+  protected CosineSimilarity<Integer> cs;
+  /** The positive class label. */
+  protected static final int POS = 1;
+  /** The negative class label. */
+  protected static final int NEG = -1;
 
   /**
    * Evaluate the query.
@@ -80,49 +83,24 @@ public class SimulateReview extends AbstractTest {
    * @return
    */
   protected Map<String, InfoMeasure> evaluateQuery(
-      ParallelPubmedSearcher searcher, TreeMultimap<Double, Citation> cosineMap,
-      Set<Citation> expertRelevantPapers,
-      Set<Citation> expertIrrelevantPapers ) {
+      TreeMultimap<Double, PubmedId> rankMap,
+      Set<PubmedId> expertRelevantPapers,
+      Set<PubmedId> expertIrrelevantPapers ) {
 
-    if ( cosineMap.size() == 0 ) {
+    if ( rankMap.size() == 0 ) {
       return null;
     }
-
-    LOG.info( "\tSimilarity range: [" + MathUtil.round(
-        cosineMap.keySet().first(), 4 ) + ", " +
-      MathUtil.round( cosineMap.keySet().last(), 4 ) + "]" );
 
     int i = 0;
     int truePosTotal = 0;
     int truePosL1 = 0;
     int truePosL2 = 0;
-    int l2ExpertRel = 0;
-    TreeMap<Integer, Integer> iMap = new TreeMap<>();
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( Citation c : cosineMap.get( sim ) ) {
-        if ( activeReview.getRelevantLevel1().contains( c.getPmid() ) ) {
-          truePosTotal++;
-          if ( !expertRelevantPapers.contains( c ) ) {
-            if ( i < activeReview.getRelevantLevel1().size() ) {
-              truePosL1++;
-
-              if ( //i < activeReview.getRelevantLevel2().size() &&
-                  activeReview.getRelevantLevel2().contains( c.getPmid() ) ) {
-                truePosL2++;
-              }
-            }
-          } else {
-            if ( activeReview.getRelevantLevel2().contains( c.getPmid() ) ) {
-              l2ExpertRel++;
-            }
-          }
-        }
-        iMap.put( i, truePosTotal );
-        if ( !expertRelevantPapers.contains( c ) &&   // want to pretend
-            !expertIrrelevantPapers.contains( c ) ) { // these aren't in
-          i++; // the list so only increment for unobserved papers
-        }
+    
+    for ( PubmedId pmid : expertRelevantPapers ) {
+      if ( activeReview.getRelevantLevel2().contains( pmid ) ) {
+        truePosL2++;
       }
+      truePosL1++;
     }
 
     LOG.info( "\tTrue & false positives total: " + i );
@@ -131,29 +109,15 @@ public class SimulateReview extends AbstractTest {
     LOG.info( "\tTrue positives for all: " + truePosTotal );
 
     Map<String, InfoMeasure> infoMap = new HashMap<>();
-    // we subtract the true pos #s below to get the number in the top n
-    // that will still have to be reviewed by the researcher
-    InfoMeasure l1Info = calculateInfoMeasureL1( activeReview,
-        truePosL1 + expertRelevantPapers.size() );
-    InfoMeasure l2Info = calculateInfoMeasureL2( activeReview,
-        truePosL2 + l2ExpertRel );
-    InfoMeasure totalInfo = new InfoMeasure( truePosTotal,
+    InfoMeasure l1Info = new InfoMeasure( truePosL1,
         activeReview.getRelevantLevel1().size() );
+    InfoMeasure l2Info = new InfoMeasure( truePosL2,
+        activeReview.getRelevantLevel2().size() );
     infoMap.put( "L1", l1Info );
     infoMap.put( "L2", l2Info );
 
     LOG.info( "Results for L1: " + l1Info );
     LOG.info( "Results for L2: " + l2Info );
-    LOG.info( "Results for all: " + totalInfo );
-
-    for ( int j : iMap.keySet() ) {
-      int truePos = iMap.get( j );
-
-      if ( truePos == truePosTotal ) {
-        LOG.info( "Minimum n for full recall: " + j );
-        break;
-      }
-    }
 
     return infoMap;
   }
@@ -163,18 +127,24 @@ public class SimulateReview extends AbstractTest {
    * @param query
    * @return
    */
-  protected Set<Citation> getPaperProposals( ParallelPubmedSearcher searcher,
-      TreeMultimap<Double, Citation> cosineMap,
-      Set<Citation> expertRelevantPapers,
-      Set<Citation> expertIrrelevantPapers ) {
-    Set<Citation> results = new HashSet<>();
+  protected Set<PubmedId> getPaperProposals(
+      TreeMultimap<Double, PubmedId> rankMap,
+      Set<PubmedId> expertRelevantPapers,
+      Set<PubmedId> expertIrrelevantPapers ) {
+    Set<PubmedId> results = new HashSet<>();
 
-    List<Citation> citList = new ArrayList<>();
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( Citation c : cosineMap.get( sim ) ) {
-        if ( !expertRelevantPapers.contains( c ) &&
-            !expertIrrelevantPapers.contains( c ) ) {
-          citList.add( c );
+    List<PubmedId> citList = new ArrayList<>();
+//    out:
+    for ( Double sim : rankMap.keySet().descendingSet() ) {
+      for ( PubmedId pmid : rankMap.get( sim ) ) {
+        if ( !expertRelevantPapers.contains( pmid ) &&
+            !expertIrrelevantPapers.contains( pmid ) ) {
+//          if ( results.size() < PAPER_PROPOSALS_PER_ITERATION ) {
+//            results.add( pmid );
+//          } else {
+//            break out;
+//          }
+          citList.add( pmid );
         }
       }
     }
@@ -200,19 +170,16 @@ public class SimulateReview extends AbstractTest {
    * @param relevant
    * @param irrelevant
    */
-  protected Set<Citation> proposePapers( Set<Citation> proposals,
-      Set<Citation> relevant, Set<Citation> irrelevant ) {
+  protected Set<PubmedId> proposePapers( Set<PubmedId> proposals,
+      Set<PubmedId> relevant, Set<PubmedId> irrelevant ) {
     LOG.info( "Proposing papers..." );
-    Set<Citation> newRelevant = new HashSet<>();
-    for ( Citation c : proposals ) {
-      if ( activeReview.getRelevantLevel1().contains( c.getPmid() ) ) {
-        LOG.debug( "\t" + c.getTitle() + " [" + c.getPmid() + "] is relevant" );
-        relevant.add( c );
-        newRelevant.add( c );
+    Set<PubmedId> newRelevant = new HashSet<>();
+    for ( PubmedId pmid : proposals ) {
+      if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
+        LOG.debug( "\t" + pmid + " is relevant" );
+        newRelevant.add( pmid );
       } else {
-        LOG.debug( "\t" + c.getTitle() + " [" + c.getPmid() +
-            "] is irrelevant" );
-        irrelevant.add( c );
+        LOG.debug( "\t" + pmid + " is irrelevant" );
       }
     }
 
@@ -225,38 +192,52 @@ public class SimulateReview extends AbstractTest {
    * @param searcher
    * @return
    */
-  protected TreeMultimap<Double, Citation> rank(
-      ParallelPubmedSearcher searcher, Set<Citation> expertRelevantPapers,
-      Set<Citation> expertIrrelevantPapers ) {
-    TreeMultimap<Double, Citation> cosineMap = TreeMultimap.create();
-    for ( Citation c : searcher.getCitations() ) {
-      cosineMap.put( c.getSimilarity(), c );
+  protected TreeMultimap<Double, PubmedId> rank(
+      Map<PubmedId, UnlabeledFeatureVector<Integer>> citations,
+      Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers,
+      Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers ) {
+    TreeMultimap<Double, PubmedId> rankMap = TreeMultimap.create();
+
+    // train the bag of words
+    for ( FeatureVector<Integer> fv : expertRelevantPapers.values() ) {
+      bow.train( fv, POS );
+    }
+    for ( FeatureVector<Integer> fv : expertIrrelevantPapers.values() ) {
+      bow.train( fv, NEG );
+    }
+
+    // "train" the cosine similarity with the relevant data
+    cs.setCompareTo( bow.getTrainingData( POS ) );
+
+    // test the remaining citations
+    for ( PubmedId pmid : citations.keySet() ) {
+      UnlabeledFeatureVector<Integer> ufv = citations.get( pmid ); 
+      double sim = cs.calculateSimilarity( ufv );
+      rankMap.put( sim, pmid );
     }
 
     // record the ranks
-    recordRank( cosineMap, expertRelevantPapers, expertIrrelevantPapers );
+    recordRank( rankMap, expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
-    return cosineMap;
+    return rankMap;
   }
 
   /**
    * Record the current ranking.
-   * @param cosineMap
+   * @param rankMap
    */
-  protected void recordRank( TreeMultimap<Double, Citation> cosineMap,
-      Set<Citation> expertRelevantPapers,
-      Set<Citation> expertIrrelevantPapers ) {
+  protected void recordRank( TreeMultimap<Double, PubmedId> rankMap,
+      Set<PubmedId> expertRelevantPapers,
+      Set<PubmedId> expertIrrelevantPapers ) {
 
     // get probability information
     if ( z == -1 ) {
-      z = calcZ( cosineMap.values().size() );
+      z = calcZ( rankMap.values().size() );
     }
 
     int rank = 1;
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( Citation c : cosineMap.get( sim ) ) {
-        PubmedId pmid = c.getPmid();
-        
+    for ( Double sim : rankMap.keySet().descendingSet() ) {
+      for ( PubmedId pmid : rankMap.get( sim ) ) {
         String rankStr = rankOutput.get( pmid );
         if ( rankStr == null ) {
           rankStr = "";
@@ -282,15 +263,15 @@ public class SimulateReview extends AbstractTest {
       }
     }
 
-    Set<Citation> allObserved = new HashSet<>();
+    Set<PubmedId> allObserved = new HashSet<>();
     allObserved.addAll( expertRelevantPapers );
     allObserved.addAll( expertIrrelevantPapers );
-    for ( Citation c : allObserved ) {
+    for ( PubmedId pmid : allObserved ) {
       // only record the first time you see this
-      String observStr = observOutput.get( c.getPmid() );
+      String observStr = observOutput.get( pmid );
       if ( observStr == null ) {
         observStr = String.valueOf( iteration );
-        observOutput.put( c.getPmid(), observStr );
+        observOutput.put( pmid, observStr );
       }
     }
 
@@ -368,21 +349,9 @@ public class SimulateReview extends AbstractTest {
       Ebean.find( PubmedId.class, pmid.getValue() );
     }
 
-    TokenizerFactory tokenizerFactory = new EnglishStopTokenizerFactory(
-        IndoEuropeanTokenizerFactory.INSTANCE );
-    tfIdf = new TfIdfDistance( tokenizerFactory );
-
-    // train the classifier
-    for ( Citation seed : activeReview.getSeedCitations() ) {
-      tfIdf.handle( seed.getTitle() );
-      tfIdf.handle( seed.getAbstr() );
-      //tfIdf.handle( seed.getMeshTerms().toString() );
-    }
-
     // initialize the cache
     try {
       defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
-//      this.defaultCache.clear();
     } catch ( CacheException e ) {
       LOG.error( "Error intitializing prefetching cache.", e );
       e.printStackTrace();
@@ -427,20 +396,29 @@ public class SimulateReview extends AbstractTest {
     LOG.info( "Initial POPULATION query: " + popQuery );
     LOG.info( "Initial INTERVENTION query: " + icQuery );
 
-    Set<Citation> expertRelevantPapers = new HashSet<>();
-    Set<Citation> expertIrrelevantPapers = new HashSet<>();
+    Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers = new HashMap<>();
+    Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
         "(" + popQuery + ") AND (" + icQuery + ")",
-        activeReview, expertRelevantPapers );
+        activeReview );
     search( searcher );
 
+    initializeClassifier( searcher.getCitations() );
+    Map<PubmedId, UnlabeledFeatureVector<Integer>> citations =
+        createFeatureVectors( searcher.getCitations() );
+    
+    // populate the relevant papers with the seed citations
+    for ( Citation c : activeReview.getSeedCitations() ) {
+      expertRelevantPapers.put( c.getPmid(), citations.get( c.getPmid() ) );
+    }
+
     // gather initial statistics on the results
-    TreeMultimap<Double, Citation> cosineMap = rank( searcher,
+    TreeMultimap<Double, PubmedId> rankMap = rank( citations,
         expertRelevantPapers, expertIrrelevantPapers );
-    evaluateQuery( searcher, cosineMap, expertRelevantPapers,
-        expertIrrelevantPapers );
+    evaluateQuery( rankMap, expertRelevantPapers.keySet(),
+        expertIrrelevantPapers.keySet() );
 
     int i = 0;
     int papersProposed = 0;
@@ -449,8 +427,8 @@ public class SimulateReview extends AbstractTest {
     while ( papersRemaining ) {
       LOG.info(  "\n\nIteration " + ++i + ":\n" );
 
-      Set<Citation> paperProposals = getPaperProposals( searcher, cosineMap,
-          expertRelevantPapers, expertIrrelevantPapers );
+      Set<PubmedId> paperProposals = getPaperProposals( rankMap,
+          expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       int numRelevant = expertRelevantPapers.size();
       if ( paperProposals.isEmpty() ) {
@@ -459,30 +437,34 @@ public class SimulateReview extends AbstractTest {
       } else {
         papersRemaining = true;
         papersProposed += PAPER_PROPOSALS_PER_ITERATION;
-        proposePapers( paperProposals,
-          expertRelevantPapers, expertIrrelevantPapers );
+        Set<PubmedId> accepted = proposePapers( paperProposals, expertRelevantPapers.keySet(),
+            expertIrrelevantPapers.keySet() );
 
-        // make sure the sim calculations are done on the latest set
-        if ( expertRelevantPapers.size() > numRelevant ) {
-          searcher.updateSimilarities( expertRelevantPapers );
+        // update the relevant/irrelevant lists
+        for ( PubmedId pmid : paperProposals ) {
+          if ( accepted.contains( pmid ) ) {
+            expertRelevantPapers.put( pmid, citations.get( pmid ) );
+          } else {
+            expertIrrelevantPapers.put( pmid, citations.get( pmid ) );
+          }
         }
+
         LOG.debug( "\t# relevant: " + expertRelevantPapers.size() );
         LOG.debug( "\t# irrelevant: " + expertIrrelevantPapers.size() );
       }
 
       // if new papers are proposed, update the ranking
       if ( expertRelevantPapers.size() > numRelevant ) {
-        cosineMap = rank(
-          searcher, expertRelevantPapers, expertIrrelevantPapers );
+        rankMap = rank( citations, expertRelevantPapers,
+            expertIrrelevantPapers );
       }
       if ( expertRelevantPapers.size() > numRelevant || im == null ) {
-        im = evaluateQuery( searcher, cosineMap,
-          expertRelevantPapers, expertIrrelevantPapers );
+        im = evaluateQuery( rankMap, expertRelevantPapers.keySet(),
+            expertIrrelevantPapers.keySet() );
       }
 
       if ( im != null ) {
         // write out the current stats
-        System.out.println( "Writing L2 recall: " + im.get( "L2" ).getRecall() );
         double costL1 = papersProposed + activeReview
             .getRelevantLevel1().size() - im.get( "L1" ).getTruePositives();
         double costL2 = papersProposed + activeReview
@@ -499,6 +481,46 @@ public class SimulateReview extends AbstractTest {
 
     out.close();
     fw.close();
+  }
+
+  /**
+   * Turn the Citations into FeatureVectors.
+   * @param citations
+   * @return
+   */
+  protected Map<PubmedId, UnlabeledFeatureVector<Integer>> createFeatureVectors(
+      Set<Citation> citations ) {
+    // create the feature vectors
+    Map<PubmedId, UnlabeledFeatureVector<Integer>> fvs = new HashMap<>();
+    for ( Citation c : citations ) {
+      fvs.put( c.getPmid(), bow.createUnlabeledFV( c.getPmid().toString(),
+          c.getTitle() + " " + c.getAbstr() ) );
+    }
+    
+    return fvs;
+  }
+
+  /**
+   * Initialize the classifier.
+   */
+  protected void initializeClassifier( Set<Citation> citations ) {
+    // initialize the bag of words
+    bow = new BagOfWords<Integer>(
+        new File( "src/main/resources/stoplists/en.txt" ) );
+    for ( Citation c : activeReview.getSeedCitations() ) {
+      // seed citations are in the positive class
+      bow.train( c.getPmid().toString(), c.getTitle() + " " + c.getAbstr(), 1 );
+    }
+    
+    // initialize the cosine similarity
+    cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
+    
+    // create the features
+    List<String> texts = new ArrayList<String>();
+    for ( Citation c : citations ) {
+      texts.add( c.getTitle() + " " + c.getAbstr() );
+    }
+    bow.createFeatures( texts );
   }
 
   /**
@@ -538,30 +560,4 @@ public class SimulateReview extends AbstractTest {
     outRanks.close();
     outProbs.close();
   }
-  
-
-  /**
-   * Update the similarity values.
-   */
-  public void updateSimilarities( Set<Citation> citations, Set<Citation> relevant ) {
-    LOG.debug( "Comparing " + citations.size() + " citations to " +
-        relevant.size() + " papers for similarity." );
-
-    // parallelized
-    ExecutorService executorService = Executors.newFixedThreadPool( NUM_FORKS );
-    for ( Citation c : citations ) {
-      CosineSimilarity cs = new CosineSimilarity( defaultCache,
-          tfIdf, c, relevant, activeReview );
-      executorService.submit( cs );
-    }
-
-    executorService.shutdown();
-
-    try {
-      executorService.awaitTermination( TIMEOUT_MINS, TimeUnit.MINUTES );
-    } catch ( InterruptedException e ) {
-      LOG.error( e );
-    }
-  }
-
 }

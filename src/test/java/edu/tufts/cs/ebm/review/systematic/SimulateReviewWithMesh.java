@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +23,8 @@ import edu.tufts.cs.ebm.mesh.RankedMesh;
 import edu.tufts.cs.ebm.mesh.TestLoadMeshRanking;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
+import edu.tufts.cs.ml.FeatureVector;
+import edu.tufts.cs.ml.UnlabeledFeatureVector;
 
 /**
  * Test the MeshWalker class.
@@ -47,18 +50,20 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
    */
   protected Set<String> getMeshProposals( ParallelPubmedSearcher searcher,
       Set<String> expertRelevantTerms, Set<String> expertIrrelevantTerms,
-      Set<Citation> expertRelevantPapers ) {
+      Set<Citation> citations, Set<PubmedId> expertRelevantPapers ) {
     Set<String> results = new HashSet<>();
 
     LOG.info( "Getting term proposal set..." );
   outer:
-    for ( Citation c : expertRelevantPapers ) {
-      for ( String term : c.getMeshTerms() ) {
-        if ( results.size() == MESH_PROPOSALS_PER_ITERATION ) {
-          break outer;
-        } else if ( !expertRelevantTerms.contains( term ) // not yet propos
-                 && !expertIrrelevantTerms.contains( term ) ) {
-          results.add( term );
+    for ( Citation c : citations ) {
+      if ( expertRelevantPapers.contains( c.getPmid() ) ) {
+        for ( String term : c.getMeshTerms() ) {
+          if ( results.size() == MESH_PROPOSALS_PER_ITERATION ) {
+            break outer;
+          } else if ( !expertRelevantTerms.contains( term ) // not yet propos
+                   && !expertIrrelevantTerms.contains( term ) ) {
+            results.add( term );
+          }
         }
       }
     }
@@ -150,20 +155,29 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
 
     Set<String> expertRelevantMesh = new HashSet<>();
     Set<String> expertIrrelevantMesh = new HashSet<>();
-    Set<Citation> expertRelevantPapers = new HashSet<>();
-    Set<Citation> expertIrrelevantPapers = new HashSet<>();
+    Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers = new HashMap<>();
+    Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
         "(" + popQuery + ") AND (" + icQuery + ")",
-        clopidogrelReview, expertRelevantPapers );
+        clopidogrelReview );
     search( searcher );
+    
+    initializeClassifier( searcher.getCitations() );
+    Map<PubmedId, UnlabeledFeatureVector<Integer>> citations =
+        createFeatureVectors( searcher.getCitations() );
+
+    // populate the relevant papers with the seed citations
+    for ( Citation c : activeReview.getSeedCitations() ) {
+      expertRelevantPapers.put( c.getPmid(), citations.get( c.getPmid() ) );
+    }
 
     // gather initial statistics on the results
-    TreeMultimap<Double, Citation> cosineMap = rank( searcher,
+    TreeMultimap<Double, PubmedId> rankMap = rank( citations,
         expertRelevantPapers, expertIrrelevantPapers );
-    evaluateQuery( searcher, cosineMap, expertRelevantPapers,
-        expertIrrelevantPapers );
+    evaluateQuery( rankMap, expertRelevantPapers.keySet(),
+        expertIrrelevantPapers.keySet() );
 
     int i = 0;
     int termsProposed = 0, papersProposed = 0;
@@ -174,7 +188,8 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
       // --- RANK TERMS ---
       if ( i % 2 == 1 ) {
         Set<String> meshProposals = getMeshProposals( searcher,
-            expertRelevantMesh, expertIrrelevantMesh, expertRelevantPapers );
+            expertRelevantMesh, expertIrrelevantMesh, searcher.getCitations(),
+            expertRelevantPapers.keySet() );
 
         boolean queryChanged = false;
         if ( meshProposals.isEmpty() ) {
@@ -194,15 +209,16 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
           // this has changed the query itself, so we need to rerun the query
           searcher = null;
           searcher = new ParallelPubmedSearcher( "(" + popQuery + ") AND " +
-            "(" + icQuery + ")", clopidogrelReview, expertRelevantPapers );
+            "(" + icQuery + ")", clopidogrelReview );
           search( searcher );
+          citations = createFeatureVectors( searcher.getCitations() );
         } else {
           LOG.info( "Query not changed." );
         }
       } else {
       // --- RANK PAPERS ---
-        Set<Citation> paperProposals = getPaperProposals( searcher, cosineMap,
-            expertRelevantPapers, expertIrrelevantPapers );
+        Set<PubmedId> paperProposals = getPaperProposals( rankMap,
+            expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
         if ( paperProposals.isEmpty() ) {
           LOG.info( "No new papers to propose." );
@@ -210,14 +226,8 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
         } else {
           papersRemaining = true;
           papersProposed += PAPER_PROPOSALS_PER_ITERATION;
-          int numRelevant = expertRelevantPapers.size();
           proposePapers( paperProposals,
-            expertRelevantPapers, expertIrrelevantPapers );
-
-          // make sure the sim calculations are done on the latest set
-          if ( expertRelevantPapers.size() > numRelevant ) {
-            searcher.updateSimilarities( expertRelevantPapers );
-          }
+            expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
           LOG.debug( "\t# relevant: " + expertRelevantPapers.size() );
           LOG.debug( "\t# irrelevant: " + expertIrrelevantPapers.size() );
           LOG.info( "# relevant papers: " + expertRelevantPapers.size() );
@@ -226,10 +236,10 @@ public class SimulateReviewWithMesh extends SimulateReviewClopidogrel {
 
       // we have changed either the query or the ranking, so we need to
       // gather new statistics on the results
-      cosineMap = rank(
-          searcher, expertRelevantPapers, expertIrrelevantPapers );
-      Map<String, InfoMeasure> im = evaluateQuery( searcher, cosineMap,
-        expertRelevantPapers, expertIrrelevantPapers );
+      rankMap = rank(
+          citations, expertRelevantPapers, expertIrrelevantPapers );
+      Map<String, InfoMeasure> im = evaluateQuery( rankMap,
+        expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       if ( im != null ) {
         // write out the current stats

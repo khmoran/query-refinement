@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashSet;
 
 import org.apache.axis2.AxisFault;
 import org.testng.annotations.Test;
@@ -23,8 +22,7 @@ public class PrintLdaInputClopidogrel extends SimulateReview {
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
-        "(" + popQuery + ") AND (" + icQuery + ")",
-        activeReview, new HashSet<Citation>() );
+        "(" + popQuery + ") AND (" + icQuery + ")", activeReview );
     search( searcher );
 
     FileOutputStream fs = new FileOutputStream( OUTPUT_FILE );

@@ -136,15 +136,6 @@ public class SimulateReviewL1vsL2 extends SimulateReview {
     try {
       cl.classify( ufv );
       Integer classification = ufv.getClassification( 3 );
-
-//      boolean correct = false;
-//      if ( ( classification == 1 &&
-//          activeReview.getRelevantLevel2().contains( c.getPmid() ) )
-//        || ( classification == 0 &&
-//          activeReview.getRelevantLevel1().contains( c.getPmid() ) ) ) {
-//          correct = true;
-//      }
-//      System.out.println( c.getPmid() + " classified as " + classification + "; correct? " + correct );
       
       if ( classification != null ) {
         double certainty = cl.getCertainty( ufv );
@@ -333,9 +324,6 @@ public class SimulateReviewL1vsL2 extends SimulateReview {
     MeshClassifier meshClassifier = new MeshClassifier();
     
     Set<Citation> results = getL1s();
-    
-    // set the initial similarities
-    updateSimilarities( results, expertL2 );
 
     // gather initial statistics on the results
     List<Citation> ranks = rank( results, new HashSet<Citation>(),
@@ -373,7 +361,6 @@ public class SimulateReviewL1vsL2 extends SimulateReview {
         // if new papers are accepted, update the similarities, infoGain,
         // and rankings
         if ( expertL2.size() > numRelevant ) {
-          updateSimilarities( results, expertL2 ); // update cosine
           if ( expertL2.size() > 0 ) {
             //meshClassifier.update( expertL2, expertL1 ); // BACKWARDS
             meshClassifier.update( expertL1, expertL2 ); // update mesh

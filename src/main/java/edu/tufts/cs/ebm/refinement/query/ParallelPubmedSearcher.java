@@ -2,7 +2,6 @@ package edu.tufts.cs.ebm.refinement.query;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -19,10 +18,6 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.aliasi.spell.TfIdfDistance;
-import com.aliasi.tokenizer.EnglishStopTokenizerFactory;
-import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
-import com.aliasi.tokenizer.TokenizerFactory;
 import com.google.common.collect.SortedMultiset;
 import com.google.common.collect.TreeMultiset;
 
@@ -30,7 +25,6 @@ import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
 import edu.tufts.cs.ebm.util.Util;
-import edu.tufts.cs.similarity.CosineSimilarity;
 import gov.nih.nlm.ncbi.www.soap.eutils.EFetchPubmedServiceStub.PubmedArticleType;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 
@@ -54,8 +48,6 @@ public class ParallelPubmedSearcher extends PubmedService
   public static final String QUERY_COMPLETE = "QUERY COMPLETE";
   /** The search. */
   protected BooleanProperty searchInProg = new SimpleBooleanProperty( false );
-  /** The title TF-IDF instance. */
-  protected static TfIdfDistance tfIdf;
   /** Citations pertaining to this query. */
   protected Set<Citation> citations = new CopyOnWriteArraySet<>();
   /** The current MeSH terms associated with the Review. */
@@ -68,19 +60,15 @@ public class ParallelPubmedSearcher extends PubmedService
   protected CountDownLatch startSignal = null;
   /** Optional doneSignal for multithreading. */
   protected CountDownLatch doneSignal = null;
-  /** The set of papers with which to calculate similarity. */
-  protected Set<Citation> compareTo = new HashSet<Citation>();
 
   /**
    * Default constructor.
    *
    * @throws AxisFault
    */
-  public ParallelPubmedSearcher( String query, SystematicReview activeReview,
-      Set<Citation> compareTo )
+  public ParallelPubmedSearcher( String query, SystematicReview activeReview )
     throws AxisFault {
     this( query, activeReview, -1 );
-    this.compareTo.addAll( compareTo );
   }
 
   /**
@@ -104,20 +92,6 @@ public class ParallelPubmedSearcher extends PubmedService
         activeReview.setSeedCitations( seedCitations );
       }
     }
-
-    this.compareTo.addAll( activeReview.getSeedCitations() );
-
-    TokenizerFactory tokenizerFactory = new EnglishStopTokenizerFactory(
-        IndoEuropeanTokenizerFactory.INSTANCE );
-    tfIdf = new TfIdfDistance( tokenizerFactory );
-
-    // train the classifier
-    for ( Citation seed : compareTo ) {
-      tfIdf.handle( seed.getTitle() );
-      tfIdf.handle( seed.getAbstr() );
-      //tfIdf.handle( seed.getMeshTerms().toString() );
-    }
-
   }
 
   /**
@@ -282,9 +256,6 @@ public class ParallelPubmedSearcher extends PubmedService
     Citation c = super.articleToCitation( articleType );
 
     if ( c != null ) {
-      CosineSimilarity cs = new CosineSimilarity( defaultCache,
-          tfIdf, c, compareTo, activeReview );
-      c.setSimilarity( cs.calculateSimilarity() );
       meshes.addAll( c.getMeshTerms() );
     }
 
@@ -297,35 +268,6 @@ public class ParallelPubmedSearcher extends PubmedService
     if ( arg instanceof Citation ) {
       Citation c = (Citation) arg;
       this.citations.add( c );
-
-      CosineSimilarity cs = new CosineSimilarity( defaultCache,
-          tfIdf, c, compareTo, activeReview );
-      c.setSimilarity( cs.calculateSimilarity( ) );
-    }
-  }
-
-  /**
-   * Update the similarity values.
-   */
-  public void updateSimilarities( Set<Citation> relevant ) {
-    compareTo.addAll( relevant );
-    LOG.debug( "Comparing " + citations.size() + " citations to " +
-        compareTo.size() + " papers for similarity." );
-
-    // parallelized
-    ExecutorService executorService = Executors.newFixedThreadPool( NUM_FORKS );
-    for ( Citation c : citations ) {
-      CosineSimilarity cs = new CosineSimilarity( defaultCache,
-          tfIdf, c, compareTo, activeReview );
-      executorService.submit( cs );
-    }
-
-    executorService.shutdown();
-
-    try {
-      executorService.awaitTermination( TIMEOUT_MINS, TimeUnit.MINUTES );
-    } catch ( InterruptedException e ) {
-      LOG.error( e );
     }
   }
 }

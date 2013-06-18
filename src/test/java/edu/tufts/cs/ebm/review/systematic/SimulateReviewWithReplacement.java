@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,8 @@ import com.google.common.collect.TreeMultimap;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.util.MathUtil;
+import edu.tufts.cs.ml.FeatureVector;
+import edu.tufts.cs.ml.UnlabeledFeatureVector;
 
 /**
  * Test the MeshWalker class.
@@ -38,17 +41,17 @@ public class SimulateReviewWithReplacement extends SimulateReview {
    * @return
    */
   @Override
-  protected Set<Citation> getPaperProposals( ParallelPubmedSearcher searcher,
-      TreeMultimap<Double, Citation> cosineMap,
-      Set<Citation> expertRelevantPapers,
-      Set<Citation> expertIrrelevantPapers ) {
-    Set<Citation> results = new HashSet<>();
+  protected Set<PubmedId> getPaperProposals( 
+      TreeMultimap<Double, PubmedId> rankMap,
+      Set<PubmedId> expertRelevantPapers,
+      Set<PubmedId> expertIrrelevantPapers ) {
+    Set<PubmedId> results = new HashSet<>();
 
-    List<Citation> citList = new ArrayList<>();
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( Citation c : cosineMap.get( sim ) ) {
+    List<PubmedId> citList = new ArrayList<>();
+    for ( Double sim : rankMap.keySet().descendingSet() ) {
+      for ( PubmedId pmid : rankMap.get( sim ) ) {
         // WITH REPLACEMENT:
-          citList.add( c );
+          citList.add( pmid );
       }
     }
 
@@ -67,40 +70,20 @@ public class SimulateReviewWithReplacement extends SimulateReview {
   }
 
   /**
-   * Rank the query results using cosine similarity.
-   * @param searcher
-   * @return
-   */
-  protected TreeMultimap<Double, Citation> rank(
-      ParallelPubmedSearcher searcher, Set<Citation> proposals ) {
-    TreeMultimap<Double, Citation> cosineMap = TreeMultimap.create();
-    for ( Citation c : searcher.getCitations() ) {
-      cosineMap.put( c.getSimilarity(), c );
-    }
-
-    // record the ranks
-    recordRank( cosineMap, proposals );
-
-    return cosineMap;
-  }
-
-  /**
    * Record the current ranking.
    * @param cosineMap
    */
-  protected void recordRank( TreeMultimap<Double, Citation> cosineMap,
-     Set<Citation> proposals ) {
+  protected void recordRank( TreeMultimap<Double, PubmedId> rankMap,
+     Set<PubmedId> proposals ) {
 
     // get probability information
     if ( z == -1 ) {
-      z = calcZ( cosineMap.values().size() );
+      z = calcZ( rankMap.values().size() );
     }
 
     int rank = 1;
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( Citation c : cosineMap.get( sim ) ) {
-        PubmedId pmid = c.getPmid();
-        
+    for ( Double sim : rankMap.keySet().descendingSet() ) {
+      for ( PubmedId pmid : rankMap.get( sim ) ) {
         String rankStr = rankOutput.get( pmid );
         if ( rankStr == null ) {
           rankStr = "";
@@ -126,15 +109,15 @@ public class SimulateReviewWithReplacement extends SimulateReview {
       }
     }
 
-    for ( Citation c : proposals ) {
-      String observStr = observOutput.get( c.getPmid() );
+    for ( PubmedId pmid : proposals ) {
+      String observStr = observOutput.get( pmid );
       if ( observStr == null ) {
         observStr = "";
       } else {
         observStr += ",";
       }
       observStr += String.valueOf( iteration );
-      observOutput.put( c.getPmid(), observStr );
+      observOutput.put( pmid, observStr );
     }
 
     iteration++;
@@ -165,20 +148,29 @@ public class SimulateReviewWithReplacement extends SimulateReview {
     LOG.info( "Initial POPULATION query: " + popQuery );
     LOG.info( "Initial INTERVENTION query: " + icQuery );
 
-    Set<Citation> expertRelevantPapers = new HashSet<>();
-    Set<Citation> expertIrrelevantPapers = new HashSet<>();
+    Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers = new HashMap<>();
+    Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
         "(" + popQuery + ") AND (" + icQuery + ")",
-        activeReview, expertRelevantPapers );
+        activeReview );
     search( searcher );
 
+    initializeClassifier( searcher.getCitations() );
+    Map<PubmedId, UnlabeledFeatureVector<Integer>> citations =
+        createFeatureVectors( searcher.getCitations() );
+
+    // populate the relevant papers with the seed citations
+    for ( Citation c : activeReview.getSeedCitations() ) {
+      expertRelevantPapers.put( c.getPmid(), citations.get( c.getPmid() ) );
+    }
+
     // gather initial statistics on the results
-    TreeMultimap<Double, Citation> cosineMap = rank( searcher,
-        new HashSet<Citation>() );
-    evaluateQuery( searcher, cosineMap, expertRelevantPapers,
-        expertIrrelevantPapers );
+    TreeMultimap<Double, PubmedId> rankMap = rank( citations,
+        expertRelevantPapers, expertIrrelevantPapers );
+    evaluateQuery( rankMap, expertRelevantPapers.keySet(),
+        expertIrrelevantPapers.keySet() );
     
     int numPapersToObserve = (int) Math.ceil(
         searcher.getCitations().size() * PERCENT_TO_OBSERVE );
@@ -191,40 +183,46 @@ public class SimulateReviewWithReplacement extends SimulateReview {
         < numPapersToObserve ) {
       LOG.info(  "\n\nIteration " + ++i + ":\n" );
 
-      Set<Citation> paperProposals = getPaperProposals( searcher, cosineMap,
-          expertRelevantPapers, expertIrrelevantPapers );
+      Set<PubmedId> paperProposals = getPaperProposals( rankMap,
+          expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       int numRelevant = expertRelevantPapers.size();
       if ( paperProposals.isEmpty() ) {
         LOG.info( "No new papers to propose." );
         break;
       } else {
-        Set<Citation> newRelevant = proposePapers( paperProposals,
-          expertRelevantPapers, expertIrrelevantPapers );
+        Set<PubmedId> accepted = proposePapers( paperProposals,
+          expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
+        
+        // update the relevant/irrelevant lists
+        for ( PubmedId pmid : paperProposals ) {
+          if ( accepted.contains( pmid ) ) {
+            expertRelevantPapers.put( pmid, citations.get( pmid ) );
+          } else {
+            expertIrrelevantPapers.put( pmid, citations.get( pmid ) );
+          }
+        }
 
-        double observedRel = (double) newRelevant.size() / (double) paperProposals.size();
+        double observedRel = (double) accepted.size() / (double) paperProposals.size();
         double expectedRel = (double) ( activeReview.getRelevantLevel1().size() - expertRelevantPapers.size() )
             / ( (double) searcher.getCitations().size() - expertRelevantPapers.size() - expertIrrelevantPapers.size() );
         LOG.info( "% observed relevant: " + observedRel );
         LOG.info( "%cR expected relevant: " + expectedRel );
 
-        // make sure the sim calculations are done on the latest set
-        if ( expertRelevantPapers.size() > numRelevant ) {
-          searcher.updateSimilarities( expertRelevantPapers );
-        }
         LOG.debug( "\t# relevant: " + expertRelevantPapers.size() );
         LOG.debug( "\t# irrelevant: " + expertIrrelevantPapers.size() );
 
         // if new papers are proposed, update the ranking
         if ( expertRelevantPapers.size() > numRelevant ) {
-          cosineMap = rank( searcher, paperProposals );
+          rankMap = rank( citations,
+              expertRelevantPapers, expertIrrelevantPapers );
         } else { // but either way record the ranks
-          recordRank( cosineMap, paperProposals );
+          recordRank( rankMap, paperProposals );
         }
       }
 
-      Map<String, InfoMeasure> im = evaluateQuery( searcher, cosineMap,
-        expertRelevantPapers, expertIrrelevantPapers );
+      Map<String, InfoMeasure> im = evaluateQuery( rankMap,
+        expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       if ( im != null ) {
         // write out the current stats

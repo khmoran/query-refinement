@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +56,15 @@ public class Util {
     Citation c = Ebean.find( Citation.class, id.longValue() );
 
     return c;
+  }
+
+  /**
+   * Strip the punctuation, capitalization from the given String.
+   * @param s
+   * @return
+   */
+  public static String alphaNormalize( String s ) {
+    return s.trim().replaceAll( "[^a-zA-Z]", "" ).toLowerCase();
   }
 
   /**

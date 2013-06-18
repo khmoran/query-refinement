@@ -25,7 +25,6 @@ import com.google.common.collect.TreeMultiset;
 
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
-import edu.tufts.cs.similarity.CosineSimilarity;
 import gov.nih.nlm.ncbi.www.soap.eutils.EFetchPubmedServiceStub;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 
@@ -224,9 +223,6 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
       if ( c != null ) {
         for ( Citation cit : c ) {
-          CosineSimilarity cs = new CosineSimilarity(
-              tfIdf, cit, compareTo, activeReview );
-          cit.setSimilarity( cs.calculateSimilarity() );
           meshes.addAll( cit.getMeshTerms() );
         }
 

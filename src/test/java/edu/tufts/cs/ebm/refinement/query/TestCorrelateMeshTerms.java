@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +120,7 @@ public class TestCorrelateMeshTerms extends AbstractTest {
     // run the initial query
     String query = "(" + popQuery + ") AND (" + icQuery + ")".toLowerCase();
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
-        query, activeReview, new HashSet<Citation>() );
+        query, activeReview );
     search( searcher );
     
     Map<String, Map<String, Integer>> meshToWordMap = new HashMap<>();

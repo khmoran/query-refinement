@@ -122,9 +122,7 @@ public class TabController implements Observer, Initializable {
         Citation.DATE_ID ) );
     authorsCol.setCellValueFactory( new PropertyValueFactory<Citation, String>(
         Citation.AUTHORS_ID ) );
-    similarityCol
-      .setCellValueFactory( new PropertyValueFactory<Citation, Double>(
-        Citation.SIMILARITY_ID ) );
+    similarityCol.setCellValueFactory( null ); // TODO fix this
 
     citations = new SimpleListProperty<>(
         FXCollections.observableList( new ArrayList<Citation>() ) );

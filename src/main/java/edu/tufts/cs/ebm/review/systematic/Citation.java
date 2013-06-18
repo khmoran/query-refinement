@@ -36,8 +36,6 @@ public class Citation implements Comparable<Citation>, Serializable {
   public static final String JOURNAL_ID = "journal";
   /** The callback identifier for the MeSH terms property. */
   public static final String MESH_TERMS_ID = "meshTerms";
-  /** The callback identifier for the MeSH terms property. */
-  public static final String SIMILARITY_ID = "similarity";
   /** The callback identifier for the date completed property. */
   public static final String DATE_ID = "date";
   /** The simple id. */
@@ -67,9 +65,6 @@ public class Citation implements Comparable<Citation>, Serializable {
   /** The MeSH terms. */
   @Transient
   protected Set<String> meshTerms = new HashSet<>();
-  /** The MeSH terms. */
-  @Transient
-  protected Double similarity;
 
   /**
    * Get the simple id.
@@ -263,22 +258,6 @@ public class Citation implements Comparable<Citation>, Serializable {
       .omitEmptyStrings()
       .split( mesh ) );
   }
-
-  /**
-   * Get the similarity.
-   * @return
-   */
-  public double getSimilarity() {
-    return this.similarity;
-  }
-
-  /**
-   * Set the similarity.
-   * @param similarity
-   */
-  public void setSimilarity( double similarity ) {
-    this.similarity = similarity;
-  } // TODO move similarity outside of the Citation
 
   /**
    * Get the title.

@@ -82,20 +82,13 @@ public class SimulateReviewMultirank extends SimulateReview {
     TreeMultimap<Double, Citation> meshMap = TreeMultimap.create();
 
     for ( Citation c : searcher.getCitations() ) {
-      cosineMap.put( c.getSimilarity(), c );
+      // TODO fix this
+      //cosineMap.put( c.getSimilarity(), c );
       meshMap.put( meshClassifier.classify( c ), c );
     }
     
     BordaAggregator<Citation> borda = new BordaAggregator<>();
     List<Citation> ranks = borda.aggregate( cosineMap, meshMap );
-    
-//    // -- TEMPORARY -- //
-//    List<Citation> ranks = new ArrayList<>();
-//    for ( Double d : cosineMap.keySet().descendingSet() ) {
-//      for ( Citation c : cosineMap.get( d ) ) {
-//        ranks.add( c );
-//      }
-//    }
 
     // record the ranks
     recordRank( ranks, proposals );
@@ -212,7 +205,7 @@ public class SimulateReviewMultirank extends SimulateReview {
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
         "(" + popQuery + ") AND (" + icQuery + ")",
-        activeReview, expertL2Relevant );
+        activeReview );
     search( searcher );
 
     // gather initial statistics on the results
@@ -258,7 +251,6 @@ public class SimulateReviewMultirank extends SimulateReview {
         // if new papers are accepted, update the similarities, infoGain,
         // and rankings
         if ( expertAllRelevant.size() > numRelevant ) {
-          searcher.updateSimilarities( expertAllRelevant ); // update cosine
           Set<Citation> l1s = new HashSet<>( expertAllRelevant );
           l1s.removeAll( expertL2Relevant );
           if ( expertL2Relevant.size() > 0 ) {
