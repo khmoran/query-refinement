@@ -20,7 +20,6 @@
 	<!-- repositories> <repository> <id>ren_googlecode</id> <url>https://ren-maven-repo.googlecode.com/git/snapshots/</url> 
 		</repository> </repositories -->
 
-<<<<<<< HEAD
 	<dependencies>
 		<!-- Text similarity -->
 		<dependency>
@@ -87,72 +86,6 @@
 			<artifactId>axis2-transport-http</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-=======
- <dependencies>
-  <!-- Text similarity -->
-  <dependency>
-   <groupId>org.apache.lucene</groupId>
-   <artifactId>lucene-core</artifactId>
-   <version>4.2.0</version>
-  </dependency>
-  <dependency>
-   <groupId>com.aliasi</groupId>
-   <artifactId>lingpipe</artifactId>
-   <version>4.1.0</version>
-   <scope>compile</scope>
-  </dependency>
-  <dependency>
-   <groupId>org.apache.commons</groupId>
-   <artifactId>commons-math3</artifactId>
-   <version>3.1.1</version>
-  </dependency>
-  <dependency>
-    <groupId>cc.mallet</groupId>
-    <artifactId>mallet</artifactId>
-    <version>${mallet.version}</version>
-  </dependency>
-  <dependency>
-    <groupId>net.sf.trove4j</groupId>
-    <artifactId>trove4j</artifactId>
-    <version>2.0.2</version>
-  </dependency>
-  <!-- Machine learning -->
-  <dependency>
-   <groupId>edu.tufts.cs.ml</groupId>
-   <artifactId>ml</artifactId>
-   <version>0.0.2-SNAPSHOT</version>
-  </dependency>
-  <!-- JavaFX -->
-  <dependency>
-   <groupId>com.oracle</groupId>
-   <artifactId>javafx</artifactId>
-   <version>2.0</version>
-   <scope>system</scope>
-   <systemPath>${JAVA_HOME}/jre/lib/jfxrt.jar</systemPath>
-  </dependency>
-  <!-- WServices -->
-  <dependency>
-   <groupId>gov.nih.nlm.ncbi.www.soap</groupId>
-   <artifactId>eutils</artifactId>
-   <version>2.0</version>
-  </dependency>
-  <dependency>
-   <groupId>org.apache.axis2</groupId>
-   <artifactId>axis2-adb</artifactId>
-   <version>1.5.2</version>
-  </dependency>
-  <dependency>
-   <groupId>org.apache.axis2</groupId>
-   <artifactId>axis2-transport-local</artifactId>
-   <version>1.5.2</version>
-  </dependency>
-  <dependency>
-   <groupId>org.apache.axis2</groupId>
-   <artifactId>axis2-transport-http</artifactId>
-   <version>1.5.2</version>
-  </dependency>
->>>>>>> cbb16c8bafda874b337054a61dc43ecf9eb6cb19
-
 		<!-- Spring libraries -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -244,8 +177,6 @@
 			<version>3.9</version>
 		</dependency>
 	</dependencies>
-
-
 
 	<build>
 		<plugins>
