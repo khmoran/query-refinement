@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# 5 runs
+for i in `seq 1 5`; do
+    # for each data set
+    for d in clopidogrel protonbeam; do
+        # on each simulation
+        ./run-simulator $d true Bow Svm
+        ./run-simulator $d true BowMesh Svm
+        ./run-simulator $d true Lda Svm
+        ./run-simulator $d true LdaMesh Svm
+        ./run-simulator $d true Mesh Svm
+    done
+done    
+        

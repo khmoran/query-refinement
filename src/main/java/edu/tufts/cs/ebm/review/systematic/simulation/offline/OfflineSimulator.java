@@ -1,4 +1,4 @@
-package edu.tufts.cs.ebm.review.systematic;
+package edu.tufts.cs.ebm.review.systematic.simulation.offline;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,15 +17,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.exception.CacheException;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 
 import com.google.common.collect.TreeMultimap;
 
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
+import edu.tufts.cs.ebm.review.systematic.simulation.Simulator;
 import edu.tufts.cs.ebm.util.MathUtil;
 import edu.tufts.cs.ml.LabeledFeatureVector;
 import edu.tufts.cs.ml.Metadata;
@@ -33,21 +29,15 @@ import edu.tufts.cs.ml.TrainRelation;
 import edu.tufts.cs.ml.reader.Reader;
 import edu.tufts.cs.ml.reader.SvmLightReader;
 
+// TODO abstract this class and then implement a separate cosine similarity/
+// TODO BoW extension
 /**
- * Test the MeshWalker class.
+ * An offline simulation of a systematic review.
  */
-public class SimulateReviewFeatureVectors extends SimulateReview {
+public class OfflineSimulator extends Simulator {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog(
-      SimulateReviewFeatureVectors.class );
-  /** The rankings output. */
-  protected Map<String, String> rankOutput = new HashMap<>();
-  /** The observations output. */
-  protected Map<String, String> observOutput = new HashMap<>();
-  /** The probabilities output. */
-  protected Map<String, String> probOutput = new HashMap<>();
-  /** The number of papers to propose to the expert per iteration. */
-  protected static final int PAPER_PROPOSALS_PER_ITERATION = 25;
+      OfflineSimulator.class );
   /** The portion of documents to observe. */
   protected static final double PERCENT_TO_OBSERVE = .6;
   /** The number of iterations to run. */
@@ -55,6 +45,18 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
   /** The default header. */
   protected static final String DEFAULT_HEADER = "dataset\trun\ttotal labels\t" +
       "new labels\trecall\t% observed relevant\t% expected relevant\tobserved";
+  /** The file containing the recall statistics. */
+  protected String statsFile;
+  /** The file containing the rankings of the papers. */
+  protected String paperRankFile;
+  /** The file containing the probabilities of the papers. */
+  protected String paperProbFile;
+  /** The rankings output. */
+  protected Map<String, String> rankOutput = new HashMap<>();
+  /** The observations output. */
+  protected Map<String, String> observOutput = new HashMap<>();
+  /** The probabilities output. */
+  protected Map<String, String> probOutput = new HashMap<>();
   /** The combined result file. */
   protected String combinedResultsFile;
   /** The name of the dataset. */
@@ -67,11 +69,7 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
    * @throws IOException
    * @throws BiffException
    */
-  @BeforeSuite
-  @Parameters( { "file", "name" } )
-  public void setUp( @Optional(
-      "src/test/resources/micro_t_and_a" ) String file,
-      @Optional( "micro_t_and_a" ) String name ) throws Exception {
+  public OfflineSimulator( String file, String name ) throws Exception {
     this.datasetFile = file;
     this.datasetName = name;
     this.statsFile = "stats-" + name + ".csv";
@@ -89,144 +87,6 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
       LOG.error( "Error intitializing prefetching cache.", e );
       e.printStackTrace();
     }
-  }
-
-  /**
-   * Get the papers terms to propose.
-   * @param query
-   * @return
-   */
-  protected Set<String> getPaperProposals( TrainRelation<Integer> searcher,
-      TreeMultimap<Double, String> cosineMap,
-      Set<String> observedRelevant, Set<String> observedIrrelevant ) {
-    Set<String> results = new HashSet<>();
-
-    List<String> citList = new ArrayList<>();
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( String feat : cosineMap.get( sim ) ) {
-        // WITH REPLACEMENT:
-          citList.add( feat );
-      }
-    }
-
-    LOG.info( "Getting paper proposal set..." );
-    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
-        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
-    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
-    //    n, PAPER_PROPOSALS_PER_ITERATION );
-    LOG.info( "\tGetting citations at ranks " + rands );
-    for ( int r : rands ) {
-      results.add( citList.get( r ) );
-    }
-
-    LOG.info(  "Paper proposals: " + results );
-    return results;
-  }
-
-  /**
-   * Rank the query results using cosine similarity.
-   * @param searcher
-   * @return
-   */
-  @SuppressWarnings( "unchecked" )
-  protected TreeMultimap<Double, String> rank( TrainRelation<Integer> data,
-      TrainRelation<Integer> compareTo, Set<String> observedRelevant,
-      Set<String> proposals ) {
-    TreeMultimap<Double, String> cosineMap = TreeMultimap.create();
-    for ( LabeledFeatureVector<Integer> doc : data ) {
-      
-      Map<String, Double> simMap = null;
-      if ( defaultCache != null ) {
-        simMap = (Map<String, Double>) defaultCache.get( doc.getId() );
-        try {
-          defaultCache.remove( doc.getId() );
-        } catch ( CacheException e ) {
-          LOG.error( "Unable to remove from cache: " + doc.getId(), e );
-        }
-      }
-      if ( simMap == null ) {
-        simMap = new HashMap<>();
-      }
-
-      double totalSim = 0.0;
-      for ( LabeledFeatureVector<Integer> rel : compareTo ) {
-        Double sim = simMap.get( rel.getId() );
-        if ( sim == null ) {
-          sim = ( doc.dot( rel ) / doc.magnitude() * rel.magnitude() );
-          simMap.put( rel.getId(), sim );
-        }
-        totalSim += sim;
-      }
-
-      double avgSim = totalSim/(double) observedRelevant.size();
-      cosineMap.put( avgSim, doc.getId() );
-
-      try {
-        if ( defaultCache != null ) defaultCache.put( doc.getId(), simMap );
-      } catch ( CacheException e ) {
-        LOG.error( "Unable to cache: " + e );
-      }
-    }
-
-    // record the ranks
-    recordRank( cosineMap, proposals );
-
-    return cosineMap;
-  }
-
-  /**
-   * Record the current ranking.
-   * @param cosineMap
-   */
-  protected void recordRank( TreeMultimap<Double, String> cosineMap,
-      Set<String> proposals ) {
-
-    // get probability information
-    if ( z == -1 ) {
-      z = calcZ( cosineMap.values().size() );
-    }
-
-    int rank = 1;
-    for ( Double sim : cosineMap.keySet().descendingSet() ) {
-      for ( String feat : cosineMap.get( sim ) ) {
-       
-        String rankStr = rankOutput.get( feat );
-        if ( rankStr == null ) {
-          rankStr = "";
-        } else {
-          rankStr += ",";
-        }
-        rankStr += String.valueOf( rank );
-        rankOutput.put( feat, rankStr );
-
-        double prob = (double) 1/ (double) rank / z;
-        prob = MathUtil.round( prob, 7 );
-
-        String probStr = probOutput.get( feat );
-        if ( probStr == null ) {
-          probStr = "";
-        } else {
-          probStr += ",";
-        }
-        probStr += String.valueOf( prob );
-        probOutput.put( feat, probStr );
-
-        rank++;
-      }
-    }
-
-    for ( String feat : proposals ) {
-      String observStr = observOutput.get( feat );
-      if ( observStr == null ) {
-        observStr = "";
-      } else {
-        observStr += ",";
-      }
-      observStr += String.valueOf( iteration );
-      observOutput.put( feat, observStr );
-    }
-
-    iteration++;
   }
 
   /**
@@ -313,43 +173,37 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
   }
 
   /**
-   * Propose the papers to the expert and add them to the appropriate bins:
-   * relevant and irrelevant.
-   * @param proposals
-   * @param relevant
-   * @param irrelevant
+   * Get the papers terms to propose.
+   * @param query
+   * @return
    */
-  protected Set<String> proposePapers( TrainRelation<Integer> data,
-      Set<String> proposals, Set<String> observedRelevant,
-      Set<String> observedIrrelevant ) {
-    LOG.info( "Proposing papers..." );
-    Set<String> newRelevant = new HashSet<>();
-    for ( String feat : proposals ) {
-      if ( data.get( feat ).getLabel() == 1 ) {
-        // LOG.debug( "\t" + feat + " is relevant" );
-        observedRelevant.add( feat );
-        newRelevant.add( feat );
-      } else {
-        // LOG.debug( "\t" + feat + " is irrelevant" );
-        observedIrrelevant.add( feat );
+  protected Set<String> getPaperProposals( TrainRelation<Integer> searcher,
+      TreeMultimap<Double, String> cosineMap,
+      Set<String> observedRelevant, Set<String> observedIrrelevant ) {
+    Set<String> results = new HashSet<>();
+
+    List<String> citList = new ArrayList<>();
+    for ( Double sim : cosineMap.keySet().descendingSet() ) {
+      for ( String feat : cosineMap.get( sim ) ) {
+        // WITH REPLACEMENT:
+        citList.add( feat );
       }
     }
 
-    LOG.info( "Proposing papers: " + newRelevant );
-    return newRelevant;
+    LOG.info( "Getting paper proposal set..." );
+    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
+        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
+    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
+    //    n, PAPER_PROPOSALS_PER_ITERATION );
+    LOG.info( "\tGetting citations at ranks " + rands );
+    for ( int r : rands ) {
+      results.add( citList.get( r ) );
+    }
+
+    LOG.info(  "Paper proposals: " + results );
+    return results;
   }
 
-  /**
-   * Update the set to compare to during cosine similarity.
-   * @param newRelevant
-   */
-  protected void updateSimilarities( TrainRelation<Integer> data,
-      TrainRelation<Integer> compareTo, Collection<String> newRelevant ) {
-    for ( String featId : newRelevant ) {
-      compareTo.add( data.get( featId ) );
-    }
-  }
-  
   @SuppressWarnings( "unchecked" )
   public void performIteration( BufferedWriter results, int iteration )
     throws IOException {
@@ -379,7 +233,7 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
 
     // gather initial statistics on the results
     TreeMultimap<Double, String> cosineMap = rank( data, compareTo,
-        observedRelevant, new HashSet<String>() );
+        observedRelevant, observedIrrelevant );
     evaluateQuery( data, cosineMap, observedRelevant, observedIrrelevant );
     
     int numPapersToObserve = (int) Math.ceil(
@@ -463,13 +317,140 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
   }
 
   /**
+   * Propose the papers to the expert and add them to the appropriate bins:
+   * relevant and irrelevant.
+   * @param proposals
+   * @param relevant
+   * @param irrelevant
+   */
+  protected Set<String> proposePapers( TrainRelation<Integer> data,
+      Set<String> proposals, Set<String> observedRelevant,
+      Set<String> observedIrrelevant ) {
+    LOG.info( "Proposing papers..." );
+    Set<String> newRelevant = new HashSet<>();
+    for ( String feat : proposals ) {
+      if ( data.get( feat ).getLabel() == 1 ) {
+        // LOG.debug( "\t" + feat + " is relevant" );
+        observedRelevant.add( feat );
+        newRelevant.add( feat );
+      } else {
+        // LOG.debug( "\t" + feat + " is irrelevant" );
+        observedIrrelevant.add( feat );
+      }
+    }
+
+    LOG.info( "Proposing papers: " + newRelevant );
+    return newRelevant;
+  }
+
+  /**
+   * Rank the query results using cosine similarity.
+   * @param searcher
+   * @return
+   */
+  @SuppressWarnings( "unchecked" )
+  protected TreeMultimap<Double, String> rank( TrainRelation<Integer> data,
+      TrainRelation<Integer> compareTo, Set<String> observedRelevant,
+      Set<String> proposals ) {
+    TreeMultimap<Double, String> cosineMap = TreeMultimap.create();
+    for ( LabeledFeatureVector<Integer> doc : data ) {
+      Map<String, Double> simMap = null;
+      if ( defaultCache != null ) {
+        simMap = (Map<String, Double>) defaultCache.get( doc.getId() );
+        try {
+          defaultCache.remove( doc.getId() );
+        } catch ( CacheException e ) {
+          LOG.error( "Unable to remove from cache: " + doc.getId(), e );
+        }
+      }
+      if ( simMap == null ) {
+        simMap = new HashMap<>();
+      }
+
+      double totalSim = 0.0;
+      for ( LabeledFeatureVector<Integer> rel : compareTo ) {
+        Double sim = simMap.get( rel.getId() );
+        if ( sim == null ) {
+          sim = ( doc.dot( rel ) / doc.magnitude() * rel.magnitude() );
+          simMap.put( rel.getId(), sim );
+        }
+        totalSim += sim;
+      }
+
+      double avgSim = totalSim/(double) observedRelevant.size();
+      cosineMap.put( avgSim, doc.getId() );
+
+      try {
+        if ( defaultCache != null ) defaultCache.put( doc.getId(), simMap );
+      } catch ( CacheException e ) {
+        LOG.error( "Unable to cache: " + e );
+      }
+    }
+
+    return cosineMap;
+  }
+
+  /**
+   * Record the current ranking.
+   * @param cosineMap
+   */
+  protected void recordRank( TreeMultimap<Double, String> cosineMap,
+      Set<String> proposals ) {
+
+    // get probability information
+    if ( z == -1 ) {
+      z = calcZ( cosineMap.values().size() );
+    }
+
+    int rank = 1;
+    for ( Double sim : cosineMap.keySet().descendingSet() ) {
+      for ( String feat : cosineMap.get( sim ) ) {
+       
+        String rankStr = rankOutput.get( feat );
+        if ( rankStr == null ) {
+          rankStr = "";
+        } else {
+          rankStr += ",";
+        }
+        rankStr += String.valueOf( rank );
+        rankOutput.put( feat, rankStr );
+
+        double prob = (double) 1/ (double) rank / z;
+        prob = MathUtil.round( prob, 7 );
+
+        String probStr = probOutput.get( feat );
+        if ( probStr == null ) {
+          probStr = "";
+        } else {
+          probStr += ",";
+        }
+        probStr += String.valueOf( prob );
+        probOutput.put( feat, probStr );
+
+        rank++;
+      }
+    }
+
+    for ( String feat : proposals ) {
+      String observStr = observOutput.get( feat );
+      if ( observStr == null ) {
+        observStr = "";
+      } else {
+        observStr += ",";
+      }
+      observStr += String.valueOf( iteration );
+      observOutput.put( feat, observStr );
+    }
+
+    iteration++;
+  }
+  
+  /**
    * Simulate the Clopidogrel query refinement process.
    *
    * @throws InterruptedException
    * @throws IOException
    */
-  @Test
-  @Override
   public void simulateReview() throws InterruptedException, IOException {
     FileWriter fw = new FileWriter( combinedResultsFile );
     BufferedWriter out = new BufferedWriter( fw );
@@ -484,13 +465,13 @@ public class SimulateReviewFeatureVectors extends SimulateReview {
   }
 
   /**
-   * Tear down the test harness.
-   * @throws IOException
-   * @throws WriteException
+   * Update the set to compare to during cosine similarity.
+   * @param newRelevant
    */
-  @AfterSuite
-  public void tearDown() throws IOException {
-    // don't output ranks and probabilities file
-    // super.tearDown();
+  protected void updateSimilarities( TrainRelation<Integer> data,
+      TrainRelation<Integer> compareTo, Collection<String> newRelevant ) {
+    for ( String featId : newRelevant ) {
+      compareTo.add( data.get( featId ) );
+    }
   }
 }

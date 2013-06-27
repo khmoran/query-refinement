@@ -1,0 +1,40 @@
+#!/bin/bash
+                                                                              
+# path to this directory
+BASEDIR=$(dirname $0)
+
+# compile the code
+# mvn -q clean compile
+
+class=edu.tufts.cs.ebm.review.systematic.simulation.drivers.SimulateReview
+printUsage() {
+    mvn -q exec:java -Dexec.mainClass="$class" -Dexec.args="--USAGE"
+    exit
+}
+
+# mandatory arguments
+if [[ "$1" == "" || "$2" == "" || "$3" == "" || "$4" == "" || "$@" == *--usage* ]]; then
+    printUsage
+fi
+
+mvn exec:java -Dexec.mainClass="$class" -Dexec.args=""$1" "$2" "$3" "$4""
+
+# save the results
+BASEDIR=$(dirname $0)
+mkdir -p $BASEDIR/results 
+NEWDIR="$BASEDIR/results/$3-$4/$1"
+mkdir -p $NEWDIR
+AVG="$NEWDIR/$3-$4-$1-avg.xlsx"
+
+if [ ! -f $AVG ]; then
+    cp $BASEDIR/results/template.xlsx $AVG
+fi
+
+dir=1
+while [ -d "$NEWDIR/$dir" ]; do
+    let dir=dir+1;
+done
+
+mkdir -p $NEWDIR/$dir
+mv *.csv $NEWDIR/$dir
+echo "Moved results files to $NEWDIR/$dir"

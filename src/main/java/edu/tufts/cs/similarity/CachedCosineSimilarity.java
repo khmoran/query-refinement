@@ -41,7 +41,6 @@ public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
    * @param c
    * @return
    */
-  @Override
   @SuppressWarnings( "unchecked" )
   public double calculateSimilarity( UnlabeledFeatureVector<E> ufv ) {
     if ( compareTo.isEmpty() ) {

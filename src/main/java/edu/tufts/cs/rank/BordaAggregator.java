@@ -13,11 +13,6 @@ import java.util.Map.Entry;
 import com.google.common.collect.TreeMultimap;
 
 public class BordaAggregator<E extends Comparable<E>> {
-  private class DoubleAccumulator {
-    /** The value. */
-    public double val = 0.0;
-  }
-
   /**
    * Aggregate the <n> Multimaps into one ranked list.
    * @param ranks
@@ -82,32 +77,32 @@ public class BordaAggregator<E extends Comparable<E>> {
    * @return
    */
   protected List<E> aggregate( List<List<E>> rankings ) {
-    Map<E, DoubleAccumulator> accumulatorMap = new HashMap<>();
+    Map<E, Double> accumulatorMap = new HashMap<>();
 
     for ( int i = 0; i < rankings.size(); i++ ) {
       for ( int j = 0; j < rankings.get( i ).size(); j++ ) {
-        DoubleAccumulator acc = accumulatorMap.get(
-            rankings.get( i ).get( j ) );
+        Double acc = accumulatorMap.get( rankings.get( i ).get( j ) );
         if ( acc == null ) {
-          acc = new DoubleAccumulator();
+          acc = new Double( 0.0 );
           accumulatorMap.put( rankings.get( i ).get( j ), acc );
         }
 
         // pos 1 - 1.0
         // pos 2 - 0.5 = 1/2
         // pos n - 1/n
-        acc.val += 1.0 / (double) ( j + 1 );
+        acc += 1.0 / (double) ( j + 1 );
+        accumulatorMap.put( rankings.get( i ).get( j ), acc ); // update map
       }
     }
 
-    List<Entry<E, DoubleAccumulator>> list = new LinkedList<>(
+    List<Entry<E, Double>> list = new LinkedList<>(
         accumulatorMap.entrySet() );
-    Collections.sort( list, new Comparator<Entry<E, DoubleAccumulator>>() {
+    Collections.sort( list, new Comparator<Entry<E, Double>>() {
       @Override
-      public int compare( Entry<E, DoubleAccumulator> o1,
-          Entry<E, DoubleAccumulator> o2 ) {
+      public int compare( Entry<E, Double> o1,
+          Entry<E, Double> o2 ) {
         // descending
-        return (int) Math.signum( o2.getValue().val - o1.getValue().val );
+        return (int) Math.signum( o2.getValue() - o1.getValue() );
       }
     } );
 

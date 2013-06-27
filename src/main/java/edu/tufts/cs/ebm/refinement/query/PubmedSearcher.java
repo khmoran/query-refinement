@@ -114,7 +114,6 @@ public class PubmedSearcher extends PubmedService implements Runnable {
       tfIdf.handle( seed.getTitle() );
       tfIdf.handle( seed.getAbstr() );
       tfIdf.handle( seed.getMeshTerms().toString() );
-      System.out.println( seed.getMeshTerms().toString() );
     }
   }
 

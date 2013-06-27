@@ -1,10 +1,11 @@
-package edu.tufts.cs.ebm.review.systematic;
+package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,9 +16,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.exception.CacheException;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+
+import cc.mallet.types.Instance;
+import cc.mallet.types.InstanceList;
 
 import com.avaje.ebean.Ebean;
 import com.google.common.collect.TreeMultimap;
@@ -26,56 +27,146 @@ import edu.tufts.cs.ebm.mesh.RankedMesh;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
+import edu.tufts.cs.ebm.review.systematic.Citation;
+import edu.tufts.cs.ebm.review.systematic.PubmedId;
+import edu.tufts.cs.ebm.review.systematic.SystematicReview;
+import edu.tufts.cs.ebm.review.systematic.simulation.Simulator;
 import edu.tufts.cs.ebm.util.MathUtil;
 import edu.tufts.cs.ml.FeatureVector;
-import edu.tufts.cs.ml.UnlabeledFeatureVector;
-import edu.tufts.cs.ml.text.BagOfWords;
-import edu.tufts.cs.ml.text.CosineSimilarity;
-import edu.tufts.cs.similarity.CachedCosineSimilarity;
+import edu.tufts.cs.ml.LabeledFeatureVector;
+import edu.tufts.cs.ml.Metadata;
+import edu.tufts.cs.ml.TrainRelation;
+import edu.tufts.cs.ml.util.MalletConverter;
+import edu.tufts.cs.ml.util.Util;
 
 /**
- * Test the MeshWalker class.
+ * An online simulation of a systematic review.
  */
-public class SimulateReview extends AbstractTest {
+public abstract class OnlineSimulator<I, C> extends Simulator {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog(
-      SimulateReview.class );
-  /** The number of minutes after which to time out the request. */
-  protected static final int TIMEOUT_MINS = 60;
-  /** The number of threads to fork off at a time. */
-  protected static final int NUM_FORKS = 8;
-  /** The number of papers to propose to the expert per iteration. */
-  protected static final int PAPER_PROPOSALS_PER_ITERATION = 5;
-  /** The cache name. */
-  protected static final String DEFAULT_CACHE_NAME = "default";
-  /** The data cache. */
-  protected static JCS defaultCache;
-  /** The file containing the recall statistics. */
-  protected String statsFile;
-  /** The file containing the rankings of the papers. */
-  protected String paperRankFile;
-  /** The file containing the probabilities of the papers. */
-  protected String paperProbFile;
+      OnlineSimulator.class );
   /** The rankings output. */
-  protected Map<PubmedId, String> rankOutput = new HashMap<>();
+  protected Map<I, String> rankOutput = new HashMap<>();
   /** The observations output. */
-  protected Map<PubmedId, String> observOutput = new HashMap<>();
+  protected Map<I, String> observOutput = new HashMap<>();
   /** The probabilities output. */
-  protected Map<PubmedId, String> probOutput = new HashMap<>();
-  /** The iteration. */
-  protected long iteration = 0;
-  /** The z value for probability calculations. */
-  protected double z = -1;
+  protected Map<I, String> probOutput = new HashMap<>();
   /** The active review. */
   protected SystematicReview activeReview;
-  /** The Bag of Words. */
-  protected BagOfWords<Integer> bow;
-  /** The Cosine Similarity. */
-  protected CosineSimilarity<Integer> cs;
-  /** The positive class label. */
-  protected static final int POS = 1;
-  /** The negative class label. */
-  protected static final int NEG = -1;
+
+  /**
+   * Set up the test suite.
+   * @throws IOException
+   * @throws BiffException
+   */
+  public OnlineSimulator( String review ) throws Exception {
+    Collection<SystematicReview> reviews = reviews();
+    String norm = Util.normalize( review );
+    for ( SystematicReview r : reviews ) {
+      if ( Util.normalize( r.getName() ).contains( norm ) ) {
+        this.activeReview = r;
+      }
+    }
+    
+    if ( this.activeReview == null ) throw new RuntimeException(
+        "Could not find review " + review );
+
+    Runtime rt = Runtime.getRuntime();
+    LOG.info( "Max Memory: " + rt.maxMemory() / MB );
+
+    LOG.info( "# seeds:\t " + activeReview.getSeeds().size() );
+    LOG.info( "# relevant L1:\t " + activeReview.getRelevantLevel1().size() );
+    LOG.info( "# relevant L2:\t " + activeReview.getRelevantLevel2().size() );
+    LOG.info( "# blacklisted:\t " + activeReview.getBlacklist().size() );
+
+    // load up the seeds
+    for ( PubmedId pmid : activeReview.getSeeds() ) {
+      Ebean.find( PubmedId.class, pmid.getValue() ); // load the seeds
+    }
+    
+    // load up the relevant papers
+    for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
+      Ebean.find( PubmedId.class, pmid.getValue() );
+    }
+
+    // initialize the cache
+    try {
+      defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
+    } catch ( CacheException e ) {
+      LOG.error( "Error intitializing prefetching cache.", e );
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Turn the Citations into FeatureVectors.
+   * @param citations
+   * @return
+   */
+  protected abstract Map<I, C> createFeatureVectors(
+      Set<Citation> citations );
+  
+
+  /**
+   * Get the training data in MALLET form.
+   * @param relevant
+   * @param irrelevant
+   * @return
+   */
+  protected InstanceList createTrainingData( InstanceList instances, 
+      Collection<PubmedId> relevant, Collection<PubmedId> irrelevant ) {
+    InstanceList il = instances.shallowClone();
+    
+    Collection<Instance> toRemove = new ArrayList<Instance>();
+    for ( Instance i : il ) {
+      try {
+        PubmedId pmid = new PubmedId( i.getName().toString() );
+        if ( !( relevant.contains( pmid ) || irrelevant.contains( pmid ) ) ) {
+            toRemove.add( i );
+        }
+      } catch ( NumberFormatException | ParseException e ) {
+        LOG.error( e );
+      }
+    }
+    il.removeAll( toRemove );
+
+    return il;
+  }
+
+  /**
+   * Initialize the Mallet vectors.
+   * @param fvs
+   */
+  protected InstanceList initializeMallet( Collection<FeatureVector<Integer>> fvs ) {
+    Metadata m = new Metadata();
+    TrainRelation<Integer> train = new TrainRelation<Integer>( "train", m );
+    
+    for ( FeatureVector<Integer> fv : fvs ) {
+      for( String feat : fv.keySet() ) {
+        if ( !m.containsKey( feat ) ) {
+          m.put( feat, "Object" );
+        }
+      }
+
+      LabeledFeatureVector<Integer> lfv;
+      try {
+        PubmedId pmid = new PubmedId( fv.getId() );
+        if ( activeReview.getRelevantLevel1().contains( pmid ) 
+          || activeReview.getRelevantLevel2().contains( pmid ) ) {
+          lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
+        } else {
+          lfv = new LabeledFeatureVector<Integer>( NEG, fv.getId() );
+        }
+        lfv.putAll( fv );
+        train.add( lfv );
+      } catch ( NumberFormatException | ParseException e ) {
+        LOG.error( e );
+      }
+    }
+
+    return MalletConverter.convert( train );
+  }
 
   /**
    * Evaluate the query.
@@ -83,9 +174,9 @@ public class SimulateReview extends AbstractTest {
    * @return
    */
   protected Map<String, InfoMeasure> evaluateQuery(
-      TreeMultimap<Double, PubmedId> rankMap,
-      Set<PubmedId> expertRelevantPapers,
-      Set<PubmedId> expertIrrelevantPapers ) {
+      TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers,
+      Set<I> expertIrrelevantPapers ) {
 
     if ( rankMap.size() == 0 ) {
       return null;
@@ -96,7 +187,7 @@ public class SimulateReview extends AbstractTest {
     int truePosL1 = 0;
     int truePosL2 = 0;
     
-    for ( PubmedId pmid : expertRelevantPapers ) {
+    for ( I pmid : expertRelevantPapers ) {
       if ( activeReview.getRelevantLevel2().contains( pmid ) ) {
         truePosL2++;
       }
@@ -127,23 +218,17 @@ public class SimulateReview extends AbstractTest {
    * @param query
    * @return
    */
-  protected Set<PubmedId> getPaperProposals(
-      TreeMultimap<Double, PubmedId> rankMap,
-      Set<PubmedId> expertRelevantPapers,
-      Set<PubmedId> expertIrrelevantPapers ) {
-    Set<PubmedId> results = new HashSet<>();
+  protected Set<I> getPaperProposals(
+      TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers,
+      Set<I> expertIrrelevantPapers ) {
+    Set<I> results = new HashSet<>();
 
-    List<PubmedId> citList = new ArrayList<>();
-//    out:
+    List<I> citList = new ArrayList<>();
     for ( Double sim : rankMap.keySet().descendingSet() ) {
-      for ( PubmedId pmid : rankMap.get( sim ) ) {
+      for ( I pmid : rankMap.get( sim ) ) {
         if ( !expertRelevantPapers.contains( pmid ) &&
             !expertIrrelevantPapers.contains( pmid ) ) {
-//          if ( results.size() < PAPER_PROPOSALS_PER_ITERATION ) {
-//            results.add( pmid );
-//          } else {
-//            break out;
-//          }
           citList.add( pmid );
         }
       }
@@ -164,17 +249,22 @@ public class SimulateReview extends AbstractTest {
   }
 
   /**
+   * Initialize the classifier.
+   */
+  protected abstract void initializeClassifier( Set<Citation> citations );
+
+  /**
    * Propose the papers to the expert and add them to the appropriate bins:
    * relevant and irrelevant.
    * @param proposals
    * @param relevant
    * @param irrelevant
    */
-  protected Set<PubmedId> proposePapers( Set<PubmedId> proposals,
-      Set<PubmedId> relevant, Set<PubmedId> irrelevant ) {
+  protected Set<I> proposePapers( Set<I> proposals,
+      Set<I> relevant, Set<I> irrelevant ) {
     LOG.info( "Proposing papers..." );
-    Set<PubmedId> newRelevant = new HashSet<>();
-    for ( PubmedId pmid : proposals ) {
+    Set<I> newRelevant = new HashSet<>();
+    for ( I pmid : proposals ) {
       if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
         LOG.debug( "\t" + pmid + " is relevant" );
         newRelevant.add( pmid );
@@ -192,43 +282,18 @@ public class SimulateReview extends AbstractTest {
    * @param searcher
    * @return
    */
-  protected TreeMultimap<Double, PubmedId> rank(
-      Map<PubmedId, UnlabeledFeatureVector<Integer>> citations,
-      Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers,
-      Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers ) {
-    TreeMultimap<Double, PubmedId> rankMap = TreeMultimap.create();
-
-    // train the bag of words
-    for ( FeatureVector<Integer> fv : expertRelevantPapers.values() ) {
-      bow.train( fv, POS );
-    }
-    for ( FeatureVector<Integer> fv : expertIrrelevantPapers.values() ) {
-      bow.train( fv, NEG );
-    }
-
-    // "train" the cosine similarity with the relevant data
-    cs.setCompareTo( bow.getTrainingData( POS ) );
-
-    // test the remaining citations
-    for ( PubmedId pmid : citations.keySet() ) {
-      UnlabeledFeatureVector<Integer> ufv = citations.get( pmid ); 
-      double sim = cs.calculateSimilarity( ufv );
-      rankMap.put( sim, pmid );
-    }
-
-    // record the ranks
-    recordRank( rankMap, expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
-
-    return rankMap;
-  }
+  protected abstract TreeMultimap<Double, I> rank(
+      Map<I, C> citations,
+      Map<I, C> expertRelevantPapers,
+      Map<I, C> expertIrrelevantPapers );
 
   /**
    * Record the current ranking.
    * @param rankMap
    */
-  protected void recordRank( TreeMultimap<Double, PubmedId> rankMap,
-      Set<PubmedId> expertRelevantPapers,
-      Set<PubmedId> expertIrrelevantPapers ) {
+  protected void recordRank( TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers,
+      Set<I> expertIrrelevantPapers ) {
 
     // get probability information
     if ( z == -1 ) {
@@ -237,7 +302,7 @@ public class SimulateReview extends AbstractTest {
 
     int rank = 1;
     for ( Double sim : rankMap.keySet().descendingSet() ) {
-      for ( PubmedId pmid : rankMap.get( sim ) ) {
+      for ( I pmid : rankMap.get( sim ) ) {
         String rankStr = rankOutput.get( pmid );
         if ( rankStr == null ) {
           rankStr = "";
@@ -263,10 +328,10 @@ public class SimulateReview extends AbstractTest {
       }
     }
 
-    Set<PubmedId> allObserved = new HashSet<>();
+    Set<I> allObserved = new HashSet<>();
     allObserved.addAll( expertRelevantPapers );
     allObserved.addAll( expertIrrelevantPapers );
-    for ( PubmedId pmid : allObserved ) {
+    for ( I pmid : allObserved ) {
       // only record the first time you see this
       String observStr = observOutput.get( pmid );
       if ( observStr == null ) {
@@ -317,68 +382,18 @@ public class SimulateReview extends AbstractTest {
   }
 
   /**
-   * Set up the test suite.
+   * Simulate the Clopidogrel query refinement process.
+   *
+   * @throws InterruptedException
    * @throws IOException
-   * @throws BiffException
    */
-  @BeforeSuite
-  public void setUp() throws Exception {
-    super.setUp();
-
-    if ( this.getClass().getSimpleName().contains(
-        "ProtonBeam" ) ) {
-      this.activeReview = protonBeamReview;
-    } else if ( this.getClass().getSimpleName().contains(
-        "Clopidogrel" ) ) {
-      this.activeReview = clopidogrelReview;
-    } else {
-      LOG.error( "Could not determine review. Exiting." );
-      System.exit( 1 );
-    }
-
-    Runtime rt = Runtime.getRuntime();
-    LOG.info( "Max Memory: " + rt.maxMemory() / MB );
-
-    LOG.info( "# seeds:\t " + activeReview.getSeeds().size() );
-    LOG.info( "# relevant L1:\t " + activeReview.getRelevantLevel1().size() );
-    LOG.info( "# relevant L2:\t " + activeReview.getRelevantLevel2().size() );
-    LOG.info( "# blacklisted:\t " + activeReview.getBlacklist().size() );
-
-    // load up the relevant papers
-    for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() );
-    }
-
-    // initialize the cache
-    try {
-      defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
-    } catch ( CacheException e ) {
-      LOG.error( "Error intitializing prefetching cache.", e );
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Calculate z.
-   * @param n
-   * @return
-   */
-  protected double calcZ( int n ) {
-    double z = 0;
-    for ( int i = 1; i <= n; i++ ) {
-      z += 1/(double) ( i );
-    }
-    
-    return z;
-  }
-
   /**
    * Simulate the Clopidogrel query refinement process.
    *
    * @throws InterruptedException
    * @throws IOException
    */
-  @Test
+  @SuppressWarnings( "unchecked" )
   public void simulateReview()
     throws InterruptedException, IOException {
     // prepare the CSV output
@@ -396,8 +411,8 @@ public class SimulateReview extends AbstractTest {
     LOG.info( "Initial POPULATION query: " + popQuery );
     LOG.info( "Initial INTERVENTION query: " + icQuery );
 
-    Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers = new HashMap<>();
-    Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers = new HashMap<>();
+    Map<I, C> expertRelevantPapers = new HashMap<>();
+    Map<I, C> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
@@ -406,17 +421,22 @@ public class SimulateReview extends AbstractTest {
     search( searcher );
 
     initializeClassifier( searcher.getCitations() );
-    Map<PubmedId, UnlabeledFeatureVector<Integer>> citations =
+    Map<I, C> citations =
         createFeatureVectors( searcher.getCitations() );
-    
+
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {
-      expertRelevantPapers.put( c.getPmid(), citations.get( c.getPmid() ) );
+      if ( citations.get( c.getPmid() ) != null ) {
+        expertRelevantPapers.put( (I) c.getPmid(), citations.get( c.getPmid() ) );
+      }
     }
 
     // gather initial statistics on the results
-    TreeMultimap<Double, PubmedId> rankMap = rank( citations,
+    TreeMultimap<Double, I> rankMap = rank( citations,
         expertRelevantPapers, expertIrrelevantPapers );
+    // record the ranks
+    recordRank( rankMap, expertRelevantPapers.keySet(),
+        expertIrrelevantPapers.keySet() );
     evaluateQuery( rankMap, expertRelevantPapers.keySet(),
         expertIrrelevantPapers.keySet() );
 
@@ -427,7 +447,7 @@ public class SimulateReview extends AbstractTest {
     while ( papersRemaining ) {
       LOG.info(  "\n\nIteration " + ++i + ":\n" );
 
-      Set<PubmedId> paperProposals = getPaperProposals( rankMap,
+      Set<I> paperProposals = getPaperProposals( rankMap,
           expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       int numRelevant = expertRelevantPapers.size();
@@ -437,11 +457,11 @@ public class SimulateReview extends AbstractTest {
       } else {
         papersRemaining = true;
         papersProposed += PAPER_PROPOSALS_PER_ITERATION;
-        Set<PubmedId> accepted = proposePapers( paperProposals, expertRelevantPapers.keySet(),
+        Set<I> accepted = proposePapers( paperProposals, expertRelevantPapers.keySet(),
             expertIrrelevantPapers.keySet() );
 
         // update the relevant/irrelevant lists
-        for ( PubmedId pmid : paperProposals ) {
+        for ( I pmid : paperProposals ) {
           if ( accepted.contains( pmid ) ) {
             expertRelevantPapers.put( pmid, citations.get( pmid ) );
           } else {
@@ -457,6 +477,9 @@ public class SimulateReview extends AbstractTest {
       if ( expertRelevantPapers.size() > numRelevant ) {
         rankMap = rank( citations, expertRelevantPapers,
             expertIrrelevantPapers );
+        // record the ranks
+        recordRank( rankMap, expertRelevantPapers.keySet(),
+            expertIrrelevantPapers.keySet() );
       }
       if ( expertRelevantPapers.size() > numRelevant || im == null ) {
         im = evaluateQuery( rankMap, expertRelevantPapers.keySet(),
@@ -484,51 +507,10 @@ public class SimulateReview extends AbstractTest {
   }
 
   /**
-   * Turn the Citations into FeatureVectors.
-   * @param citations
-   * @return
-   */
-  protected Map<PubmedId, UnlabeledFeatureVector<Integer>> createFeatureVectors(
-      Set<Citation> citations ) {
-    // create the feature vectors
-    Map<PubmedId, UnlabeledFeatureVector<Integer>> fvs = new HashMap<>();
-    for ( Citation c : citations ) {
-      fvs.put( c.getPmid(), bow.createUnlabeledFV( c.getPmid().toString(),
-          c.getTitle() + " " + c.getAbstr() ) );
-    }
-    
-    return fvs;
-  }
-
-  /**
-   * Initialize the classifier.
-   */
-  protected void initializeClassifier( Set<Citation> citations ) {
-    // initialize the bag of words
-    bow = new BagOfWords<Integer>(
-        new File( "src/main/resources/stoplists/en.txt" ) );
-    for ( Citation c : activeReview.getSeedCitations() ) {
-      // seed citations are in the positive class
-      bow.train( c.getPmid().toString(), c.getTitle() + " " + c.getAbstr(), 1 );
-    }
-    
-    // initialize the cosine similarity
-    cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
-    
-    // create the features
-    List<String> texts = new ArrayList<String>();
-    for ( Citation c : citations ) {
-      texts.add( c.getTitle() + " " + c.getAbstr() );
-    }
-    bow.createFeatures( texts );
-  }
-
-  /**
    * Tear down the test harness.
    * @throws IOException
    * @throws WriteException
    */
-  @AfterSuite
   public void tearDown() throws IOException {
     FileWriter fstreamRanks = new FileWriter( paperRankFile );
     BufferedWriter outRanks = new BufferedWriter( fstreamRanks );
@@ -544,7 +526,7 @@ public class SimulateReview extends AbstractTest {
     outRanks.append( header.toString() + "\n" );
     outProbs.append( header.toString() + "\n" );
     
-    for ( PubmedId pmid : rankOutput.keySet() ) {
+    for ( I pmid : rankOutput.keySet() ) {
       String observ = observOutput.get( pmid );
       String rankStr = rankOutput.get( pmid );
       String observStr = ( observ == null ) ? "" : observ;

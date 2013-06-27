@@ -1,4 +1,4 @@
-package edu.tufts.cs.ebm.review.systematic;
+package edu.tufts.cs.ebm.review.systematic.simulation.online.repl;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,28 +12,31 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.Test;
 
 import com.google.common.collect.TreeMultimap;
 
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
+import edu.tufts.cs.ebm.review.systematic.Citation;
+import edu.tufts.cs.ebm.review.systematic.simulation.online.OnlineSimulator;
 import edu.tufts.cs.ebm.util.MathUtil;
-import edu.tufts.cs.ml.FeatureVector;
-import edu.tufts.cs.ml.UnlabeledFeatureVector;
 
 /**
  * Test the MeshWalker class.
  */
-public class SimulateReviewWithReplacement extends SimulateReview {
+public abstract class OnlineSimulationReplacement<I, C> extends
+  OnlineSimulator<I, C> {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog(
-      SimulateReviewWithReplacement.class );
+      OnlineSimulationReplacement.class );
   /** The number of papers to propose to the expert per iteration. */
   protected static final int PAPER_PROPOSALS_PER_ITERATION = 50;
   /** The portion of documents to observe. */
   protected static final double PERCENT_TO_OBSERVE = .5;
+  
+  public OnlineSimulationReplacement( String dataset ) throws Exception {
+     super( dataset );
+  }
 
   /**
    * Get the papers terms to propose.
@@ -41,15 +44,15 @@ public class SimulateReviewWithReplacement extends SimulateReview {
    * @return
    */
   @Override
-  protected Set<PubmedId> getPaperProposals( 
-      TreeMultimap<Double, PubmedId> rankMap,
-      Set<PubmedId> expertRelevantPapers,
-      Set<PubmedId> expertIrrelevantPapers ) {
-    Set<PubmedId> results = new HashSet<>();
+  protected Set<I> getPaperProposals( 
+      TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers,
+      Set<I> expertIrrelevantPapers ) {
+    Set<I> results = new HashSet<>();
 
-    List<PubmedId> citList = new ArrayList<>();
+    List<I> citList = new ArrayList<>();
     for ( Double sim : rankMap.keySet().descendingSet() ) {
-      for ( PubmedId pmid : rankMap.get( sim ) ) {
+      for ( I pmid : rankMap.get( sim ) ) {
         // WITH REPLACEMENT:
           citList.add( pmid );
       }
@@ -69,12 +72,9 @@ public class SimulateReviewWithReplacement extends SimulateReview {
     return results;
   }
 
-  /**
-   * Record the current ranking.
-   * @param cosineMap
-   */
-  protected void recordRank( TreeMultimap<Double, PubmedId> rankMap,
-     Set<PubmedId> proposals ) {
+  @Override
+  protected void recordRank( TreeMultimap<Double, I> rankMap,
+     Set<I> proposals, Set<I> expertIrrelevantPapers ) {
 
     // get probability information
     if ( z == -1 ) {
@@ -83,7 +83,7 @@ public class SimulateReviewWithReplacement extends SimulateReview {
 
     int rank = 1;
     for ( Double sim : rankMap.keySet().descendingSet() ) {
-      for ( PubmedId pmid : rankMap.get( sim ) ) {
+      for ( I pmid : rankMap.get( sim ) ) {
         String rankStr = rankOutput.get( pmid );
         if ( rankStr == null ) {
           rankStr = "";
@@ -109,7 +109,7 @@ public class SimulateReviewWithReplacement extends SimulateReview {
       }
     }
 
-    for ( PubmedId pmid : proposals ) {
+    for ( I pmid : proposals ) {
       String observStr = observOutput.get( pmid );
       if ( observStr == null ) {
         observStr = "";
@@ -123,13 +123,7 @@ public class SimulateReviewWithReplacement extends SimulateReview {
     iteration++;
   }
 
-  /**
-   * Simulate the Clopidogrel query refinement process.
-   *
-   * @throws InterruptedException
-   * @throws IOException
-   */
-  @Test
+  @SuppressWarnings( "unchecked" )
   @Override
   public void simulateReview()
     throws InterruptedException, IOException {
@@ -148,8 +142,8 @@ public class SimulateReviewWithReplacement extends SimulateReview {
     LOG.info( "Initial POPULATION query: " + popQuery );
     LOG.info( "Initial INTERVENTION query: " + icQuery );
 
-    Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers = new HashMap<>();
-    Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers = new HashMap<>();
+    Map<I, C> expertRelevantPapers = new HashMap<>();
+    Map<I, C> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
@@ -158,16 +152,16 @@ public class SimulateReviewWithReplacement extends SimulateReview {
     search( searcher );
 
     initializeClassifier( searcher.getCitations() );
-    Map<PubmedId, UnlabeledFeatureVector<Integer>> citations =
+    Map<I, C> citations =
         createFeatureVectors( searcher.getCitations() );
 
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {
-      expertRelevantPapers.put( c.getPmid(), citations.get( c.getPmid() ) );
+      expertRelevantPapers.put( (I) c.getPmid(), citations.get( c.getPmid() ) );
     }
 
     // gather initial statistics on the results
-    TreeMultimap<Double, PubmedId> rankMap = rank( citations,
+    TreeMultimap<Double, I> rankMap = rank( citations,
         expertRelevantPapers, expertIrrelevantPapers );
     evaluateQuery( rankMap, expertRelevantPapers.keySet(),
         expertIrrelevantPapers.keySet() );
@@ -183,7 +177,7 @@ public class SimulateReviewWithReplacement extends SimulateReview {
         < numPapersToObserve ) {
       LOG.info(  "\n\nIteration " + ++i + ":\n" );
 
-      Set<PubmedId> paperProposals = getPaperProposals( rankMap,
+      Set<I> paperProposals = getPaperProposals( rankMap,
           expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       int numRelevant = expertRelevantPapers.size();
@@ -191,11 +185,11 @@ public class SimulateReviewWithReplacement extends SimulateReview {
         LOG.info( "No new papers to propose." );
         break;
       } else {
-        Set<PubmedId> accepted = proposePapers( paperProposals,
+        Set<I> accepted = proposePapers( paperProposals,
           expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
         
         // update the relevant/irrelevant lists
-        for ( PubmedId pmid : paperProposals ) {
+        for ( I pmid : paperProposals ) {
           if ( accepted.contains( pmid ) ) {
             expertRelevantPapers.put( pmid, citations.get( pmid ) );
           } else {
@@ -217,7 +211,7 @@ public class SimulateReviewWithReplacement extends SimulateReview {
           rankMap = rank( citations,
               expertRelevantPapers, expertIrrelevantPapers );
         } else { // but either way record the ranks
-          recordRank( rankMap, paperProposals );
+          recordRank( rankMap, paperProposals, new HashSet<I>() );
         }
       }
 
@@ -243,15 +237,5 @@ public class SimulateReviewWithReplacement extends SimulateReview {
 
     out.close();
     fw.close();
-  }
-
-  /**
-   * Tear down the test harness.
-   * @throws IOException
-   * @throws WriteException
-   */
-  @AfterSuite
-  public void tearDown() throws IOException {
-    super.tearDown();
   }
 }

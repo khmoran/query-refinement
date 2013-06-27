@@ -19,13 +19,11 @@ import javax.persistence.Transient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import edu.tufts.cs.ebm.refinement.query.controller.MainController;
-
 @Entity
 public class SystematicReview implements Serializable,
   Comparable<SystematicReview> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog( MainController.class );
+  protected static final Log LOG = LogFactory.getLog( SystematicReview.class );
   /** Default generated serial version UID. */
   private static final long serialVersionUID = -5992075362650101039L;
   /** The generated entity id. */
