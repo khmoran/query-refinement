@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.animation.RotateTransitionBuilder;
 import javafx.application.Platform;
@@ -139,7 +140,7 @@ public class TabController implements Observer, Initializable {
 
     RotateTransition rot = RotateTransitionBuilder.create().node( timer )
         .byAngle( 360 ).duration( new Duration( 3000 ) ).build();
-    rot.setCycleCount( RotateTransition.INDEFINITE );
+    rot.setCycleCount( Animation.INDEFINITE );
     rot.play();
   }
 
@@ -368,6 +369,7 @@ public class TabController implements Observer, Initializable {
       if ( arg instanceof Collection ) {
         Platform.runLater(
             new Runnable() {
+              @Override
               @SuppressWarnings( "unchecked" )
               public void run() {
                 Collection<Citation> c = (Collection<Citation>) arg;
@@ -379,6 +381,7 @@ public class TabController implements Observer, Initializable {
       if ( arg instanceof Citation && arg != null ) {
         Platform.runLater(
             new Runnable() {
+              @Override
               public void run() {
                 Citation c = (Citation) arg;
                 citations.add( c );

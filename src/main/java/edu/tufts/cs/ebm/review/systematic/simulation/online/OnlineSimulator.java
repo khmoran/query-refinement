@@ -135,40 +135,6 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
   }
 
   /**
-   * Initialize the Mallet vectors.
-   * @param fvs
-   */
-  protected InstanceList initializeMallet( Collection<FeatureVector<Integer>> fvs ) {
-    Metadata m = new Metadata();
-    TrainRelation<Integer> train = new TrainRelation<Integer>( "train", m );
-    
-    for ( FeatureVector<Integer> fv : fvs ) {
-      for( String feat : fv.keySet() ) {
-        if ( !m.containsKey( feat ) ) {
-          m.put( feat, "Object" );
-        }
-      }
-
-      LabeledFeatureVector<Integer> lfv;
-      try {
-        PubmedId pmid = new PubmedId( fv.getId() );
-        if ( activeReview.getRelevantLevel1().contains( pmid ) 
-          || activeReview.getRelevantLevel2().contains( pmid ) ) {
-          lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
-        } else {
-          lfv = new LabeledFeatureVector<Integer>( NEG, fv.getId() );
-        }
-        lfv.putAll( fv );
-        train.add( lfv );
-      } catch ( NumberFormatException | ParseException e ) {
-        LOG.error( e );
-      }
-    }
-
-    return MalletConverter.convert( train );
-  }
-
-  /**
    * Evaluate the query.
    * @param searcher
    * @return
@@ -252,6 +218,40 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
    * Initialize the classifier.
    */
   protected abstract void initializeClassifier( Set<Citation> citations );
+
+  /**
+   * Initialize the Mallet vectors.
+   * @param fvs
+   */
+  protected InstanceList initializeMallet( Collection<FeatureVector<Integer>> fvs ) {
+    Metadata m = new Metadata();
+    TrainRelation<Integer> train = new TrainRelation<Integer>( "train", m );
+    
+    for ( FeatureVector<Integer> fv : fvs ) {
+      for( String feat : fv.keySet() ) {
+        if ( !m.containsKey( feat ) ) {
+          m.put( feat, "Object" );
+        }
+      }
+
+      LabeledFeatureVector<Integer> lfv;
+      try {
+        PubmedId pmid = new PubmedId( fv.getId() );
+        if ( activeReview.getRelevantLevel1().contains( pmid ) 
+          || activeReview.getRelevantLevel2().contains( pmid ) ) {
+          lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
+        } else {
+          lfv = new LabeledFeatureVector<Integer>( NEG, fv.getId() );
+        }
+        lfv.putAll( fv );
+        train.add( lfv );
+      } catch ( NumberFormatException | ParseException e ) {
+        LOG.error( e );
+      }
+    }
+
+    return MalletConverter.convert( train );
+  }
 
   /**
    * Propose the papers to the expert and add them to the appropriate bins:
@@ -393,6 +393,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
    * @throws InterruptedException
    * @throws IOException
    */
+  @Override
   @SuppressWarnings( "unchecked" )
   public void simulateReview()
     throws InterruptedException, IOException {

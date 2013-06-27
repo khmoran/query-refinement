@@ -90,13 +90,6 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
 
   @Override
   protected Citation fetch( PubmedId pmid ) {
-    // TODO do we want to use cache?
-    // try to find it in the cache first
-    //Citation c = (Citation) defaultCache.get( pmid );
-    //if ( c != null ) {
-    //  return c;
-    //}
-
     Citation c = Util.getCitation( pmid );
 
     if ( c != null ) {

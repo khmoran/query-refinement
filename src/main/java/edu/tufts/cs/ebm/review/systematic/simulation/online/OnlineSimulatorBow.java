@@ -40,6 +40,7 @@ public abstract class OnlineSimulatorBow extends OnlineSimulator<PubmedId, Featu
    * @param citations
    * @return
    */
+  @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
     // initialize the bag of words

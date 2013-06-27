@@ -47,6 +47,7 @@ public class DateFormatFileAppender extends FileAppender {
   private String fileBackup;// Saves the file pattern
   private boolean separate = false;
 
+  @Override
   public void setFile( String file ) {
     super.setFile( file );
     this.fileBackup = getFile();
@@ -61,6 +62,7 @@ public class DateFormatFileAppender extends FileAppender {
     this.separate = separate;
   }
 
+  @Override
   protected void subAppend( LoggingEvent event ) {
     if ( separate ) {
       try {// First reset the file so each new log gets a new file.
@@ -72,6 +74,7 @@ public class DateFormatFileAppender extends FileAppender {
     super.subAppend( event );
   }
 
+  @Override
   public synchronized void setFile( String fileName, boolean append,
       boolean bufferedIO, int bufferSize ) throws IOException {
     SimpleDateFormat sdf = new SimpleDateFormat( fileBackup );

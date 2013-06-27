@@ -40,6 +40,7 @@ public abstract class OnlineSimulatorBowMesh extends OnlineSimulator<PubmedId, F
    * @param citations
    * @return
    */
+  @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
     // initialize the bag of words

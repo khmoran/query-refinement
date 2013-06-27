@@ -29,6 +29,7 @@ public class Launcher extends Application {
   /**
    * Launch the application.
    */
+  @Override
   public void start( Stage stage ) throws Exception {
     AnnotationConfigApplicationContext context =
         new AnnotationConfigApplicationContext( ControllerFactory.class );

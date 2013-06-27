@@ -198,7 +198,7 @@ public abstract class OnlineSimulationReplacement<I, C> extends
         }
 
         double observedRel = (double) accepted.size() / (double) paperProposals.size();
-        double expectedRel = (double) ( activeReview.getRelevantLevel1().size() - expertRelevantPapers.size() )
+        double expectedRel = ( activeReview.getRelevantLevel1().size() - expertRelevantPapers.size() )
             / ( (double) searcher.getCitations().size() - expertRelevantPapers.size() - expertIrrelevantPapers.size() );
         LOG.info( "% observed relevant: " + observedRel );
         LOG.info( "%cR expected relevant: " + expectedRel );

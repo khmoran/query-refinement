@@ -80,7 +80,7 @@ public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
       LOG.error( "Unable to cache: " + e );
     }
 
-    double avg = sum / (double) compareTo.size();
+    double avg = sum / compareTo.size();
 
     return avg;
   }

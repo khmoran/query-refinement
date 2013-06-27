@@ -203,7 +203,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     int runs = (int) Math.ceil( count / new Double( fetchesPerRun ) );
     int start = 0;
     for ( int i = 0; i < runs; i++ ) {
-      LOG.debug( "Fetching results from id " + start + " to id " + (int) ( start
+      LOG.debug( "Fetching results from id " + start + " to id " + ( start
           + fetchesPerRun ) );
       EFetchPubmedServiceStub.EFetchRequest req2 =
           new EFetchPubmedServiceStub.EFetchRequest();
@@ -215,7 +215,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
       Collection<Citation> c = fetch( req2 );
       for ( int attempt = 1; c == null && attempt <= 3; attempt++ ) {
         LOG.warn( "Error fetching citations " + start + " to "
-            + (int) ( start + fetchesPerRun ) + " on attempt " + attempt
+            + ( start + fetchesPerRun ) + " on attempt " + attempt
             + "; trying again." );
         c = fetch( req2 );
       }
@@ -231,10 +231,10 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
         LOG.debug( "Fetched " + c.size() + " results of expected "
             + fetchesPerRun + " from id " + start + " to id "
-            + (int) ( start + fetchesPerRun ) );
+            + ( start + fetchesPerRun ) );
       } else {
         LOG.error( "Failed to fetch from id " + start + " to id "
-            + (int) ( start + fetchesPerRun ) );
+            + ( start + fetchesPerRun ) );
       }
 
       try {

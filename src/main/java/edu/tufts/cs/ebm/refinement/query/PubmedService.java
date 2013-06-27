@@ -164,7 +164,7 @@ public abstract class PubmedService extends Observable {
     EFetchPubmedServiceStub.EFetchRequest req =
         new EFetchPubmedServiceStub.EFetchRequest();
 
-    String pmidStr = "";  // TODO test
+    String pmidStr = "";
     for ( PubmedId pmid : pmids ) {
       Citation c = Util.getCitation( pmid );
       if ( c != null ) {

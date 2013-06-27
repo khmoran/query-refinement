@@ -200,7 +200,7 @@ public class MathUtil {
 
     double total = entropyT;
     for ( double entropyTsub : entropyTsubs ) {
-      double term = ( (double) ( 1.0/entropyTsubs.length ) * entropyTsub );
+      double term = ( 1.0/entropyTsubs.length * entropyTsub );
       total = total - term;
       eq += " - (1/" + entropyTsubs.length + ")(" +
           MathUtil.round( entropyTsub, 5 ) + ")";

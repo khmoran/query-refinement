@@ -90,7 +90,7 @@ public class BordaAggregator<E extends Comparable<E>> {
         // pos 1 - 1.0
         // pos 2 - 0.5 = 1/2
         // pos n - 1/n
-        acc += 1.0 / (double) ( j + 1 );
+        acc += 1.0 / ( j + 1 );
         accumulatorMap.put( rankings.get( i ).get( j ), acc ); // update map
       }
     }

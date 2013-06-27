@@ -29,8 +29,7 @@ import edu.tufts.cs.ml.TrainRelation;
 import edu.tufts.cs.ml.reader.Reader;
 import edu.tufts.cs.ml.reader.SvmLightReader;
 
-// TODO abstract this class and then implement a separate cosine similarity/
-// TODO BoW extension
+// TODO abstract this class and then implement a separate cosine similarity/BoW extension
 /**
  * An offline simulation of a systematic review.
  */
@@ -264,7 +263,7 @@ public class OfflineSimulator extends Simulator {
 
         observedRel = (double) newRelevant.size() /
             (double) paperProposals.size();
-        expectedRel = (double) ( data.countClass( 1 ) -
+        expectedRel = ( data.countClass( 1 ) -
             observedRelevant.size() ) / ( (double) data.size() -
                 observedRelevant.size() - observedIrrelevant.size() );
         LOG.info( "% observed relevant: " + observedRel );
@@ -377,7 +376,7 @@ public class OfflineSimulator extends Simulator {
         totalSim += sim;
       }
 
-      double avgSim = totalSim/(double) observedRelevant.size();
+      double avgSim = totalSim/observedRelevant.size();
       cosineMap.put( avgSim, doc.getId() );
 
       try {
@@ -451,6 +450,7 @@ public class OfflineSimulator extends Simulator {
    * @throws InterruptedException
    * @throws IOException
    */
+  @Override
   public void simulateReview() throws InterruptedException, IOException {
     FileWriter fw = new FileWriter( combinedResultsFile );
     BufferedWriter out = new BufferedWriter( fw );

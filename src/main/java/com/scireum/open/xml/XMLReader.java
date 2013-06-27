@@ -150,6 +150,7 @@ public class XMLReader extends DefaultHandler {
       org.xml.sax.XMLReader reader = saxParser.getXMLReader();
       reader.setEntityResolver( new EntityResolver() {
 
+        @Override
         public InputSource resolveEntity( String publicId, String systemId )
             throws SAXException, IOException {
           URL url = new URL( systemId );

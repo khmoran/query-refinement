@@ -37,6 +37,7 @@ public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
   /**
    * Initialize the classifier.
    */
+  @Override
   protected void initializeClassifier( Set<Citation> citations ) {
     // initialize the cosine similarity
     cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
@@ -47,6 +48,7 @@ public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
    * @param searcher
    * @return
    */
+  @Override
   protected TreeMultimap<Double, PubmedId> rank(
       Map<PubmedId, FeatureVector<Integer>> citations,
       Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers,
