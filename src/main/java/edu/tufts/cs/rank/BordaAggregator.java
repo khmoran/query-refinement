@@ -2,6 +2,7 @@ package edu.tufts.cs.rank;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +13,9 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.TreeMultimap;
 
+import edu.tufts.cs.ebm.review.systematic.PubmedId;
+import edu.tufts.cs.ml.FeatureVector;
+
 public class BordaAggregator<E extends Comparable<E>> {
   /**
    * Aggregate the <n> Multimaps into one ranked list.
@@ -21,21 +25,8 @@ public class BordaAggregator<E extends Comparable<E>> {
   @SuppressWarnings( "unchecked" )
   public <F extends Comparable<F>> List<E> aggregate(
       TreeMultimap<F, E>... ranks ) {
-    List<List<E>> matrix = new ArrayList<>();
-
-    for ( TreeMultimap<F, E> r : ranks ) {
-      List<E> lst = new ArrayList<>();
-
-      for ( F sim : r.keySet().descendingSet() ) {
-        lst.addAll( r.get( sim ) );
-      }
-
-      matrix.add( lst );
-    }
-
-    return aggregate( matrix );
+    return aggregate( ranks );
   }
-
 
   /**
    * Aggregate the <n> Lists into one ranked list.
@@ -76,7 +67,7 @@ public class BordaAggregator<E extends Comparable<E>> {
    * @param rankings
    * @return
    */
-  protected List<E> aggregate( List<List<E>> rankings ) {
+  public List<E> aggregate( List<List<E>> rankings ) {
     Map<E, Double> accumulatorMap = new HashMap<>();
 
     for ( int i = 0; i < rankings.size(); i++ ) {

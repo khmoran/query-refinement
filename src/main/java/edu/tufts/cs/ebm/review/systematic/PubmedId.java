@@ -3,8 +3,10 @@ package edu.tufts.cs.ebm.review.systematic;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class PubmedId extends Number implements Comparable<PubmedId> {
@@ -15,7 +17,9 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
   /** The internal value. */
   @Id
   protected Long value = (long) 0;
-  /** The title associated with the id. */
+  /** The title. */
+  @Column( length = 5000 )
+  @Lob
   protected String title;
 
   /**

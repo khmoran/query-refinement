@@ -40,8 +40,17 @@ public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
   @Override
   protected void initializeClassifier( Set<Citation> citations ) {
     // initialize the cosine similarity
-    cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
   }
+  
+  @Override
+  protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
+      Set<Citation> citations ) {
+    Map<PubmedId, FeatureVector<Integer>> fvs = super.createFeatureVectors( citations );
+    cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
+
+    return fvs;
+  }
+
 
   /**
    * Rank the query results using cosine similarity.

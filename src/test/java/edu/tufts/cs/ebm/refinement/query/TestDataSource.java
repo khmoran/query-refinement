@@ -1,13 +1,14 @@
 package edu.tufts.cs.ebm.refinement.query;
 
-import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
 
 import org.testng.annotations.Test;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlRow;
-
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
+import edu.tufts.cs.ebm.util.Util;
 
 /**
  * Test connecting to the data source.
@@ -20,10 +21,11 @@ public class TestDataSource {
    */
   @Test
   public void testConnect() {
-    String sql = "select 1";
-    SqlRow row = Ebean.createSqlQuery( sql ).findUnique();
+    String sql = "select t from SystematicReview t";
+    Query q = MainController.EM.createQuery( sql );
+    List<SystematicReview> list = q.getResultList();
 
-    assert !row.isEmpty();
+    assert list != null;
   }
 
   /**
@@ -31,20 +33,22 @@ public class TestDataSource {
    */
   @Test
   public void insertReview() {
-    SystematicReview review = new SystematicReview();
-    String name = "Clopidogrel SR";
-    review.setCreatedOn( new Date() );
-    review.setName( name );
-
-    // this will update
-    Ebean.save( review );
+    // create the review
+    SystematicReview review1 = Util.createReview( "Test", "test" );
 
     // find the inserted entity by its id
-    SystematicReview review2 = Ebean.find(
-        SystematicReview.class, review.getId() );
+    SystematicReview review2 = MainController.EM.find(
+        SystematicReview.class, review1.getId() );
     assert review2 != null;
-    assert review2.getName().equals( name );
+    assert review2.getName().equals( "Test" );
 
-    //Ebean.delete( review );
+    MainController.EM.getTransaction().begin();
+    MainController.EM.remove( review1 );
+    MainController.EM.getTransaction().commit();
+
+    // find the inserted entity by its id
+    SystematicReview review3 = MainController.EM.find(
+        SystematicReview.class, review1.getId() );
+    assert review3 == null;
   }
 }

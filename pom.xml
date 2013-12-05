@@ -115,9 +115,9 @@
 
 		<!-- ORM library -->
 		<dependency>
-			<groupId>org.avaje</groupId>
-			<artifactId>ebean</artifactId>
-			<version>2.7.7</version>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>2.5.1-RC1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

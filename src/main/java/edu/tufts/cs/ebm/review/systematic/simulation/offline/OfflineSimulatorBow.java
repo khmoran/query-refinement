@@ -1,4 +1,4 @@
-package edu.tufts.cs.ebm.review.systematic.simulation.online;
+package edu.tufts.cs.ebm.review.systematic.simulation.offline;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,13 +16,12 @@ import edu.tufts.cs.ml.FeatureVector;
 import edu.tufts.cs.ml.text.BagOfWords;
 
 /**
- * An online simulation of a systematic review using a Bag of Words
- * representation.
+ * An offline simulation of a systematic review.
  */
-public abstract class OnlineSimulatorBow extends OnlineSimulator<PubmedId, FeatureVector<Integer>> {
+public abstract class OfflineSimulatorBow extends OfflineSimulator<PubmedId, FeatureVector<Integer>> {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBow.class );
+      OfflineSimulatorBow.class );
   /** The Bag of Words. */
   protected BagOfWords<Integer> bow;
 
@@ -31,9 +30,10 @@ public abstract class OnlineSimulatorBow extends OnlineSimulator<PubmedId, Featu
    * @param review
    * @throws Exception
    */
-  public OnlineSimulatorBow( String review ) throws Exception {
+  public OfflineSimulatorBow( String review ) throws Exception {
     super( review );
   }
+
 
   /**
    * Turn the Citations into FeatureVectors.

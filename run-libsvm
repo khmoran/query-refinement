@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# 5 runs
+for i in `seq 1 5`; do
+    # for each data set
+    for d in 0.1 1 10 100 1000; do
+        # on each simulation
+        ./run-simulator clopidogrel true Bow Svm $d
+    done
+done    
+        

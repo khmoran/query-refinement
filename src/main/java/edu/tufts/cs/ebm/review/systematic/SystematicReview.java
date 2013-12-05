@@ -44,34 +44,33 @@ public class SystematicReview implements Serializable,
   /** The most recent outcome query. */
   protected String queryO;
   /** The PMIDs for the seed articles. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_seeds" )
   protected Set<PubmedId> seeds = new HashSet<>();
   /** The PMIDs for relevant articles. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_relevant_l1" )
   protected Set<PubmedId> relevantLevel1 = new HashSet<>();
   /** The PMIDs for the level 2 articles. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_relevant_l2" )
   protected Set<PubmedId> relevantLevel2 = new HashSet<>();
   /** The PMIDs for articles with irrelevant populations. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_irrel_pop" )
   protected Set<PubmedId> irrelevantP = new HashSet<>();
   /** The PMIDs for articles with irrelevant interventions/comparisons. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_irrel_interv_comp" )
   protected Set<PubmedId> irrelevantIC = new HashSet<>();
   /** The PMIDs for articles with irrelevant outcomes. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany( cascade = CascadeType.PERSIST )
   @JoinTable( name = "review_irrel_outc" )
   protected Set<PubmedId> irrelevantO = new HashSet<>();
   /** Blacklisted PMIDs. */
-  @ManyToMany( cascade = CascadeType.ALL )
+  @ManyToMany
   @JoinTable( name = "review_blacklist" )
   protected Set<PubmedId> blacklist = new HashSet<>();
-
   /** The seed citations. */
   @Transient
   protected Set<Citation> seedCitations = new HashSet<>();

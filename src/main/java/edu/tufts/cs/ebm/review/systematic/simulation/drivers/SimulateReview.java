@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.tufts.cs.ebm.review.systematic.simulation.Simulator;
+import edu.tufts.cs.ebm.review.systematic.simulation.online.OnlineSimulatorBowRankSvm;
 import edu.tufts.cs.ml.exception.CommandLineArgumentException;
 
 public class SimulateReview {
@@ -37,6 +38,9 @@ public class SimulateReview {
       Object instance = constructor.newInstance( dataset );
       if ( instance instanceof Simulator ) {
         Simulator s = (Simulator) instance;
+        if ( s instanceof OnlineSimulatorBowRankSvm && cmd.getHyperparameter() != null ) {
+          ( (OnlineSimulatorBowRankSvm) s ).setC( cmd.getHyperparameter() );
+        }
         s.simulateReview();
       }
     } catch ( ClassNotFoundException | NoSuchMethodException | SecurityException
@@ -45,7 +49,7 @@ public class SimulateReview {
       LOG.error( "Simulator " + className + " does not exist or could not be " +
         "instantiated.", e );
     } catch ( Exception e ) {
-      LOG.error( e );
+      e.printStackTrace();
     }
   }
 

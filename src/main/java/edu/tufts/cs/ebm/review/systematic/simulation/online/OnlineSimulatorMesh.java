@@ -63,8 +63,9 @@ public abstract class OnlineSimulatorMesh extends OnlineSimulator<PubmedId, Feat
     // create the feature vectors
     Map<PubmedId, FeatureVector<Integer>> fvs = new HashMap<>();
     for ( Citation c : citations ) {
+      String mesh = c.getMeshStr().replaceAll( ",", " " );
       fvs.put( c.getPmid(), bow.createUnlabeledFV( c.getPmid().toString(),
-          c.getTitle() + " " + c.getAbstr() ) );
+          mesh ) );
     }
     
     return fvs;

@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,8 +28,6 @@ import javafx.scene.text.Text;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.avaje.ebean.Ebean;
 
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
@@ -103,6 +105,7 @@ public class UpdateReviewController implements Initializable {
       creatorErrorText.setText( "" );
     }
     if ( !nameBox.getText().isEmpty() && !creatorBox.getText().isEmpty() ) {
+      MainController.EM.getTransaction().begin();
       // none of the required fields are empty
       activeReview.setName( nameBox.getText() );
       activeReview.setCreator( creatorBox.getText() );
@@ -111,10 +114,11 @@ public class UpdateReviewController implements Initializable {
       Set<String> props = new HashSet<String>();
       props.add( "seeds" );
       try {
-        Ebean.update( activeReview );
+        MainController.EM.persist( activeReview );
       } catch ( javax.persistence.PersistenceException ex ) {
         LOG.error( "Duplicate id error.", ex ); // TODO fix this
       }
+      MainController.EM.getTransaction().commit();
       mainController.loadReview( activeReview );
     }
   }
@@ -208,9 +212,11 @@ public class UpdateReviewController implements Initializable {
           listView.getSelectionModel().getSelectedItem();
 
       if ( toDelete != null ) {
+        MainController.EM.getTransaction().begin();
         listItems.remove( toDelete );
         activeReview.getSeeds().remove( toDelete );
-        Ebean.update( activeReview );
+        MainController.EM.refresh( activeReview );
+        MainController.EM.getTransaction().commit();
       }
     }
   }

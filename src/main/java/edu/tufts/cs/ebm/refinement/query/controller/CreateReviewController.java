@@ -21,11 +21,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.avaje.ebean.Ebean;
 
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
@@ -190,13 +192,14 @@ public class CreateReviewController implements Initializable {
     }
     if ( !nameBox.getText().isEmpty() && !creatorBox.getText().isEmpty() ) {
       // none of the required fields are empty
-      review = new SystematicReview();
-      review.setName( nameBox.getText() );
-      review.setCreator( creatorBox.getText() );
+      review = Util.createReview( nameBox.getText(), creatorBox.getText() );
       Set<PubmedId> seeds = new HashSet<PubmedId>( listItems );
       review.setSeeds( seeds );
-      Ebean.save( review );
-      Ebean.saveManyToManyAssociations( review, "seeds" );
+
+      MainController.EM.getTransaction().begin();
+      MainController.EM.persist( review );
+      MainController.EM.getTransaction().commit();
+
       mainController.loadReview( review );
     }
   }

@@ -39,10 +39,12 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.avaje.ebean.Ebean;
 
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
 import edu.tufts.cs.ebm.refinement.query.PubmedSearcher;
@@ -182,7 +184,7 @@ public class TabController implements Observer, Initializable {
       }
 
       for ( PubmedId pmid : activeReview.getSeeds() ) {
-        Ebean.find( PubmedId.class, pmid.getValue() );  // load the seeds
+        MainController.EM.find( PubmedId.class, pmid.getValue() );  // load the seeds
       }
     }
   }
@@ -256,10 +258,12 @@ public class TabController implements Observer, Initializable {
   protected void handleMarkRelevantAction( ActionEvent e ) {
     Citation c = articleTable.getSelectionModel().getSelectedItem();
 
+    MainController.EM.getTransaction().begin();
     if ( c != null ) {
       activeReview.addRelevantLevel2( c.getPmid() );
-      Ebean.update( activeReview );
+      MainController.EM.persist( activeReview );
     }
+    MainController.EM.getTransaction().commit();
   }
 
   /**
@@ -287,7 +291,9 @@ public class TabController implements Observer, Initializable {
           break;
       }
 
-      Ebean.update( activeReview );
+      MainController.EM.getTransaction().begin();
+      MainController.EM.persist( activeReview );
+      MainController.EM.getTransaction().commit();
     }
   }
 
@@ -360,7 +366,10 @@ public class TabController implements Observer, Initializable {
         LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
         break;
     }
-    Ebean.update( activeReview );
+    
+    MainController.EM.getTransaction().begin();
+    MainController.EM.persist( activeReview );
+    MainController.EM.getTransaction().commit();
   }
 
   @Override

@@ -4,7 +4,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,20 +24,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
 
 public class MainController implements Initializable {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( MainController.class );
+  public static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory( "pubmed" );
+  public static final EntityManager EM = FACTORY.createEntityManager();
   /** The main stage. */
   protected Stage mainStage;
   /** The query controller. */
@@ -114,10 +116,11 @@ public class MainController implements Initializable {
   @Bean
   protected ObservableList<SystematicReview> reviews()
     throws NamingException, ClassNotFoundException, SQLException {
-    Query<SystematicReview> query = Ebean.find( SystematicReview.class );
-    Set<SystematicReview> set = query.findSet();
+
+    Query q = MainController.EM.createQuery("select m from SystematicReview m");
+    List<SystematicReview> list = q.getResultList();
     ObservableList<SystematicReview> reviews =
-        FXCollections.observableArrayList( set );
+        FXCollections.observableArrayList( list );
 
     return reviews;
   }
@@ -159,13 +162,8 @@ public class MainController implements Initializable {
       List<SystematicReview> toDelete =
           loadTable.getSelectionModel().getSelectedItems();
 
-      if ( toDelete != null ) {
-        Ebean.delete( toDelete );
-        try {
-          Ebean.deleteManyToManyAssociations( toDelete, "seeds" );
-        } catch ( NullPointerException ex ) {
-          LOG.warn( "No many-to-many associations to delete." );
-        }
+      for ( SystematicReview s : toDelete) {
+        MainController.EM.remove( s );
 
         try {
           loadTable.setItems( reviews() );

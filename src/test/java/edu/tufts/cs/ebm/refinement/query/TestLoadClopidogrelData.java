@@ -24,8 +24,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.avaje.ebean.Ebean;
-
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.AbstractTest;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
@@ -47,11 +46,9 @@ public class TestLoadClopidogrelData extends AbstractTest {
   @BeforeSuite
   public void setUp() throws Exception {
     super.setUp();
-    if ( reviews().isEmpty() || reviews().size() == 1 ) {
-      SystematicReview review = new SystematicReview();
-      review.setName( "Clopidogrel" );
-      review.setCreator( "test" );
-      Ebean.save( review );
+
+    if ( reviews().isEmpty() ) {
+      Util.createReview( "Clopidogrel", "test" );
     }
   }
 
@@ -70,9 +67,16 @@ public class TestLoadClopidogrelData extends AbstractTest {
     String icQuery = "cyp2c19 OR platelet reactivity OR verifynow " +
       "OR platelet aggregation";
 
+    // Begin a new local transaction so that we can persist a new entity
+    MainController.EM.getTransaction().begin();
+    
     review.setQueryP( pQuery );
     review.setQueryIC( icQuery );
-    Ebean.update( review );
+    MainController.EM.merge( review );
+    
+    // Commit the transaction, which will cause the entity to
+    // be stored in the database
+    MainController.EM.getTransaction().commit();
   }
 
   /**
@@ -102,8 +106,14 @@ public class TestLoadClopidogrelData extends AbstractTest {
     }
     br.close();
 
+    // Begin a new local transaction so that we can persist a new entity
+    MainController.EM.getTransaction().begin();
+
     review.setSeeds( seedSet );
-    Ebean.update( review );
+    MainController.EM.persist( review );
+
+    MainController.EM.getTransaction().commit();
+
     System.out.println( "Seeds: " + review.getSeeds() );
     System.out.println( "Citations: " + citations().size() );
   }
@@ -115,6 +125,8 @@ public class TestLoadClopidogrelData extends AbstractTest {
   @Parameters( { "csvFile" } )
   public void loadRelevantIrrelevant(
       @Optional( "src/test/resources/cl-relevant-all.csv" ) String csvFile ) {
+    // Begin a new local transaction so that we can persist a new entity
+
     try {
       SystematicReview review = reviews().get( 0 );
 
@@ -141,10 +153,13 @@ public class TestLoadClopidogrelData extends AbstractTest {
       review.setIrrelevantO( new HashSet<PubmedId>() );
 
       try {
-        Ebean.update( review ); //, props );
+        MainController.EM.getTransaction().begin();
+        MainController.EM.persist( review );
+        MainController.EM.getTransaction().commit();
       } catch ( javax.persistence.PersistenceException ex ) {
         LOG.error( "Duplicate id error.", ex ); // TODO fix this
       }
+
 
       System.out.println( "L1 size: " + review.getRelevantLevel1().size() );
       System.out.println( "L2 size: " + review.getRelevantLevel2().size() );

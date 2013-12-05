@@ -10,10 +10,10 @@ import java.util.TreeSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.avaje.ebean.Ebean;
-
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
+import edu.tufts.cs.ebm.review.systematic.SystematicReview;
 
 public class Util {
   /** The Logger for this class. */
@@ -25,6 +25,17 @@ public class Util {
   protected Util() {
     // purposely not instantiable
   }
+  
+  public static SystematicReview createReview( String name, String creator ) {
+    MainController.EM.getTransaction().begin();
+    SystematicReview review = new SystematicReview();
+    review.setName( name );
+    review.setCreator( creator );
+    MainController.EM.persist( review );
+    MainController.EM.getTransaction().commit();
+
+    return review;
+  }
 
   /**
    * Create or update the PMID with this value.
@@ -32,16 +43,16 @@ public class Util {
    * @return
    */
   public static PubmedId createOrUpdatePmid( long l ) {
-    PubmedId pmid = Ebean.find( PubmedId.class, l );
+    PubmedId pmid = MainController.EM.find( PubmedId.class, l );
     if ( pmid == null ) {
+      MainController.EM.getTransaction().begin();
       try {
         pmid = new PubmedId( l );
-        Ebean.save( pmid );
+        MainController.EM.persist( pmid );
       } catch ( NumberFormatException e ) {
-        //LOG.warn( "Invalid PubMed id: " + l, e );
+        LOG.warn( "Invalid PubMed id: " + l, e );
       }
-    } else {
-      Ebean.update( pmid );
+      MainController.EM.getTransaction().commit();
     }
 
     return pmid;
@@ -53,7 +64,7 @@ public class Util {
    * @return
    */
   public static Citation getCitation( PubmedId id ) {
-    Citation c = Ebean.find( Citation.class, id.longValue() );
+    Citation c = MainController.EM.find( Citation.class, id.longValue() );
 
     return c;
   }

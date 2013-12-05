@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -19,20 +18,12 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javax.naming.NamingException;
-
 import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.annotation.Bean;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
 
@@ -41,6 +32,7 @@ import edu.tufts.cs.ebm.mesh.TestLoadMeshRanking;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
 import edu.tufts.cs.ebm.refinement.query.PubmedIdentifier;
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.util.Util;
 
 /**
@@ -146,25 +138,6 @@ public class MeshAdder extends AbstractTest implements Observer {
   }
 
   /**
-   * Load up the systematic reviews from the database.
-   *
-   * @return
-   * @throws NamingException
-   * @throws ClassNotFoundException
-   * @throws SQLException
-   */
-  @Bean
-  protected ObservableList<SystematicReview> reviews() throws NamingException,
-      ClassNotFoundException, SQLException {
-    Query<SystematicReview> query = Ebean.find( SystematicReview.class );
-    Set<SystematicReview> set = query.findSet();
-    ObservableList<SystematicReview> reviews = FXCollections
-        .observableArrayList( set );
-
-    return reviews;
-  }
-
-  /**
    * Execute the search.
    * @param query
    * @return
@@ -264,7 +237,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
     // load up the relevant papers
     for ( PubmedId pmid : clopidogrelReview.getRelevantLevel1() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() );
+      MainController.EM.find( PubmedId.class, pmid.getValue() );
     }
   }
 

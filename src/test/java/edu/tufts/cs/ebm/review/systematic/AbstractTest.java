@@ -2,12 +2,15 @@ package edu.tufts.cs.ebm.review.systematic;
 
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.naming.NamingException;
+import javax.persistence.Query;
 
 import junit.framework.TestCase;
 
@@ -16,12 +19,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.testng.annotations.BeforeSuite;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.Launcher;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 
 public class AbstractTest extends TestCase {
   /** The Logger for this class. */
@@ -41,6 +42,11 @@ public class AbstractTest extends TestCase {
   public void setUp() throws Exception {
     setProxy();
 
+    if ( reviews().isEmpty() ) {
+      LOG.error( "No reviews in database." );
+      return;
+    }
+
     try {
       clopidogrelReview = reviews().get( 0 );
     } catch ( ClassNotFoundException | NamingException | SQLException e ) {
@@ -48,6 +54,10 @@ public class AbstractTest extends TestCase {
       System.exit( 1 );
     }
     assert clopidogrelReview.getName().equalsIgnoreCase( "Clopidogrel" );
+
+    if ( reviews().size() == 1 ) {
+      return;
+    }
 
     try {
       protonBeamReview = reviews().get( 1 );
@@ -59,12 +69,12 @@ public class AbstractTest extends TestCase {
 
     // load up the seeds
     for ( PubmedId pmid : clopidogrelReview.getSeeds() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
     }
 
     // load up the seeds
     for ( PubmedId pmid : protonBeamReview.getSeeds() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
     }
   }
 
@@ -123,12 +133,18 @@ public class AbstractTest extends TestCase {
   @Bean
   protected ObservableList<SystematicReview> reviews() throws NamingException,
       ClassNotFoundException, SQLException {
-    Query<SystematicReview> query = Ebean.find( SystematicReview.class );
-    Set<SystematicReview> set = query.findSet();
+    String sql = "select t from SystematicReview t";
+    Query q = MainController.EM.createQuery( sql );
+    List<SystematicReview> list = q.getResultList();
+    
+    System.out.println( "# systematic reviews: " + list.size() );
+  
     ObservableList<SystematicReview> reviews = FXCollections
-        .observableArrayList( set );
-
-    Collections.sort( reviews );
+        .observableArrayList( list );
+    
+    if ( !reviews.isEmpty() ) {
+      Collections.sort( reviews );
+    }
 
     return reviews;
   }
@@ -196,8 +212,9 @@ public class AbstractTest extends TestCase {
   @Bean
   protected Set<Citation> citations()
     throws NamingException, ClassNotFoundException, SQLException {
-    Query<Citation> query = Ebean.find( Citation.class );
-    Set<Citation> citations = query.findSet();
+    String sql = "select t from Citation t";
+    Query q = MainController.EM.createQuery( sql );
+    Set<Citation> citations = new HashSet<Citation>( q.getResultList() );
 
     return citations;
   }

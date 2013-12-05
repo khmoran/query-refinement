@@ -16,10 +16,10 @@ import org.apache.jcs.access.exception.CacheException;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import com.avaje.ebean.Ebean;
 import com.google.common.base.Functions;
 import com.google.common.collect.Ordering;
 
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.AbstractTest;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
@@ -58,7 +58,7 @@ public class TestCorrelateMeshTerms extends AbstractTest {
 
     // load up the relevant papers
     for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() );
+      MainController.EM.find( PubmedId.class, pmid.getValue() );
     }
 
     // initialize the cache

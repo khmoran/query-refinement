@@ -1,5 +1,6 @@
 package edu.tufts.cs.ebm.refinement.query;
 
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.util.PubmedDate;
@@ -38,8 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.exception.CacheException;
-
-import com.avaje.ebean.Ebean;
 
 /**
  * Thread to query PubMed.
@@ -105,12 +104,10 @@ public abstract class PubmedService extends Observable {
 
       if ( title != null && !title.isEmpty() ) {
         id.setTitle( title );
+        MainController.EM.getTransaction().begin();
         c = new Citation( id, title, abstr, journal, date, authors, meshSet );
-        try {
-          Ebean.save( c );
-        } catch ( Exception e  ) {
-          LOG.error( e );
-        }
+        MainController.EM.persist( c );
+        MainController.EM.getTransaction().commit();
       }
     }
 

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#printenv
                                                                               
 # path to this directory
 BASEDIR=$(dirname $0)
@@ -8,7 +10,7 @@ BASEDIR=$(dirname $0)
 
 class=edu.tufts.cs.ebm.review.systematic.simulation.drivers.SimulateReview
 printUsage() {
-    mvn -q exec:java -Dexec.mainClass="$class" -Dexec.args="--USAGE"
+    mvn -q exec:java -Dexec.mainClass="$class" -Dexec.args="--USAGE" -o
     exit
 }
 
@@ -17,12 +19,12 @@ if [[ "$1" == "" || "$2" == "" || "$3" == "" || "$4" == "" || "$@" == *--usage* 
     printUsage
 fi
 
-mvn exec:java -Dexec.mainClass="$class" -Dexec.args=""$1" "$2" "$3" "$4""
+mvn -o exec:java -Dexec.mainClass="$class" -Dexec.args=""$1" "$2" "$3" "$4" "$5""
 
 # save the results
 BASEDIR=$(dirname $0)
 mkdir -p $BASEDIR/results 
-NEWDIR="$BASEDIR/results/$3-$4/$1"
+NEWDIR="$BASEDIR/results/$3-$4/$1/$5"
 mkdir -p $NEWDIR
 AVG="$NEWDIR/$3-$4-$1-avg.xlsx"
 

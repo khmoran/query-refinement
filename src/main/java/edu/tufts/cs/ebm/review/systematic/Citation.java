@@ -6,12 +6,14 @@ import java.util.Set;
 
 import javafx.collections.ObservableSet;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import com.avaje.ebean.validation.Length;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
@@ -42,25 +44,30 @@ public class Citation implements Comparable<Citation>, Serializable {
   @Id
   protected long id;
   /** The PubMed id. */
-  @OneToOne
+  @OneToOne( cascade = CascadeType.PERSIST )
   protected PubmedId pmid;
   /** The title. */
-  @Length( max = 5000 )
+  @Column( length = 5000 )
+  @Lob
   protected String title;
   /** The abstract. */
-  @Length( max = 100000 )
+  @Column( length = 100000 )
+  @Lob
   protected String abstr;
   /** The date completed. */
   @Transient
   protected PubmedDate date;
   /** The authors. */
-  @Length( max = 5000 )
+  @Column( length = 5000 )
+  @Lob
   protected String authors;
   /** The journal. */
-  @Length( max = 5000 )
+  @Column( length = 5000 )
+  @Lob
   protected String journal;
   /** The MeSH terms. */
-  @Length( max = 5000 )
+  @Column( length = 5000 )
+  @Lob
   protected String meshStr;
   /** The MeSH terms. */
   @Transient
@@ -135,6 +142,7 @@ public class Citation implements Comparable<Citation>, Serializable {
   public Citation( PubmedId pmid, String title, String abstr, String journal,
       PubmedDate dateCompleted, String authors,
       ObservableSet<String> meshTerms ) {
+    this.id = pmid.longValue();
     setPmid( pmid );
     setTitle( title );
     setAbstr( abstr );
@@ -171,7 +179,7 @@ public class Citation implements Comparable<Citation>, Serializable {
    */
   public void setPmid( PubmedId pmid ) {
     this.pmid = pmid;
-    this.id = pmid.longValue();
+    //this.id = pmid.longValue();
   }
 
   /**

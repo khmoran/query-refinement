@@ -2,12 +2,15 @@ package edu.tufts.cs.ebm.refinement.query;
 
 import java.rmi.RemoteException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.avaje.ebean.Ebean;
-
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
@@ -78,10 +81,12 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
       notifyObservers( c );
     } else {
       if ( activeReview != null ) {
+        MainController.EM.getTransaction().begin();
         this.activeReview.addBlacklisted( pmid );
-        LOG.warn( "Null citation: " + pmid + "; adding to blacklist: " +
-          activeReview.getBlacklist().size() );
-        Ebean.update( this.activeReview );
+        MainController.EM.persist( this.activeReview );
+        MainController.EM.getTransaction().commit();
+        LOG.warn( "Null citation: " + pmid + "; adding to blacklist (" +
+          activeReview.getBlacklist().size() + " total)" );
       } else {
         LOG.warn( "Null citation: " + pmid );
       }

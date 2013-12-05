@@ -3,7 +3,6 @@ package edu.tufts.cs.ebm.review.systematic.simulation.online;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,13 +19,13 @@ import org.apache.jcs.access.exception.CacheException;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
-import com.avaje.ebean.Ebean;
 import com.google.common.collect.TreeMultimap;
 
 import edu.tufts.cs.ebm.mesh.RankedMesh;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
@@ -54,6 +53,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
   protected Map<I, String> probOutput = new HashMap<>();
   /** The active review. */
   protected SystematicReview activeReview;
+  /** The name of the dataset. */
+  protected String dataset;
 
   /**
    * Set up the test suite.
@@ -62,9 +63,9 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
    */
   public OnlineSimulator( String review ) throws Exception {
     Collection<SystematicReview> reviews = reviews();
-    String norm = Util.normalize( review );
+    this.dataset = Util.normalize( review );;
     for ( SystematicReview r : reviews ) {
-      if ( Util.normalize( r.getName() ).contains( norm ) ) {
+      if ( Util.normalize( r.getName() ).contains( this.dataset ) ) {
         this.activeReview = r;
       }
     }
@@ -82,12 +83,12 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
     // load up the seeds
     for ( PubmedId pmid : activeReview.getSeeds() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
     }
     
     // load up the relevant papers
     for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
-      Ebean.find( PubmedId.class, pmid.getValue() );
+      MainController.EM.find( PubmedId.class, pmid.getValue() );
     }
 
     // initialize the cache
@@ -121,11 +122,12 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     Collection<Instance> toRemove = new ArrayList<Instance>();
     for ( Instance i : il ) {
       try {
-        PubmedId pmid = new PubmedId( i.getName().toString() );
+        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
+            Long.valueOf( i.getName().toString() ) );
         if ( !( relevant.contains( pmid ) || irrelevant.contains( pmid ) ) ) {
             toRemove.add( i );
         }
-      } catch ( NumberFormatException | ParseException e ) {
+      } catch ( NumberFormatException e ) {
         LOG.error( e );
       }
     }
@@ -156,8 +158,11 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     for ( I pmid : expertRelevantPapers ) {
       if ( activeReview.getRelevantLevel2().contains( pmid ) ) {
         truePosL2++;
+      } // have to do this because some of the seed papers may be
+        // left out of the relevant set 
+      if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
+        truePosL1++;
       }
-      truePosL1++;
     }
 
     LOG.info( "\tTrue & false positives total: " + i );
@@ -201,14 +206,18 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     }
 
     LOG.info( "Getting paper proposal set..." );
-    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
-        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
-    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
-    //    n, PAPER_PROPOSALS_PER_ITERATION );
-    LOG.info( "\tGetting citations at ranks " + rands );
-    for ( int r : rands ) {
-      results.add( citList.get( r ) );
-    }
+//    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
+//        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
+//    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
+//    //    n, PAPER_PROPOSALS_PER_ITERATION );
+//    LOG.info( "\tGetting citations at ranks " + rands );
+//    for ( int r : rands ) {
+//      results.add( citList.get( r ) );
+//    }
+    
+    // TODO temporarily removing stochastic element
+    int lastIdx = ( citList.size() < PAPER_PROPOSALS_PER_ITERATION ) ? citList.size() : PAPER_PROPOSALS_PER_ITERATION;
+    results.addAll( citList.subList( 0, lastIdx ) );
 
     LOG.info(  "Paper proposals: " + results );
     return results;
@@ -236,16 +245,17 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
       LabeledFeatureVector<Integer> lfv;
       try {
-        PubmedId pmid = new PubmedId( fv.getId() );
+        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
+            Long.valueOf( fv.getId() ) );
         if ( activeReview.getRelevantLevel1().contains( pmid ) 
           || activeReview.getRelevantLevel2().contains( pmid ) ) {
-          lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
-        } else {
           lfv = new LabeledFeatureVector<Integer>( NEG, fv.getId() );
+        } else {
+          lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
         }
         lfv.putAll( fv );
         train.add( lfv );
-      } catch ( NumberFormatException | ParseException e ) {
+      } catch ( NumberFormatException e ) {
         LOG.error( e );
       }
     }
@@ -265,7 +275,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     LOG.info( "Proposing papers..." );
     Set<I> newRelevant = new HashSet<>();
     for ( I pmid : proposals ) {
-      if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
+      if ( activeReview.getRelevantLevel1().contains( pmid )
+          || activeReview.getRelevantLevel2().contains( pmid ) ) {
         LOG.debug( "\t" + pmid + " is relevant" );
         newRelevant.add( pmid );
       } else {
@@ -416,9 +427,10 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     Map<I, C> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
-    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
-        "(" + popQuery + ") AND (" + icQuery + ")",
+    String query = "(" + popQuery + ") AND (" + icQuery + ")";
+    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher( query,
         activeReview );
+    LOG.info( "Initial query: " + query );
     search( searcher );
 
     initializeClassifier( searcher.getCitations() );
@@ -431,6 +443,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
         expertRelevantPapers.put( (I) c.getPmid(), citations.get( c.getPmid() ) );
       }
     }
+    
+    LOG.info( "Starting with " + expertRelevantPapers.size() + " relevant papers." );
 
     // gather initial statistics on the results
     TreeMultimap<Double, I> rankMap = rank( citations,
@@ -475,7 +489,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
       }
 
       // if new papers are proposed, update the ranking
-      if ( expertRelevantPapers.size() > numRelevant ) {
+      if ( expertRelevantPapers.size() > numRelevant || i <= 1 ) {
         rankMap = rank( citations, expertRelevantPapers,
             expertIrrelevantPapers );
         // record the ranks

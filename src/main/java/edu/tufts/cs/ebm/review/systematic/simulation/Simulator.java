@@ -2,24 +2,25 @@ package edu.tufts.cs.ebm.review.systematic.simulation;
 
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.naming.NamingException;
+import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jcs.JCS;
 import org.springframework.context.annotation.Bean;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
 import edu.tufts.cs.ebm.refinement.query.Launcher;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
+import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
 
@@ -126,11 +127,12 @@ public abstract class Simulator {
    * @throws ClassNotFoundException
    * @throws SQLException
    */
+  @SuppressWarnings( "unchecked" )
   @Bean
   protected static Set<Citation> citations()
     throws NamingException, ClassNotFoundException, SQLException {
-    Query<Citation> query = Ebean.find( Citation.class );
-    Set<Citation> citations = query.findSet();
+    Query q = MainController.EM.createQuery("select m from SystematicReview m");
+    Set<Citation> citations = new HashSet<Citation>( q.getResultList() );
 
     return citations;
   }
@@ -144,13 +146,16 @@ public abstract class Simulator {
    * @throws ClassNotFoundException
    * @throws SQLException
    */
+  @SuppressWarnings( "unchecked" )
   @Bean
   protected static ObservableList<SystematicReview> reviews() throws NamingException,
       ClassNotFoundException, SQLException {
-    Query<SystematicReview> query = Ebean.find( SystematicReview.class );
-    Set<SystematicReview> set = query.findSet();
+
+    Query q = MainController.EM.createQuery( "select m from SystematicReview m");
+    List<SystematicReview> list = q.getResultList();
+    
     ObservableList<SystematicReview> reviews = FXCollections
-        .observableArrayList( set );
+        .observableArrayList( list );
 
     Collections.sort( reviews );
 
