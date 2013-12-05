@@ -17,8 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.jcs.JCS;
 import org.springframework.context.annotation.Bean;
 
+import edu.tufts.cs.ebm.refinement.Launcher;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
-import edu.tufts.cs.ebm.refinement.query.Launcher;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;

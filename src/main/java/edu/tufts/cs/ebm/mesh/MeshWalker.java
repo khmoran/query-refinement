@@ -18,7 +18,7 @@ import com.scireum.open.xml.NodeHandler;
 import com.scireum.open.xml.StructuredNode;
 import com.scireum.open.xml.XMLReader;
 
-import edu.tufts.cs.ebm.refinement.query.Launcher;
+import edu.tufts.cs.ebm.refinement.Launcher;
 
 public class MeshWalker {
   /** The Logger for this class. */

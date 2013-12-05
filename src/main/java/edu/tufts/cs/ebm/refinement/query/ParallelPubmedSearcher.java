@@ -87,8 +87,13 @@ public class ParallelPubmedSearcher extends PubmedService
     if ( activeReview != null ) {
       if ( activeReview.getSeedCitations().isEmpty() ) {
         PubmedLocator locator = new PubmedLocator();
-        Set<Citation> seedCitations = locator.getCitations(
-            activeReview.getSeeds() );
+        PubmedId[] pmids = activeReview.getSeeds().toArray( new PubmedId[0] );
+        String[] pmidStrs = new String[pmids.length];
+        for ( int i = 0; i < pmids.length; i++ ) {
+          PubmedId pmid = pmids[i];
+          pmidStrs[i] = pmid.toString();
+        }
+        Set<Citation> seedCitations = locator.getCitations( pmidStrs );
         activeReview.setSeedCitations( seedCitations );
       }
     }

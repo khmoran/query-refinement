@@ -29,19 +29,19 @@ import edu.tufts.cs.ml.util.Util;
  */
 public abstract class OfflineSimulator<I, C> extends Simulator {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OfflineSimulator.class );
+  protected static final Log LOG = LogFactory.getLog( OfflineSimulator.class );
   /** The active review. */
   protected SystematicReview activeReview;
   /** The name of the dataset. */
   protected String dataset;
-  
+  /** The default number of iterations. */
   protected static final int DEFAULT_NUM_IT = 10;
-  
+  /** The number of iterations. */
   protected static int numIt = DEFAULT_NUM_IT;
 
   /**
    * Set up the test suite.
+   * 
    * @throws IOException
    * @throws BiffException
    */
@@ -55,15 +55,15 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     }
 
     // TODO temporary
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/ss/yyyy");
+    SimpleDateFormat sdf = new SimpleDateFormat( "MM/ss/yyyy" );
     if ( dataset.equalsIgnoreCase( "clopidogrel" ) ) {
-      activeReview.setCreatedOn( sdf.parse("07/27/2012") );
+      activeReview.setCreatedOn( sdf.parse( "07/27/2012" ) );
     } else if ( dataset.equalsIgnoreCase( "protonbeam" ) ) {
-      activeReview.setCreatedOn( sdf.parse("07/11/2009") );
+      activeReview.setCreatedOn( sdf.parse( "07/11/2009" ) );
     }
-    
-    if ( this.activeReview == null ) throw new RuntimeException(
-        "Could not find review " + review );
+
+    if ( this.activeReview == null )
+      throw new RuntimeException( "Could not find review " + review );
 
     Runtime rt = Runtime.getRuntime();
     LOG.info( "Max Memory: " + rt.maxMemory() / MB );
@@ -75,22 +75,22 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
     // load up the seeds
     for ( PubmedId pmid : activeReview.getSeeds() ) {
-      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
+                                                                 // seeds
     }
-    
+
     // load up the relevant papers
     for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
       MainController.EM.find( PubmedId.class, pmid.getValue() );
     }
   }
 
-  
   @Override
   public void simulateReview() throws Exception {
     // prepare the CSV output
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
-   // header row
+    // header row
     out.write( "pct held out, iteration, L1 AUC, L2 AUC" );
     out.newLine();
     out.flush();
@@ -107,23 +107,24 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
         activeReview );
     LOG.info( "Initial query: " + query );
     search( searcher );
-    
-    Set<Citation> citations = removePostStudyArticles( searcher.getCitations() );
+
+    Set<Citation> citations = removePostStudyArticles(
+        searcher.getCitations() );
 
     for ( int heldOut = 1; heldOut < 10; heldOut++ ) {
       for ( int it = 1; it <= numIt; it++ ) {
         Map<I, C> fvs = createFeatureVectors( citations );
-        Map<I, C> trainingSet = createTrainingSet( fvs, heldOut*.1 );
+        Map<I, C> trainingSet = createTrainingSet( fvs, heldOut * .1 );
         Map<I, C> testSet = createTestSet( fvs, trainingSet );
-        
-        LOG.info( "Iteration " + it + ": train " + trainingSet.size() +
-            ", test " + testSet.size() );
-    
+
+        LOG.info( "Iteration " + it + ": train " + trainingSet.size()
+            + ", test " + testSet.size() );
+
         // gather initial statistics on the results
         List<PubmedId> ranks = rank( trainingSet, testSet );
         String stats = evaluate( ranks );
-        
-        out.write( (heldOut*10) + "," + it + "," + stats );
+
+        out.write( ( heldOut * 10 ) + "," + it + "," + stats );
         out.newLine();
       }
     }
@@ -134,12 +135,12 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Evaluate the ranking.
+   *
    * @param ranks
    * @param fvs
    * @throws IOException
    */
-  protected String evaluate( List<PubmedId> ranking )
-      throws IOException {
+  protected String evaluate( List<PubmedId> ranking ) throws IOException {
     Set<PubmedId> relevantL1 = new HashSet<PubmedId>();
     Set<PubmedId> relevantL2 = new HashSet<PubmedId>();
     for ( PubmedId id : ranking ) {
@@ -149,34 +150,43 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
       if ( activeReview.getRelevantLevel2().contains( id ) ) {
         relevantL2.add( id );
       }
-     }
+    }
 
     double aucL1 = computeAUC( ranking, relevantL1 );
     double aucL2 = computeAUC( ranking, relevantL2 );
-    
+
     return aucL1 + "," + aucL2;
   }
-  
-  protected <E> String computePrecisionAndRecall( List<E> ranking, Set<E> relevant ) {
+
+  /**
+   * Calculate the precision and recall.
+   * @param ranking
+   * @param relevant
+   * @return
+   */
+  protected <E> String computePrecisionAndRecall( List<E> ranking,
+      Set<E> relevant ) {
     List<Double> precisionAtThreshold = new ArrayList<Double>();
     List<Double> recallAtThreshold = new ArrayList<Double>();
     int relevantFound = 0;
     StringBuilder sb = new StringBuilder();
     for ( int pos = 0; pos < ranking.size(); pos++ ) {
       E item = ranking.get( pos );
-      if ( relevant.contains( item ) ) relevantFound++;
+      if ( relevant.contains( item ) )
+        relevantFound++;
       double precision = (double) relevantFound / (double) pos;
       precisionAtThreshold.add( precision );
       double recall = (double) relevantFound / (double) relevant.size();
       recallAtThreshold.add( recall );
       sb.append( precision + "," + recall + "\n" );
     }
-    
+
     return sb.toString();
   }
-  
+
   /**
    * Compute the AUC for the ranking.
+   * 
    * @param ranking
    * @param relevant
    * @return
@@ -210,6 +220,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Create the training set.
+   * 
    * @param fvs
    * @param numFolds
    * @param fold
@@ -219,13 +230,14 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     Random generator = new Random();
     I[] values = (I[]) fvs.keySet().toArray();
     Map<I, C> training = new HashMap<I, C>();
-    
+
     int numInstances = (int) Math.ceil( fvs.size() * pctData );
 
-    LOG.info( "Selecting " + numInstances + " random papers out of " + fvs.size() + "..." );
+    LOG.info( "Selecting " + numInstances + " random papers out of "
+        + fvs.size() + "..." );
 
-    while( training.size() < numInstances ) {
-      int i = generator.nextInt(values.length);
+    while ( training.size() < numInstances ) {
+      int i = generator.nextInt( values.length );
       I randPaper = values[i];
       if ( !training.containsKey( randPaper ) ) {
         training.put( randPaper, fvs.get( randPaper ) );
@@ -237,6 +249,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Create the test set.
+   * 
    * @param fvs
    * @param training
    * @return
@@ -255,36 +268,41 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Rank the documents.
+   * 
    * @param training
    * @param test
    * @return
    */
   protected abstract List<PubmedId> rank( Map<I, C> training, Map<I, C> test );
-  
+
   /**
    * Remove any articles occurring after the systematic review was conducted.
+   * 
    * @param citations
    * @return
    */
   protected Set<Citation> removePostStudyArticles( Set<Citation> citations ) {
     Set<Citation> filtered = new HashSet<Citation>();
     for ( Citation c : citations ) {
-      if ( c.getDate() == null || !c.getDate().after( activeReview.getCreatedOn() ) ) {
+      if ( c.getDate() == null
+          || !c.getDate().after( activeReview.getCreatedOn() ) ) {
         filtered.add( c );
       } else {
         if ( activeReview.getRelevantLevel1().contains( c.getPmid() ) ) {
-          throw new RuntimeException( "Filtered out relevant article by date! " + c.getPmid() );
+          throw new RuntimeException( "Filtered out relevant article by date! "
+              + c.getPmid() );
         }
       }
     }
 
-    LOG.info( filtered.size() + " / " + citations.size() +
-        " articles are prior to review completion." );
+    LOG.info( filtered.size() + " / " + citations.size()
+        + " articles are prior to review completion." );
     return filtered;
   }
 
   /**
    * Turn the Citations into FeatureVectors.
+   * 
    * @param citations
    * @return
    */
