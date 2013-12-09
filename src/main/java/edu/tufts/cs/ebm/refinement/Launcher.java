@@ -20,6 +20,7 @@ public class Launcher extends Application {
 
   /**
    * Main to launch the application.
+   * 
    * @param args
    */
   public static void main( String[] args ) {
@@ -31,8 +32,8 @@ public class Launcher extends Application {
    */
   @Override
   public void start( Stage stage ) throws Exception {
-    AnnotationConfigApplicationContext context =
-        new AnnotationConfigApplicationContext( ControllerFactory.class );
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+        ControllerFactory.class );
     MainController main = context.getBean( MainController.class );
     Scene scene = new Scene( main.getView() );
     scene.getStylesheets().add( "query.css" );
@@ -66,19 +67,18 @@ public class Launcher extends Application {
       }
     }
 
-    long memory = Runtime.getRuntime().maxMemory()/( 1024*1024 );
+    long memory = Runtime.getRuntime().maxMemory() / ( 1024 * 1024 );
     LOG.info( "Max memory (mb): " + memory );
     LOG.info( "Proxy set: " + System.getProperty( "http.proxySet" ) );
     LOG.info( "Proxy host: " + System.getProperty( "http.proxyHost" ) );
     LOG.info( "Proxy port: " + System.getProperty( "http.proxyPort" ) );
-    LOG.info( "Non-proxy hosts: " +
-        System.getProperty( "http.nonProxyHosts" ) );
+    LOG.info( "Non-proxy hosts: " + System.getProperty( "http.nonProxyHosts" ) );
   }
 
   @Override
   public void stop() throws Exception {
-    AnnotationConfigApplicationContext context =
-        new AnnotationConfigApplicationContext( ControllerFactory.class );
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+        ControllerFactory.class );
     QueryController qc = context.getBean( QueryController.class );
     qc.stop();
     super.stop();

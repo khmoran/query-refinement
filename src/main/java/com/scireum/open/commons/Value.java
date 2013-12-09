@@ -94,7 +94,7 @@ public class Value {
     return data == null ? defaultValue : data;
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" } )
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public <T> T coerce( Class<?> targetClazz, T defaultValue ) {
     if ( data == null ) {
       return null;
@@ -132,7 +132,7 @@ public class Value {
   /**
    * Reads a value with a given type.
    */
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   public <V> V get( Class<V> clazz, V defaultValue ) {
     Object result = get( defaultValue );
     if ( result == null || !clazz.isAssignableFrom( result.getClass() ) ) {
@@ -303,7 +303,7 @@ public class Value {
     return asString();
   }
 
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   public <E extends Enum<E>> E asEnum( Class<E> clazz ) {
     if ( data == null ) {
       return null;

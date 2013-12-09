@@ -43,17 +43,16 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
-  public PubmedIdentifier( String query )
-    throws AxisFault {
+  public PubmedIdentifier( String query ) throws AxisFault {
     this( query, -1 );
   }
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public PubmedIdentifier( String query, int maxResults ) throws AxisFault {
@@ -65,6 +64,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Get the search-in-progress indicator.
+   * 
    * @return
    */
   public BooleanProperty getSearchInProg() {
@@ -73,7 +73,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Get the current query.
-   *
+   * 
    * @return
    */
   public String getQuery() {
@@ -105,6 +105,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Default search.
+   * 
    * @throws RemoteException
    */
   public void search() throws RemoteException {
@@ -119,8 +120,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
     /*
      * Search PubMed.
      */
-    EUtilsServiceStub.ESearchRequest req =
-        new EUtilsServiceStub.ESearchRequest();
+    EUtilsServiceStub.ESearchRequest req = new EUtilsServiceStub.ESearchRequest();
     req.setDb( "pubmed" );
     req.setTerm( query );
     req.setRetStart( String.valueOf( start ) );
@@ -140,6 +140,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Get the ids found.
+   * 
    * @return
    */
   public String[] getIds() {
@@ -148,7 +149,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Set the done signal.
-   *
+   * 
    * @param doneSignal
    */
   public void setDoneSignal( CountDownLatch doneSignal ) {
@@ -157,7 +158,7 @@ public class PubmedIdentifier extends PubmedService implements Runnable {
 
   /**
    * Set the start signal.
-   *
+   * 
    * @param startSignal
    */
   public void setStartSignal( CountDownLatch startSignal ) {

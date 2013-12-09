@@ -27,42 +27,46 @@ public class SimulateReview {
     String representation = cmd.getRepresentation();
     String classifier = cmd.getClassifier();
     String onlineStr = ( online ) ? "Online" : "Offline";
-    String pkgName = SimulateReview.class.getPackage().getName().replace(
-        "drivers", "" ).concat( onlineStr.toLowerCase() ) + ".";
-    String className = pkgName + onlineStr + "Simulator" + representation + classifier;
-    
-    LOG.info( "Attempting to load simulation " + className + " on dataset " + dataset + "..." );
+    String pkgName = SimulateReview.class.getPackage().getName()
+        .replace( "drivers", "" ).concat( onlineStr.toLowerCase() )
+        + ".";
+    String className = pkgName + onlineStr + "Simulator" + representation
+        + classifier;
+
+    LOG.info( "Attempting to load simulation " + className + " on dataset "
+        + dataset + "..." );
     try {
-      Class<?> simulator = SimulateReview.class.getClassLoader().loadClass( className );
+      Class<?> simulator = SimulateReview.class.getClassLoader().loadClass(
+          className );
       Constructor<?> constructor = simulator.getConstructor( String.class );
       Object instance = constructor.newInstance( dataset );
       if ( instance instanceof Simulator ) {
         Simulator s = (Simulator) instance;
-        if ( s instanceof OnlineSimulatorBowRankSvm && cmd.getHyperparameter() != null ) {
+        if ( s instanceof OnlineSimulatorBowRankSvm
+            && cmd.getHyperparameter() != null ) {
           ( (OnlineSimulatorBowRankSvm) s ).setC( cmd.getHyperparameter() );
         }
         s.simulateReview();
       }
-    } catch ( ClassNotFoundException | NoSuchMethodException | SecurityException
-            | InstantiationException | IllegalAccessException
-            | IllegalArgumentException | InvocationTargetException e ) {
-      LOG.error( "Simulator " + className + " does not exist or could not be " +
-        "instantiated.", e );
+    } catch ( ClassNotFoundException | NoSuchMethodException
+        | SecurityException | InstantiationException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException e ) {
+      LOG.error( "Simulator " + className + " does not exist or could not be "
+          + "instantiated.", e );
     } catch ( Exception e ) {
       e.printStackTrace();
     }
   }
 
-
   /**
    * Print the configuration to the console.
+   * 
    * @param cmd
    */
   protected static void printInfo( SimulateReviewArguments cmd ) {
-    LOG.info( "Running Simulate Review with: " +
-      "\n\tDataset:\t" + cmd.getDataset() +
-      "\n\tOnline:\t" + cmd.isOnline() +
-      "\n\tRepresentation:\t" + cmd.getRepresentation() +
-      "\n\tClassifier:\t" + cmd.getClassifier() );
+    LOG.info( "Running Simulate Review with: " + "\n\tDataset:\t"
+        + cmd.getDataset() + "\n\tOnline:\t" + cmd.isOnline()
+        + "\n\tRepresentation:\t" + cmd.getRepresentation()
+        + "\n\tClassifier:\t" + cmd.getClassifier() );
   }
 }

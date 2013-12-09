@@ -18,12 +18,13 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
   @Id
   protected Long value = (long) 0;
   /** The title. */
-  @Column( length = 5000 )
+  @Column(length = 5000)
   @Lob
   protected String title;
 
   /**
    * Get the title.
+   * 
    * @return
    */
   public String getTitle() {
@@ -32,6 +33,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Set the title.
+   * 
    * @param title
    */
   public void setTitle( String title ) {
@@ -74,6 +76,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Constructor that takes a long.
+   * 
    * @param value
    */
   public PubmedId( long value ) throws NumberFormatException {
@@ -85,6 +88,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Constructor that takes a String.
+   * 
    * @param value
    * @throws ParseException
    */
@@ -101,6 +105,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Set the value.
+   * 
    * @param value
    */
   public void setValue( Long value ) {
@@ -109,6 +114,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Set the value.
+   * 
    * @param value
    * @throws ParseException
    */
@@ -119,6 +125,7 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Get the value.
+   * 
    * @return
    */
   public Long getValue() {
@@ -127,12 +134,13 @@ public class PubmedId extends Number implements Comparable<PubmedId> {
 
   /**
    * Set the value.
+   * 
    * @param value
    */
   protected void set( long value ) {
     if ( !( value >= 0 && value <= 99999999 ) ) {
-      throw new NumberFormatException(
-          "Does not conform to PubMed id format: " + value );
+      throw new NumberFormatException( "Does not conform to PubMed id format: "
+          + value );
     }
 
     this.value = value;

@@ -42,8 +42,7 @@ public class MeshAdder extends AbstractTest implements Observer {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( MeshAdder.class );
   /** The file containing the ranking of MeSH terms by info gain. */
-  protected static final String MESH_RANKING =
-      "src/test/resources/meshRanking.out";
+  protected static final String MESH_RANKING = "src/test/resources/meshRanking.out";
   /** The info gain map. */
   protected TreeSet<RankedMesh> rankedMeshes;
   /** The true positive counts. */
@@ -55,6 +54,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Get those terms with the highest info gain.
+   * 
    * @return
    */
   protected String getBestTerm( Set<String> meshes, Set<String> used,
@@ -84,6 +84,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Get the MeSH terms from the seed papers.
+   * 
    * @return
    */
   protected Multiset<String> getSeedMeshes() {
@@ -99,6 +100,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Refine the given search using the provided term.
+   * 
    * @param searcher
    * @param term
    * @return
@@ -106,7 +108,7 @@ public class MeshAdder extends AbstractTest implements Observer {
    */
   protected Entry<PubmedIdentifier, InfoMeasure> refineSearch(
       PubmedIdentifier searcher, InfoMeasure prevInfo, String term )
-    throws AxisFault {
+      throws AxisFault {
     String orQuery = searcher.getQuery() + " OR " + term;
     String andQuery = searcher.getQuery() + " AND " + term;
     PubmedIdentifier orSearcher = new PubmedIdentifier( orQuery );
@@ -114,8 +116,8 @@ public class MeshAdder extends AbstractTest implements Observer {
     PubmedIdentifier andSearcher = new PubmedIdentifier( andQuery );
     andSearcher.addObserver( this );
 
-    Map<PubmedIdentifier, InfoMeasure> results = searchConcurrent(
-        orSearcher, andSearcher );
+    Map<PubmedIdentifier, InfoMeasure> results = searchConcurrent( orSearcher,
+        andSearcher );
 
     InfoMeasure orResult = results.get( orSearcher );
     InfoMeasure andResult = results.get( andSearcher );
@@ -127,11 +129,11 @@ public class MeshAdder extends AbstractTest implements Observer {
     // so if their recalls are the same, choose AND; if the OR recall is
     // better than the original, choose OR; otherwise the originalc
     if ( andResult.getRecall() >= orResult.getRecall() ) {
-      return new SimpleEntry<PubmedIdentifier, InfoMeasure>(
-          andSearcher, andResult );
+      return new SimpleEntry<PubmedIdentifier, InfoMeasure>( andSearcher,
+          andResult );
     } else if ( orResult.getRecall() > prevInfo.getRecall() ) {
-      return new SimpleEntry<PubmedIdentifier, InfoMeasure>(
-          orSearcher, orResult );
+      return new SimpleEntry<PubmedIdentifier, InfoMeasure>( orSearcher,
+          orResult );
     } else {
       return null;
     }
@@ -139,6 +141,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Execute the search.
+   * 
    * @param query
    * @return
    */
@@ -165,6 +168,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Execute the searches concurrently.
+   * 
    * @return
    */
   protected Map<PubmedIdentifier, InfoMeasure> searchConcurrent(
@@ -182,7 +186,7 @@ public class MeshAdder extends AbstractTest implements Observer {
       }
 
       startSignal.countDown(); // let all threads proceed
-      doneSignal.await();  // wait til they're all done
+      doneSignal.await(); // wait til they're all done
 
       Thread.sleep( 10000 );
 
@@ -206,6 +210,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Execute the searches concurrently.
+   * 
    * @param queries
    * @return
    */
@@ -216,6 +221,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Set up the test suite.
+   * 
    * @throws IOException
    */
   @Override
@@ -243,13 +249,13 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Simulate the Clopidogrel query refinement process.
-   *
+   * 
    * @throws RemoteException
    * @throws InterruptedException
    */
   @Test
-  public void simulateClopidogrelReview()
-    throws RemoteException, InterruptedException {
+  public void simulateClopidogrelReview() throws RemoteException,
+      InterruptedException {
 
     Set<String> usedTerms = new HashSet<>();
 
@@ -268,8 +274,8 @@ public class MeshAdder extends AbstractTest implements Observer {
     LOG.info( "Initial POPULATION query: " + clopidogrelReview.getQueryP() );
     LOG.info( "Initial INTERVENTION query: " + clopidogrelReview.getQueryIC() );
 
-    Map<PubmedIdentifier, InfoMeasure> results = searchConcurrent(
-        popSearcher, icSearcher );
+    Map<PubmedIdentifier, InfoMeasure> results = searchConcurrent( popSearcher,
+        icSearcher );
     InfoMeasure popInfo = results.get( popSearcher );
     InfoMeasure icInfo = results.get( icSearcher );
 
@@ -281,7 +287,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
     int i = 0;
     while ( ( popSearcher != null || icSearcher != null ) ) {
-      LOG.info(  "\n\nIteration " + ++i + ":\n" );
+      LOG.info( "\n\nIteration " + ++i + ":\n" );
       // Refine the Population sub-query, if possible
       if ( popSearcher != null ) {
         // Get the MeSH terms found during the population search
@@ -290,7 +296,7 @@ public class MeshAdder extends AbstractTest implements Observer {
         String popTerm = getBestTerm( popMeshes, usedTerms,
             PicoElement.POPULATION );
         if ( popTerm == null ) {
-          popSearcher = null;  // ran out of terms... done
+          popSearcher = null; // ran out of terms... done
           continue;
         }
         usedTerms.add( popTerm ); // don't repeat terms
@@ -321,8 +327,8 @@ public class MeshAdder extends AbstractTest implements Observer {
         usedTerms.add( icTerm ); // don't repeat terms
         meshes.remove( icSearcher ); // clean up for next time
         // Refine the search with the given MeSH term
-        Entry<PubmedIdentifier, InfoMeasure> result = refineSearch(
-            icSearcher, icInfo, icTerm );
+        Entry<PubmedIdentifier, InfoMeasure> result = refineSearch( icSearcher,
+            icInfo, icTerm );
         if ( result != null ) { // MeSH term has been added to the query
           icSearcher = result.getKey();
           icInfo = result.getValue();
@@ -335,7 +341,7 @@ public class MeshAdder extends AbstractTest implements Observer {
     }
   }
 
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   @Override
   public void update( Observable o, Object arg ) {
     if ( o instanceof PubmedIdentifier && arg.getClass().isArray() ) {
@@ -369,9 +375,9 @@ public class MeshAdder extends AbstractTest implements Observer {
 
       Runtime rt = Runtime.getRuntime();
       LOG.debug( "Free Memory: " + rt.freeMemory() / MB );
-      LOG.info( "\tTrue positive counts: " +
-          entryToString( query, truePosCt.get( query ) ) +
-          "\n\tTotal counts: " + entryToString( query, totalCt.get( query ) ) );
+      LOG.info( "\tTrue positive counts: "
+          + entryToString( query, truePosCt.get( query ) )
+          + "\n\tTotal counts: " + entryToString( query, totalCt.get( query ) ) );
       // we are throwing out mesh terms that we can't use for info gain
     } else if ( o instanceof PubmedIdentifier && arg instanceof Set ) {
       PubmedIdentifier query = (PubmedIdentifier) o;
@@ -393,6 +399,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Stringify the map.
+   * 
    * @param map
    * @return
    */
@@ -410,6 +417,7 @@ public class MeshAdder extends AbstractTest implements Observer {
 
   /**
    * Calculate the info measure.
+   * 
    * @param pmids
    * @return
    */
@@ -427,8 +435,8 @@ public class MeshAdder extends AbstractTest implements Observer {
       }
     }
 
-    return new InfoMeasure(
-        truePos, pmids.length, clopidogrelReview.getRelevantLevel1().size() );
+    return new InfoMeasure( truePos, pmids.length, clopidogrelReview
+        .getRelevantLevel1().size() );
 
   }
 }

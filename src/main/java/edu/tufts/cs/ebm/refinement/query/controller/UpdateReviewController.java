@@ -5,10 +5,6 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,11 +31,10 @@ import edu.tufts.cs.ebm.util.Util;
 
 public class UpdateReviewController implements Initializable {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      UpdateReviewController.class );
+  protected static final Log LOG = LogFactory
+      .getLog( UpdateReviewController.class );
   /** Key combo to catch TAB + another key. */
-  protected final KeyCombination combo = new KeyCodeCombination(
-      KeyCode.ENTER );
+  protected final KeyCombination combo = new KeyCodeCombination( KeyCode.ENTER );
   /** The query controller. */
   @Autowired
   protected QueryController queryController;
@@ -79,8 +74,8 @@ public class UpdateReviewController implements Initializable {
   /** The review being created. */
   protected SystematicReview activeReview;
   /** The seed list items. */
-  protected final ObservableList<PubmedId> listItems =
-      FXCollections.observableArrayList();
+  protected final ObservableList<PubmedId> listItems = FXCollections
+      .observableArrayList();
 
   @Override
   public void initialize( URL location, ResourceBundle resources ) {
@@ -89,7 +84,7 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Handle the "create review" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -125,6 +120,7 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Cancel the update.
+   * 
    * @param e
    */
   @FXML
@@ -134,6 +130,7 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Set the active review.
+   * 
    * @param r
    */
   public void setActiveReview( SystematicReview r ) {
@@ -146,7 +143,7 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Get the view.
-   *
+   * 
    * @return
    */
   public Pane getView() {
@@ -155,7 +152,7 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Handle the "add" seed button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -163,10 +160,9 @@ public class UpdateReviewController implements Initializable {
     addSeed();
   }
 
-
   /**
    * Handle the "add" seed button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -203,13 +199,13 @@ public class UpdateReviewController implements Initializable {
 
   /**
    * Handle deletion of a seed.
+   * 
    * @param e
    */
   @FXML
   protected void handleDeleteSeedAction( ActionEvent e ) {
     if ( e.getSource() instanceof MenuItem && listView.isFocused() ) {
-      PubmedId toDelete =
-          listView.getSelectionModel().getSelectedItem();
+      PubmedId toDelete = listView.getSelectionModel().getSelectedItem();
 
       if ( toDelete != null ) {
         MainController.EM.getTransaction().begin();

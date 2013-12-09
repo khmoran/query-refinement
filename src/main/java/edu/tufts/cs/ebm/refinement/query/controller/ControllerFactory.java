@@ -1,4 +1,5 @@
 package edu.tufts.cs.ebm.refinement.query.controller;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -6,12 +7,11 @@ import javafx.fxml.FXMLLoader;
 
 import org.springframework.context.annotation.Bean;
 
-
-
 public class ControllerFactory {
 
   /**
    * The main controller.
+   * 
    * @return
    * @throws IOException
    */
@@ -22,6 +22,7 @@ public class ControllerFactory {
 
   /**
    * The create review controller.
+   * 
    * @return
    * @throws IOException
    */
@@ -32,30 +33,29 @@ public class ControllerFactory {
 
   /**
    * The create review controller.
+   * 
    * @return
    * @throws IOException
    */
   @Bean
-  public UpdateReviewController updateReviewController()
-    throws IOException {
-    return (UpdateReviewController) loadController(
-        "UpdateReviewPage.fxml" );
+  public UpdateReviewController updateReviewController() throws IOException {
+    return (UpdateReviewController) loadController( "UpdateReviewPage.fxml" );
   }
 
   /**
    * The review details controller.
+   * 
    * @return
    * @throws IOException
    */
   @Bean
-  public ReviewDetailsController reviewDetailsController()
-    throws IOException {
-    return (ReviewDetailsController) loadController(
-        "ReviewDetailsPage.fxml" );
+  public ReviewDetailsController reviewDetailsController() throws IOException {
+    return (ReviewDetailsController) loadController( "ReviewDetailsPage.fxml" );
   }
 
   /**
    * The create review controller.
+   * 
    * @return
    * @throws IOException
    */
@@ -66,6 +66,7 @@ public class ControllerFactory {
 
   /**
    * The query controller.
+   * 
    * @return
    * @throws IOException
    */
@@ -76,6 +77,7 @@ public class ControllerFactory {
 
   /**
    * Load the controller.
+   * 
    * @param url
    * @return
    * @throws IOException

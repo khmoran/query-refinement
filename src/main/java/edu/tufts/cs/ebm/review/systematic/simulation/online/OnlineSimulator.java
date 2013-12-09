@@ -43,8 +43,7 @@ import edu.tufts.cs.ml.util.Util;
  */
 public abstract class OnlineSimulator<I, C> extends Simulator {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulator.class );
+  protected static final Log LOG = LogFactory.getLog( OnlineSimulator.class );
   /** The rankings output. */
   protected Map<I, String> rankOutput = new HashMap<>();
   /** The observations output. */
@@ -58,20 +57,22 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Set up the test suite.
+   * 
    * @throws IOException
    * @throws BiffException
    */
   public OnlineSimulator( String review ) throws Exception {
     Collection<SystematicReview> reviews = reviews();
-    this.dataset = Util.normalize( review );;
+    this.dataset = Util.normalize( review );
+    ;
     for ( SystematicReview r : reviews ) {
       if ( Util.normalize( r.getName() ).contains( this.dataset ) ) {
         this.activeReview = r;
       }
     }
-    
-    if ( this.activeReview == null ) throw new RuntimeException(
-        "Could not find review " + review );
+
+    if ( this.activeReview == null )
+      throw new RuntimeException( "Could not find review " + review );
 
     Runtime rt = Runtime.getRuntime();
     LOG.info( "Max Memory: " + rt.maxMemory() / MB );
@@ -83,9 +84,10 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
     // load up the seeds
     for ( PubmedId pmid : activeReview.getSeeds() ) {
-      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
+                                                                 // seeds
     }
-    
+
     // load up the relevant papers
     for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
       MainController.EM.find( PubmedId.class, pmid.getValue() );
@@ -102,30 +104,30 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Turn the Citations into FeatureVectors.
+   * 
    * @param citations
    * @return
    */
-  protected abstract Map<I, C> createFeatureVectors(
-      Set<Citation> citations );
-  
+  protected abstract Map<I, C> createFeatureVectors( Set<Citation> citations );
 
   /**
    * Get the training data in MALLET form.
+   * 
    * @param relevant
    * @param irrelevant
    * @return
    */
-  protected InstanceList createTrainingData( InstanceList instances, 
+  protected InstanceList createTrainingData( InstanceList instances,
       Collection<PubmedId> relevant, Collection<PubmedId> irrelevant ) {
     InstanceList il = instances.shallowClone();
-    
+
     Collection<Instance> toRemove = new ArrayList<Instance>();
     for ( Instance i : il ) {
       try {
-        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
-            Long.valueOf( i.getName().toString() ) );
+        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid( Long
+            .valueOf( i.getName().toString() ) );
         if ( !( relevant.contains( pmid ) || irrelevant.contains( pmid ) ) ) {
-            toRemove.add( i );
+          toRemove.add( i );
         }
       } catch ( NumberFormatException e ) {
         LOG.error( e );
@@ -138,12 +140,12 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Evaluate the query.
+   * 
    * @param searcher
    * @return
    */
   protected Map<String, InfoMeasure> evaluateQuery(
-      TreeMultimap<Double, I> rankMap,
-      Set<I> expertRelevantPapers,
+      TreeMultimap<Double, I> rankMap, Set<I> expertRelevantPapers,
       Set<I> expertIrrelevantPapers ) {
 
     if ( rankMap.size() == 0 ) {
@@ -154,12 +156,12 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     int truePosTotal = 0;
     int truePosL1 = 0;
     int truePosL2 = 0;
-    
+
     for ( I pmid : expertRelevantPapers ) {
       if ( activeReview.getRelevantLevel2().contains( pmid ) ) {
         truePosL2++;
       } // have to do this because some of the seed papers may be
-        // left out of the relevant set 
+        // left out of the relevant set
       if ( activeReview.getRelevantLevel1().contains( pmid ) ) {
         truePosL1++;
       }
@@ -171,10 +173,10 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     LOG.info( "\tTrue positives for all: " + truePosTotal );
 
     Map<String, InfoMeasure> infoMap = new HashMap<>();
-    InfoMeasure l1Info = new InfoMeasure( truePosL1,
-        activeReview.getRelevantLevel1().size() );
-    InfoMeasure l2Info = new InfoMeasure( truePosL2,
-        activeReview.getRelevantLevel2().size() );
+    InfoMeasure l1Info = new InfoMeasure( truePosL1, activeReview
+        .getRelevantLevel1().size() );
+    InfoMeasure l2Info = new InfoMeasure( truePosL2, activeReview
+        .getRelevantLevel2().size() );
     infoMap.put( "L1", l1Info );
     infoMap.put( "L2", l2Info );
 
@@ -186,40 +188,40 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Get the papers terms to propose.
+   * 
    * @param query
    * @return
    */
-  protected Set<I> getPaperProposals(
-      TreeMultimap<Double, I> rankMap,
-      Set<I> expertRelevantPapers,
-      Set<I> expertIrrelevantPapers ) {
+  protected Set<I> getPaperProposals( TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers, Set<I> expertIrrelevantPapers ) {
     Set<I> results = new HashSet<>();
 
     List<I> citList = new ArrayList<>();
     for ( Double sim : rankMap.keySet().descendingSet() ) {
       for ( I pmid : rankMap.get( sim ) ) {
-        if ( !expertRelevantPapers.contains( pmid ) &&
-            !expertIrrelevantPapers.contains( pmid ) ) {
+        if ( !expertRelevantPapers.contains( pmid )
+            && !expertIrrelevantPapers.contains( pmid ) ) {
           citList.add( pmid );
         }
       }
     }
 
     LOG.info( "Getting paper proposal set..." );
-//    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
-//        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
-//    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
-//    //    n, PAPER_PROPOSALS_PER_ITERATION );
-//    LOG.info( "\tGetting citations at ranks " + rands );
-//    for ( int r : rands ) {
-//      results.add( citList.get( r ) );
-//    }
-    
+    // Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
+    // citList.size(), PAPER_PROPOSALS_PER_ITERATION );
+    // //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
+    // // n, PAPER_PROPOSALS_PER_ITERATION );
+    // LOG.info( "\tGetting citations at ranks " + rands );
+    // for ( int r : rands ) {
+    // results.add( citList.get( r ) );
+    // }
+
     // TODO temporarily removing stochastic element
-    int lastIdx = ( citList.size() < PAPER_PROPOSALS_PER_ITERATION ) ? citList.size() : PAPER_PROPOSALS_PER_ITERATION;
+    int lastIdx = ( citList.size() < PAPER_PROPOSALS_PER_ITERATION ) ? citList
+        .size() : PAPER_PROPOSALS_PER_ITERATION;
     results.addAll( citList.subList( 0, lastIdx ) );
 
-    LOG.info(  "Paper proposals: " + results );
+    LOG.info( "Paper proposals: " + results );
     return results;
   }
 
@@ -230,14 +232,16 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Initialize the Mallet vectors.
+   * 
    * @param fvs
    */
-  protected InstanceList initializeMallet( Collection<FeatureVector<Integer>> fvs ) {
+  protected InstanceList initializeMallet(
+      Collection<FeatureVector<Integer>> fvs ) {
     Metadata m = new Metadata();
     TrainRelation<Integer> train = new TrainRelation<Integer>( "train", m );
-    
+
     for ( FeatureVector<Integer> fv : fvs ) {
-      for( String feat : fv.keySet() ) {
+      for ( String feat : fv.keySet() ) {
         if ( !m.containsKey( feat ) ) {
           m.put( feat, "Object" );
         }
@@ -245,10 +249,10 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
       LabeledFeatureVector<Integer> lfv;
       try {
-        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
-            Long.valueOf( fv.getId() ) );
-        if ( activeReview.getRelevantLevel1().contains( pmid ) 
-          || activeReview.getRelevantLevel2().contains( pmid ) ) {
+        PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid( Long
+            .valueOf( fv.getId() ) );
+        if ( activeReview.getRelevantLevel1().contains( pmid )
+            || activeReview.getRelevantLevel2().contains( pmid ) ) {
           lfv = new LabeledFeatureVector<Integer>( NEG, fv.getId() );
         } else {
           lfv = new LabeledFeatureVector<Integer>( POS, fv.getId() );
@@ -266,12 +270,13 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
   /**
    * Propose the papers to the expert and add them to the appropriate bins:
    * relevant and irrelevant.
+   * 
    * @param proposals
    * @param relevant
    * @param irrelevant
    */
-  protected Set<I> proposePapers( Set<I> proposals,
-      Set<I> relevant, Set<I> irrelevant ) {
+  protected Set<I> proposePapers( Set<I> proposals, Set<I> relevant,
+      Set<I> irrelevant ) {
     LOG.info( "Proposing papers..." );
     Set<I> newRelevant = new HashSet<>();
     for ( I pmid : proposals ) {
@@ -290,21 +295,20 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Rank the query results using cosine similarity.
+   * 
    * @param searcher
    * @return
    */
-  protected abstract TreeMultimap<Double, I> rank(
-      Map<I, C> citations,
-      Map<I, C> expertRelevantPapers,
-      Map<I, C> expertIrrelevantPapers );
+  protected abstract TreeMultimap<Double, I> rank( Map<I, C> citations,
+      Map<I, C> expertRelevantPapers, Map<I, C> expertIrrelevantPapers );
 
   /**
    * Record the current ranking.
+   * 
    * @param rankMap
    */
   protected void recordRank( TreeMultimap<Double, I> rankMap,
-      Set<I> expertRelevantPapers,
-      Set<I> expertIrrelevantPapers ) {
+      Set<I> expertRelevantPapers, Set<I> expertIrrelevantPapers ) {
 
     // get probability information
     if ( z == -1 ) {
@@ -323,7 +327,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
         rankStr += String.valueOf( rank );
         rankOutput.put( pmid, rankStr );
 
-        double prob = (double) 1/ (double) rank / z;
+        double prob = (double) 1 / (double) rank / z;
         prob = MathUtil.round( prob, 7 );
 
         String probStr = probOutput.get( pmid );
@@ -356,6 +360,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Refine the query.
+   * 
    * @param popQuery
    * @param icQuery
    * @param newRelevant
@@ -394,26 +399,24 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Simulate the Clopidogrel query refinement process.
-   *
+   * 
    * @throws InterruptedException
    * @throws IOException
    */
   /**
    * Simulate the Clopidogrel query refinement process.
-   *
+   * 
    * @throws InterruptedException
    * @throws IOException
    */
   @Override
-  @SuppressWarnings( "unchecked" )
-  public void simulateReview()
-    throws InterruptedException, IOException {
+  @SuppressWarnings("unchecked")
+  public void simulateReview() throws InterruptedException, IOException {
     // prepare the CSV output
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
-   // header row
-    out.write(
-      "i,papers proposed,papers added,L1 cost,L1 recall,L2cost,L2recall" );
+    // header row
+    out.write( "i,papers proposed,papers added,L1 cost,L1 recall,L2cost,L2recall" );
     out.newLine();
     out.flush();
 
@@ -434,21 +437,22 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     search( searcher );
 
     initializeClassifier( searcher.getCitations() );
-    Map<I, C> citations =
-        createFeatureVectors( searcher.getCitations() );
+    Map<I, C> citations = createFeatureVectors( searcher.getCitations() );
 
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {
       if ( citations.get( c.getPmid() ) != null ) {
-        expertRelevantPapers.put( (I) c.getPmid(), citations.get( c.getPmid() ) );
+        expertRelevantPapers
+            .put( (I) c.getPmid(), citations.get( c.getPmid() ) );
       }
     }
-    
-    LOG.info( "Starting with " + expertRelevantPapers.size() + " relevant papers." );
+
+    LOG.info( "Starting with " + expertRelevantPapers.size()
+        + " relevant papers." );
 
     // gather initial statistics on the results
-    TreeMultimap<Double, I> rankMap = rank( citations,
-        expertRelevantPapers, expertIrrelevantPapers );
+    TreeMultimap<Double, I> rankMap = rank( citations, expertRelevantPapers,
+        expertIrrelevantPapers );
     // record the ranks
     recordRank( rankMap, expertRelevantPapers.keySet(),
         expertIrrelevantPapers.keySet() );
@@ -460,7 +464,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     boolean papersRemaining = true;
     Map<String, InfoMeasure> im = null;
     while ( papersRemaining ) {
-      LOG.info(  "\n\nIteration " + ++i + ":\n" );
+      LOG.info( "\n\nIteration " + ++i + ":\n" );
 
       Set<I> paperProposals = getPaperProposals( rankMap,
           expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
@@ -472,8 +476,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
       } else {
         papersRemaining = true;
         papersProposed += PAPER_PROPOSALS_PER_ITERATION;
-        Set<I> accepted = proposePapers( paperProposals, expertRelevantPapers.keySet(),
-            expertIrrelevantPapers.keySet() );
+        Set<I> accepted = proposePapers( paperProposals,
+            expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
         // update the relevant/irrelevant lists
         for ( I pmid : paperProposals ) {
@@ -490,8 +494,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
       // if new papers are proposed, update the ranking
       if ( expertRelevantPapers.size() > numRelevant || i <= 1 ) {
-        rankMap = rank( citations, expertRelevantPapers,
-            expertIrrelevantPapers );
+        rankMap = rank( citations, expertRelevantPapers, expertIrrelevantPapers );
         // record the ranks
         recordRank( rankMap, expertRelevantPapers.keySet(),
             expertIrrelevantPapers.keySet() );
@@ -503,14 +506,15 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
       if ( im != null ) {
         // write out the current stats
-        double costL1 = papersProposed + activeReview
-            .getRelevantLevel1().size() - im.get( "L1" ).getTruePositives();
-        double costL2 = papersProposed + activeReview
-            .getRelevantLevel1().size() - im.get( "L2" ).getTruePositives();
-        out.write( i + "," + papersProposed + "," +
-          expertRelevantPapers.size() +
-          "," + costL1 + "," + im.get( "L1" ).getRecall() +
-          "," + costL2 + "," + im.get( "L2" ).getRecall() );
+        double costL1 = papersProposed
+            + activeReview.getRelevantLevel1().size()
+            - im.get( "L1" ).getTruePositives();
+        double costL2 = papersProposed
+            + activeReview.getRelevantLevel1().size()
+            - im.get( "L2" ).getTruePositives();
+        out.write( i + "," + papersProposed + "," + expertRelevantPapers.size()
+            + "," + costL1 + "," + im.get( "L1" ).getRecall() + "," + costL2
+            + "," + im.get( "L2" ).getRecall() );
       }
 
       out.newLine();
@@ -523,6 +527,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Tear down the test harness.
+   * 
    * @throws IOException
    * @throws WriteException
    */
@@ -540,20 +545,23 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     }
     outRanks.append( header.toString() + "\n" );
     outProbs.append( header.toString() + "\n" );
-    
+
     for ( I pmid : rankOutput.keySet() ) {
       String observ = observOutput.get( pmid );
       String rankStr = rankOutput.get( pmid );
       String observStr = ( observ == null ) ? "" : observ;
-      String l1 = activeReview.getRelevantLevel1().contains( pmid ) ? "true" : "false";
-      String l2 = activeReview.getRelevantLevel2().contains( pmid ) ? "true" : "false";
-      outRanks.append( pmid + "," + l1 + "," + l2 + ",\"" + observStr + "\"," + rankStr + "\n" );
-      
+      String l1 = activeReview.getRelevantLevel1().contains( pmid ) ? "true"
+          : "false";
+      String l2 = activeReview.getRelevantLevel2().contains( pmid ) ? "true"
+          : "false";
+      outRanks.append( pmid + "," + l1 + "," + l2 + ",\"" + observStr + "\","
+          + rankStr + "\n" );
+
       String prob = probOutput.get( pmid );
       String probStr = ( prob == null ) ? "" : prob;
       outProbs.append( pmid + ",,,," + probStr + "\n" );
     }
-    
+
     outRanks.close();
     outProbs.close();
   }

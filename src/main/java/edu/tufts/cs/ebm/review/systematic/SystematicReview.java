@@ -21,19 +21,19 @@ import org.apache.commons.logging.LogFactory;
 
 @Entity
 public class SystematicReview implements Serializable,
-  Comparable<SystematicReview> {
+    Comparable<SystematicReview> {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( SystematicReview.class );
   /** Default generated serial version UID. */
   private static final long serialVersionUID = -5992075362650101039L;
   /** The generated entity id. */
   @Id
-  @GeneratedValue( strategy = GenerationType.AUTO )
+  @GeneratedValue(strategy = GenerationType.AUTO)
   protected Long id;
   /** The name of the review. */
   protected String name;
   /** The date the systematic review was created. */
-  @Temporal( TemporalType.DATE )
+  @Temporal(TemporalType.DATE)
   protected Date createdOn;
   /** The creator of the review. */
   protected String creator;
@@ -44,32 +44,32 @@ public class SystematicReview implements Serializable,
   /** The most recent outcome query. */
   protected String queryO;
   /** The PMIDs for the seed articles. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_seeds" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_seeds")
   protected Set<PubmedId> seeds = new HashSet<>();
   /** The PMIDs for relevant articles. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_relevant_l1" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_relevant_l1")
   protected Set<PubmedId> relevantLevel1 = new HashSet<>();
   /** The PMIDs for the level 2 articles. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_relevant_l2" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_relevant_l2")
   protected Set<PubmedId> relevantLevel2 = new HashSet<>();
   /** The PMIDs for articles with irrelevant populations. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_irrel_pop" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_irrel_pop")
   protected Set<PubmedId> irrelevantP = new HashSet<>();
   /** The PMIDs for articles with irrelevant interventions/comparisons. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_irrel_interv_comp" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_irrel_interv_comp")
   protected Set<PubmedId> irrelevantIC = new HashSet<>();
   /** The PMIDs for articles with irrelevant outcomes. */
-  @ManyToMany( cascade = CascadeType.PERSIST )
-  @JoinTable( name = "review_irrel_outc" )
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(name = "review_irrel_outc")
   protected Set<PubmedId> irrelevantO = new HashSet<>();
   /** Blacklisted PMIDs. */
   @ManyToMany
-  @JoinTable( name = "review_blacklist" )
+  @JoinTable(name = "review_blacklist")
   protected Set<PubmedId> blacklist = new HashSet<>();
   /** The seed citations. */
   @Transient
@@ -77,6 +77,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the seed citations.
+   * 
    * @return
    */
   public Set<Citation> getSeedCitations() {
@@ -85,6 +86,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the seed citations.
+   * 
    * @param seedCitations
    */
   public void setSeedCitations( Set<Citation> seedCitations ) {
@@ -100,6 +102,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the last population query executed for this review.
+   * 
    * @return
    */
   public String getQueryP() {
@@ -108,6 +111,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the last population query executed for this review.
+   * 
    * @param queryP
    */
   public void setQueryP( String queryP ) {
@@ -116,6 +120,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the last intervention/comparison query executed for this review.
+   * 
    * @return
    */
   public String getQueryIC() {
@@ -124,6 +129,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the last intervention/comparison query executed for this review.
+   * 
    * @param queryIC
    */
   public void setQueryIC( String queryIC ) {
@@ -132,6 +138,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the last outcome query executed for this review.
+   * 
    * @return
    */
   public String getQueryO() {
@@ -140,6 +147,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the last outcome query executed for this review.
+   * 
    * @param queryO
    */
   public void setQueryO( String queryO ) {
@@ -148,6 +156,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the id.
+   * 
    * @return
    */
   public Long getId() {
@@ -156,6 +165,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the id.
+   * 
    * @return
    */
   public void setId( Long id ) {
@@ -164,6 +174,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the name.
+   * 
    * @return
    */
   public String getName() {
@@ -172,6 +183,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the name.
+   * 
    * @param name
    */
   public void setName( String name ) {
@@ -180,6 +192,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the date created.
+   * 
    * @return
    */
   public Date getCreatedOn() {
@@ -188,6 +201,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the date created.
+   * 
    * @return
    */
   public void setCreatedOn( Date createdOn ) {
@@ -196,6 +210,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the creator.
+   * 
    * @return
    */
   public String getCreator() {
@@ -204,6 +219,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the creator.
+   * 
    * @return
    */
   public void setCreator( String creator ) {
@@ -212,6 +228,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the seed PMIDs.
+   * 
    * @return
    */
   public Set<PubmedId> getSeeds() {
@@ -220,6 +237,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the seed PMIDs.
+   * 
    * @return
    */
   public void setSeeds( Set<PubmedId> seedPmids ) {
@@ -228,6 +246,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the relevant articles.
+   * 
    * @return
    */
   public Set<PubmedId> getRelevantLevel1() {
@@ -236,15 +255,16 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the relevant articles.
+   * 
    * @return
    */
   public void setRelevantLevel1( Set<PubmedId> relevantLevel1 ) {
     this.relevantLevel1 = relevantLevel1;
   }
 
-
   /**
    * Get the relevant articles.
+   * 
    * @return
    */
   public Set<PubmedId> getRelevantLevel2() {
@@ -253,6 +273,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the relevant articles.
+   * 
    * @return
    */
   public void setRelevantLevel2( Set<PubmedId> relevantLevel2 ) {
@@ -261,6 +282,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the articles with irrelevant populations.
+   * 
    * @return
    */
   public Set<PubmedId> getIrrelevantP() {
@@ -269,6 +291,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the articles with irrelevant populations.
+   * 
    * @return
    */
   public void setIrrelevantP( Set<PubmedId> irrelevantPopulations ) {
@@ -277,6 +300,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the articles with irrelevant interventions.
+   * 
    * @return
    */
   public Set<PubmedId> getIrrelevantIC() {
@@ -285,15 +309,16 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the articles with irrelevant interventions.
+   * 
    * @return
    */
-  public void setIrrelevantIC(
-      Set<PubmedId> irrelevantIntervention ) {
+  public void setIrrelevantIC( Set<PubmedId> irrelevantIntervention ) {
     this.irrelevantIC = irrelevantIntervention;
   }
 
   /**
    * Get the articles with irrelevant outcomes.
+   * 
    * @return
    */
   public Set<PubmedId> getIrrelevantO() {
@@ -302,6 +327,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the articles with irrelevant outcomes.
+   * 
    * @return
    */
   public void setIrrelevantO( Set<PubmedId> irrelevantOutcome ) {
@@ -310,6 +336,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add a relevant article.
+   * 
    * @param id
    */
   public void addRelevantLevel1( PubmedId id ) {
@@ -318,6 +345,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add a relevant article.
+   * 
    * @param id
    */
   public void addRelevantLevel2( PubmedId id ) {
@@ -326,6 +354,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add an irrelevant article.
+   * 
    * @param id
    */
   public void addIrrelevantP( PubmedId id ) {
@@ -334,6 +363,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add an irrelevant article.
+   * 
    * @param id
    */
   public void addIrrelevantIC( PubmedId id ) {
@@ -342,6 +372,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add an irrelevant article.
+   * 
    * @param id
    */
   public void addIrrelevantO( PubmedId id ) {
@@ -350,6 +381,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add an irrelevant article.
+   * 
    * @param id
    */
   public void addIrrelevantAll( PubmedId id ) {
@@ -360,6 +392,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Get the blacklist.
+   * 
    * @return
    */
   public Set<PubmedId> getBlacklist() {
@@ -368,6 +401,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Set the blacklist.
+   * 
    * @param blacklist
    */
   public void setBlacklist( Set<PubmedId> blacklist ) {
@@ -376,6 +410,7 @@ public class SystematicReview implements Serializable,
 
   /**
    * Add to the blacklist.
+   * 
    * @param id
    */
   public void addBlacklisted( PubmedId id ) {

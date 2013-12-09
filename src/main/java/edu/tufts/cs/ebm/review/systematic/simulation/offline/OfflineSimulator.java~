@@ -35,7 +35,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
   /** The name of the dataset. */
   protected String dataset;
   /** The default number of iterations. */
-  protected static final int DEFAULT_NUM_IT = 5;
+  protected static final int DEFAULT_NUM_IT = 10;
   /** The number of iterations. */
   protected static int numIt = DEFAULT_NUM_IT;
 
@@ -125,7 +125,6 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
         out.write( ( heldOut * 10 ) + "," + it + "," + stats );
         out.newLine();
-	out.flush();
       }
     }
 

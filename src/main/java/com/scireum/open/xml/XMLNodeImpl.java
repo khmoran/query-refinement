@@ -84,7 +84,7 @@ public class XMLNodeImpl implements StructuredNode {
       return null;
     }
     if ( result instanceof Node ) {
-      String s = ((Node) result).getTextContent();
+      String s = ( (Node) result ).getTextContent();
       if ( s != null ) {
         return s.trim();
       }

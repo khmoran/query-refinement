@@ -19,18 +19,19 @@ import edu.tufts.cs.ml.text.CosineSimilarity;
 import edu.tufts.cs.similarity.CachedCosineSimilarity;
 
 /**
- * An online simulation of a systematic review using an LDA representation and
- * a naive bayes classifier.
+ * An online simulation of a systematic review using an LDA representation and a
+ * naive bayes classifier.
  */
 public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorLdaCosine.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorLdaCosine.class );
   /** The Cosine Similarity. */
   protected CosineSimilarity<Integer> cs;
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -40,6 +41,7 @@ public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
 
   /**
    * Create a training data set from the LDA features.
+   * 
    * @param lda
    * @param expertRelevantPapers
    * @param expertIrrelevantPapers
@@ -52,15 +54,16 @@ public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
     for ( int i = 0; i < NUM_TOPICS; i++ ) {
       m.put( String.valueOf( i ), "numeric" );
     }
-    TrainRelation<Integer> relation = new TrainRelation<Integer>(
-        "lda", m );
+    TrainRelation<Integer> relation = new TrainRelation<Integer>( "lda", m );
     for ( FeatureVector<Integer> fv : expertRelevantPapers ) {
-      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( POS, fv.getId() );
+      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( POS,
+          fv.getId() );
       lfv.putAll( fv );
       relation.add( lfv );
     }
     for ( FeatureVector<Integer> fv : expertIrrelevantPapers ) {
-      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( NEG, fv.getId() );
+      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( NEG,
+          fv.getId() );
       lfv.putAll( fv );
       relation.add( lfv );
     }
@@ -71,11 +74,13 @@ public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
   @Override
   protected void initializeClassifier( Set<Citation> citations ) {
     // initialize the cosine similarity
-    cs = new CachedCosineSimilarity<Integer>( defaultCache, new TrainRelation<Integer>( "", new Metadata() ) );
+    cs = new CachedCosineSimilarity<Integer>( defaultCache,
+        new TrainRelation<Integer>( "", new Metadata() ) );
   }
-  
+
   /**
    * Rank the query results using cosine similarity.
+   * 
    * @param searcher
    * @return
    */
@@ -101,7 +106,7 @@ public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
 
     // test the remaining citations
     for ( PubmedId pmid : citations.keySet() ) {
-      FeatureVector<Integer> ufv = citations.get( pmid ); 
+      FeatureVector<Integer> ufv = citations.get( pmid );
       double sim = cs.calculateSimilarity( ufv );
       rankMap.put( sim, pmid );
     }

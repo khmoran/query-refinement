@@ -17,11 +17,10 @@ import edu.tufts.cs.ebm.review.systematic.Citation;
 
 public class CitationController implements Initializable {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      CitationController.class );
+  protected static final Log LOG = LogFactory.getLog( CitationController.class );
   /** The date format. */
-  protected static final DateFormat DATE_FORMAT =
-      new SimpleDateFormat( "MM/dd/yyyy" );
+  protected static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+      "MM/dd/yyyy" );
   /** The citation. */
   protected Citation citation;
   /** The pane view. */
@@ -55,6 +54,7 @@ public class CitationController implements Initializable {
 
   /**
    * Get the view.
+   * 
    * @return
    */
   public ScrollPane getView() {
@@ -63,6 +63,7 @@ public class CitationController implements Initializable {
 
   /**
    * Set the citation.
+   * 
    * @param c
    */
   public void setCitation( Citation c ) {

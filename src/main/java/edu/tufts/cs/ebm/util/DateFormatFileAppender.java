@@ -20,10 +20,10 @@ import org.apache.log4j.spi.LoggingEvent;
 /**
  * DateFormatFileAppender is a log4j Appender and extends {@link FileAppender}
  * so each log is named based on a date format defined in the File property.
- *
+ * 
  * Sample File: 'logs/'yyyy/MM-MMM/dd-EEE/HH-mm-ss-S'.log' Makes a file like:
  * logs/2004/04-Apr/13-Tue/09-45-15-937.log
- *
+ * 
  * @author James Stauffer
  */
 public class DateFormatFileAppender extends FileAppender {

@@ -24,14 +24,11 @@ public class MeshWalker {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( Launcher.class );
   /** The XML file containing the MeSH tree. */
-  protected static final String TREE_XML_FILE =
-      "src/main/resources/desc2013.xml";
+  protected static final String TREE_XML_FILE = "src/main/resources/desc2013.xml";
   /** The "DescriptorRecord" node name. */
-  protected static final String DESCRIPTOR_RECORD_NODE_NAME =
-      "DescriptorRecord";
+  protected static final String DESCRIPTOR_RECORD_NODE_NAME = "DescriptorRecord";
   /** The "DescriptorName" node name. */
-  protected static final String DESCRIPTOR_NAME_NODE_NAME =
-      "DescriptorName";
+  protected static final String DESCRIPTOR_NAME_NODE_NAME = "DescriptorName";
 
   /**
    * Default constructor.
@@ -93,6 +90,7 @@ public class MeshWalker {
 
     /**
      * Default constructor.
+     * 
      * @param terms
      */
     public TermHandler( String term ) {
@@ -102,6 +100,7 @@ public class MeshWalker {
 
     /**
      * Default constructor.
+     * 
      * @param terms
      */
     public TermHandler( Collection<String> terms ) {
@@ -110,6 +109,7 @@ public class MeshWalker {
 
     /**
      * Get the found terms.
+     * 
      * @return
      */
     public Set<StructuredNode> getNodes() {

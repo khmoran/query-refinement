@@ -24,8 +24,8 @@ import edu.tufts.cs.ebm.review.systematic.SystematicReview;
 
 public class ReviewDetailsController implements Initializable {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      ReviewDetailsController.class );
+  protected static final Log LOG = LogFactory
+      .getLog( ReviewDetailsController.class );
   /** The main controller. */
   @Autowired
   protected MainController mainController;
@@ -68,6 +68,7 @@ public class ReviewDetailsController implements Initializable {
 
   /**
    * Get the view.
+   * 
    * @return
    */
   public GridPane getView() {
@@ -76,6 +77,7 @@ public class ReviewDetailsController implements Initializable {
 
   /**
    * Set the active review.
+   * 
    * @param clopidogrelReview
    */
   public void setActiveReview( SystematicReview r ) {
@@ -95,14 +97,14 @@ public class ReviewDetailsController implements Initializable {
     } else {
       this.creatorContent.setText( "" );
     }
-    if ( activeReview.getSeeds() != null  ) {
+    if ( activeReview.getSeeds() != null ) {
       this.seeds.setText( buildString( activeReview.getSeeds() ) );
       seedTab.setText( "Seeds (" + activeReview.getSeeds().size() + ")" );
     }
-    if ( activeReview.getRelevantLevel2() != null  ) {
+    if ( activeReview.getRelevantLevel2() != null ) {
       this.relevant.setText( buildString( activeReview.getRelevantLevel2() ) );
-      relevantTab.setText(
-          "Relevant (" + activeReview.getRelevantLevel2().size() + ")" );
+      relevantTab.setText( "Relevant ("
+          + activeReview.getRelevantLevel2().size() + ")" );
     }
 
     Set<PubmedId> irrels = new HashSet<>( activeReview.getIrrelevantP() );
@@ -114,6 +116,7 @@ public class ReviewDetailsController implements Initializable {
 
   /**
    * Build a String from the list of PubmedIds.
+   * 
    * @param ids
    * @return
    */
@@ -123,8 +126,8 @@ public class ReviewDetailsController implements Initializable {
     Collections.sort( sorted );
     for ( PubmedId seed : sorted ) {
       if ( seed.getTitle() != null && !seed.getTitle().isEmpty() ) {
-        seedList.append(
-            "\"" + seed.getTitle() + "\" (" + seed.toString() + ")\n" );
+        seedList.append( "\"" + seed.getTitle() + "\" (" + seed.toString()
+            + ")\n" );
       } else {
         seedList.append( seed.toString() + "\n" );
       }
@@ -135,6 +138,7 @@ public class ReviewDetailsController implements Initializable {
 
   /**
    * Handle the "done" button press.
+   * 
    * @param e
    */
   @FXML

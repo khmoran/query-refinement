@@ -19,6 +19,7 @@ public class PubmedDate extends Date {
 
   /**
    * Copy constructor.
+   * 
    * @param d
    */
   public PubmedDate( Date d ) {

@@ -20,13 +20,14 @@ import edu.tufts.cs.similarity.CachedCosineSimilarity;
  */
 public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBowCosine.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorBowCosine.class );
   /** The Cosine Similarity. */
   protected CosineSimilarity<Integer> cs;
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -41,19 +42,21 @@ public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
   protected void initializeClassifier( Set<Citation> citations ) {
     // initialize the cosine similarity
   }
-  
+
   @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
-    Map<PubmedId, FeatureVector<Integer>> fvs = super.createFeatureVectors( citations );
-    cs = new CachedCosineSimilarity<Integer>( defaultCache, bow.getTrainingData() );
+    Map<PubmedId, FeatureVector<Integer>> fvs = super
+        .createFeatureVectors( citations );
+    cs = new CachedCosineSimilarity<Integer>( defaultCache,
+        bow.getTrainingData() );
 
     return fvs;
   }
 
-
   /**
    * Rank the query results using cosine similarity.
+   * 
    * @param searcher
    * @return
    */

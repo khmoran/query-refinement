@@ -15,7 +15,8 @@ import edu.tufts.cs.ml.text.CosineSimilarity;
 
 public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
   /** The logger. */
-  private static final Log LOG = LogFactory.getLog( CachedCosineSimilarity.class );
+  private static final Log LOG = LogFactory
+      .getLog( CachedCosineSimilarity.class );
   /** The data cache. */
   protected JCS cache;
 
@@ -37,11 +38,11 @@ public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
 
   /**
    * Calculate the similarity between the citation and the review's seeds.
-   *
+   * 
    * @param c
    * @return
    */
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   public double calculateSimilarity( UnlabeledFeatureVector<E> ufv ) {
     if ( compareTo.isEmpty() ) {
       return 0.0;
@@ -65,8 +66,7 @@ public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
     for ( LabeledFeatureVector<E> lfv : compareTo ) {
       Double sim = simMap.get( lfv.getId() );
       if ( sim == null ) {
-        sim = ( ufv.dot( lfv ) /
-                ufv.magnitude() * lfv.magnitude() );
+        sim = ( ufv.dot( lfv ) / ufv.magnitude() * lfv.magnitude() );
         simMap.put( lfv.getId(), sim );
         sum += sim;
       } else {
@@ -75,7 +75,8 @@ public class CachedCosineSimilarity<E> extends CosineSimilarity<E> {
     }
 
     try {
-      if ( cache != null ) cache.put( key, simMap );
+      if ( cache != null )
+        cache.put( key, simMap );
     } catch ( CacheException e ) {
       LOG.error( "Unable to cache: " + e );
     }

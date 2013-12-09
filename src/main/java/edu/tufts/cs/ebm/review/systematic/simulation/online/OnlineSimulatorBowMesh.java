@@ -19,15 +19,18 @@ import edu.tufts.cs.ml.text.BagOfWords;
  * An online simulation of a systematic review using a Bag of Words
  * representation.
  */
-public abstract class OnlineSimulatorBowMesh extends OnlineSimulator<PubmedId, FeatureVector<Integer>> {
+public abstract class OnlineSimulatorBowMesh extends
+    OnlineSimulator<PubmedId, FeatureVector<Integer>> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBowMesh.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorBowMesh.class );
 
   /** The Bag of Words. */
   protected BagOfWords<Integer> bow;
+
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -37,6 +40,7 @@ public abstract class OnlineSimulatorBowMesh extends OnlineSimulator<PubmedId, F
 
   /**
    * Turn the Citations into FeatureVectors.
+   * 
    * @param citations
    * @return
    */
@@ -44,9 +48,9 @@ public abstract class OnlineSimulatorBowMesh extends OnlineSimulator<PubmedId, F
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
     // initialize the bag of words
-    bow = new BagOfWords<Integer>(
-        new File( "src/main/resources/stoplists/en.txt" ) );
-   
+    bow = new BagOfWords<Integer>( new File(
+        "src/main/resources/stoplists/en.txt" ) );
+
     // create the features
     List<String> texts = new ArrayList<String>();
     for ( Citation c : citations ) {
@@ -59,14 +63,16 @@ public abstract class OnlineSimulatorBowMesh extends OnlineSimulator<PubmedId, F
       // seed citations are in the positive class
       bow.train( c.getPmid().toString(), c.getTitle() + " " + c.getAbstr(), 1 );
     }
-    
+
     // create the feature vectors
     Map<PubmedId, FeatureVector<Integer>> fvs = new HashMap<>();
     for ( Citation c : citations ) {
-      fvs.put( c.getPmid(), bow.createUnlabeledFV( c.getPmid().toString(),
-          c.getTitle() + " " + c.getAbstr() ) );
+      fvs.put(
+          c.getPmid(),
+          bow.createUnlabeledFV( c.getPmid().toString(),
+              c.getTitle() + " " + c.getAbstr() ) );
     }
-    
+
     return fvs;
   }
 }

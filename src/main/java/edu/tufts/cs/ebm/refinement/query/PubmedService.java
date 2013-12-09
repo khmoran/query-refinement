@@ -61,7 +61,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Initialize the services.
-   *
+   * 
    * @throws AxisFault
    */
   protected void init() throws AxisFault {
@@ -70,7 +70,7 @@ public abstract class PubmedService extends Observable {
 
     try {
       defaultCache = JCS.getInstance( DEFAULT_CACHE_NAME );
-//      this.defaultCache.clear();
+      // this.defaultCache.clear();
     } catch ( CacheException e ) {
       LOG.error( "Error intitializing prefetching cache.", e );
       e.printStackTrace();
@@ -79,7 +79,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Convert the articles to citations.
-   *
+   * 
    * @param articles
    * @return
    */
@@ -116,7 +116,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Fetch the citations.
-   *
+   * 
    * @param req2
    * @return
    * @throws RemoteException
@@ -152,14 +152,13 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Fetch the Citations for the given PubmedId.
-   *
+   * 
    * @param pmid
    * @return
    */
   protected Set<Citation> fetch( Set<PubmedId> pmids ) {
     Set<Citation> results = new HashSet<>();
-    EFetchPubmedServiceStub.EFetchRequest req =
-        new EFetchPubmedServiceStub.EFetchRequest();
+    EFetchPubmedServiceStub.EFetchRequest req = new EFetchPubmedServiceStub.EFetchRequest();
 
     String pmidStr = "";
     for ( PubmedId pmid : pmids ) {
@@ -170,7 +169,7 @@ public abstract class PubmedService extends Observable {
         pmidStr += pmid + ",";
       }
     }
-    pmidStr = pmidStr.substring( 0, pmidStr.length()-2 );
+    pmidStr = pmidStr.substring( 0, pmidStr.length() - 2 );
 
     req.setId( pmidStr );
     EFetchPubmedServiceStub.EFetchResult res;
@@ -203,25 +202,24 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Fetch the Citation for the given PubmedId.
-   *
+   * 
    * @param pmid
    * @return
    */
   protected Citation fetch( PubmedId pmid ) {
     // try to find it in the cache first
-    //Citation c = (Citation) defaultCache.get( pmid );
-    //if ( c != null ) {
-    //  LOG.debug( "Found " + pmid + " in cache!" );
-    //  return c;
-    //}
+    // Citation c = (Citation) defaultCache.get( pmid );
+    // if ( c != null ) {
+    // LOG.debug( "Found " + pmid + " in cache!" );
+    // return c;
+    // }
     Citation c = Util.getCitation( pmid );
 
     if ( c != null ) {
       return c;
     }
 
-    EFetchPubmedServiceStub.EFetchRequest req =
-        new EFetchPubmedServiceStub.EFetchRequest();
+    EFetchPubmedServiceStub.EFetchRequest req = new EFetchPubmedServiceStub.EFetchRequest();
     req.setId( pmid.toString() );
     EFetchPubmedServiceStub.EFetchResult res;
 
@@ -249,17 +247,17 @@ public abstract class PubmedService extends Observable {
       return null;
     }
 
-    //try { // add the result to the cache
-    //  defaultCache.put( pmid, c );
-    //} catch ( CacheException e ) {
-    //  LOG.error( e );
-    //}
+    // try { // add the result to the cache
+    // defaultCache.put( pmid, c );
+    // } catch ( CacheException e ) {
+    // LOG.error( e );
+    // }
     return c;
   }
 
   /**
    * Get the abstract from the citation.
-   *
+   * 
    * @param mct
    * @return
    */
@@ -281,9 +279,10 @@ public abstract class PubmedService extends Observable {
 
     return abstr;
   }
+
   /**
    * Get the authors from the citation.
-   *
+   * 
    * @param mct
    * @return
    */
@@ -318,7 +317,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Get the date from the citation.
-   *
+   * 
    * @param mct
    * @return
    */
@@ -330,7 +329,7 @@ public abstract class PubmedService extends Observable {
       if ( article != null && article.getArticleDate() != null ) {
         for ( ArticleDateType d : article.getArticleDate() ) {
           cal = new GregorianCalendar( Integer.parseInt( d.getYear() ),
-            Integer.parseInt( d.getMonth() ), Integer.parseInt( d.getDay() ) );
+              Integer.parseInt( d.getMonth() ), Integer.parseInt( d.getDay() ) );
         }
       }
       if ( cal == null && mct.getDateCompleted() != null ) {
@@ -361,7 +360,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Get the journal from the citation.
-   *
+   * 
    * @param mct
    * @return
    */
@@ -381,7 +380,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Get the MeSH terms from the citation.
-   *
+   * 
    * @param mct
    * @return
    */
@@ -401,7 +400,7 @@ public abstract class PubmedService extends Observable {
 
   /**
    * Get the title from the article.
-   *
+   * 
    * @param article
    * @return
    */

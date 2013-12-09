@@ -33,66 +33,76 @@ import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
  * An online simulation of a systematic review using a Bag of Words
  * representation and an SVM classifier.
  */
-public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowRankSvmTwoTier {
+public class OfflineSimulatorBowRankSvmLabeledTerms extends
+    OfflineSimulatorBowRankSvmTwoTier {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OfflineSimulatorBowRankSvmLabeledTerms.class );
-  protected static final String PSEUDO_PREFIX = "psuedo_";
+  protected static final Log LOG = LogFactory
+      .getLog( OfflineSimulatorBowRankSvmLabeledTerms.class );
+  /** The document ID prefix for a pseudo document term. */
+  protected static final String PSEUDO_PREFIX = "pseudo_";
   /** The pseduo document positive class label. */
   protected static final int PSEUDO_POS = 0;
   /** The pseduo document negative class label. */
   protected static final int PSEUDO_NEG = 4;
   /** Labeled terms. */
-  protected Map<FeatureVector<Integer>, Integer> labeledTerms =
-      new HashMap<FeatureVector<Integer>, Integer>();
+  protected Map<FeatureVector<Integer>, Integer> labeledTerms = new HashMap<FeatureVector<Integer>, Integer>();
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
-  public OfflineSimulatorBowRankSvmLabeledTerms( String review ) throws Exception {
+  public OfflineSimulatorBowRankSvmLabeledTerms( String review )
+      throws Exception {
     super( review );
   }
 
   /**
    * Turn the Citations into FeatureVectors.
+   * 
    * @param citations
    * @return
    */
   @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
-    Map<PubmedId, FeatureVector<Integer>> fvs = super.createFeatureVectors( citations );
-    File f = new File( "src/test/resources/" + this.dataset + "-labeled-terms.csv" );
+    Map<PubmedId, FeatureVector<Integer>> fvs = super
+        .createFeatureVectors( citations );
+    File f = new File( "src/test/resources/" + this.dataset
+        + "-labeled-terms.csv" );
     try {
       loadPseudoDocuments( f );
     } catch ( IOException e ) {
-      LOG.error( "Could not load labeled psuedodocument terms from " + f.toString(), e );
+      LOG.error(
+          "Could not load labeled psuedodocument terms from " + f.toString(), e );
     }
-    
+
     return fvs;
   }
 
   /**
-   * Load up the psudo documents (labeled terms).
+   * Load up the pseudo-documents (labeled terms).
+   * 
    * @param f
    * @throws IOException
    */
   protected void loadPseudoDocuments( File f ) throws IOException {
     Path path = Paths.get( f.getPath() );
     List<String> terms = Files.readAllLines( path, Charset.defaultCharset() );
-    
+
     for ( String term : terms ) {
-      FeatureVector<Integer> pseudo = bow.createUnlabeledFV( PSEUDO_PREFIX + term, term );
+      FeatureVector<Integer> pseudo = bow.createUnlabeledFV( PSEUDO_PREFIX
+          + term, term );
       if ( term.contains( "+" ) ) {
         labeledTerms.put( pseudo, PSEUDO_POS );
       } else {
         labeledTerms.put( pseudo, PSEUDO_NEG );
       }
     }
-    
-    LOG.info( "Loaded " +  labeledTerms.size() + " labeled terms for psueodocuments." );
+
+    LOG.info( "Loaded " + labeledTerms.size()
+        + " labeled terms for psueodocuments." );
   }
 
   @Override
@@ -100,13 +110,13 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
       Map<PubmedId, FeatureVector<Integer>> training,
       Map<PubmedId, FeatureVector<Integer>> test ) {
     List<PubmedId> ranking = new ArrayList<PubmedId>();
-    
+
     List<FeatureVector<Integer>> pos = new ArrayList<FeatureVector<Integer>>();
     List<FeatureVector<Integer>> neg = new ArrayList<FeatureVector<Integer>>();
-    
+
     for ( PubmedId id : training.keySet() ) {
       if ( activeReview.getRelevantLevel1().contains( id )
-        || activeReview.getRelevantLevel2().contains( id ) ) {
+          || activeReview.getRelevantLevel2().contains( id ) ) {
         pos.add( training.get( id ) );
       } else {
         neg.add( training.get( id ) );
@@ -117,18 +127,17 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
     if ( !( pos.isEmpty() || neg.isEmpty() ) ) {
       // create the training data, which is the expert-identified relevant
       // and irrelevant sets
-      Map<FeatureVector<Integer>, Integer> minorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> minorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : pos ) {
         fv.setQid( 1 );
         PubmedId pmid = Util.createOrUpdatePmid( Long.valueOf( fv.getId() ) );
         int posRank = POS_L1;
-        if ( activeReview.getRelevantLevel2().contains( pmid ) ) posRank = POS_L2;
+        if ( activeReview.getRelevantLevel2().contains( pmid ) )
+          posRank = POS_L2;
         fv.setRank( posRank );
         minorityMap.put( fv, posRank );
       }
-      Map<FeatureVector<Integer>, Integer> majorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> majorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : neg ) {
         fv.setQid( 1 );
         fv.setRank( NEG );
@@ -136,22 +145,23 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
       }
 
       // create the test set
-      TestRelation<Integer> testRelation = new TestRelation<Integer>(
-          "test", bow.getTrainingData().getMetadata() );
+      TestRelation<Integer> testRelation = new TestRelation<Integer>( "test",
+          bow.getTrainingData().getMetadata() );
       for ( FeatureVector<Integer> c : test.values() ) {
-        if ( c.getQid() == null ) c.setQid( 1 );
+        if ( c.getQid() == null )
+          c.setQid( 1 );
         testRelation.add( (UnlabeledFeatureVector<Integer>) c );
       }
-      
+
       ranking = ensembleRank( minorityMap, majorityMap, testRelation );
     }
-    
+
     return ranking;
   }
-  
 
   /**
    * Bag and run the classifier on an undersampled subset.
+   * 
    * @param minorityClass
    * @param majorityClass
    * @param test
@@ -160,10 +170,11 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
   @Override
   protected List<PubmedId> bag(
       Map<FeatureVector<Integer>, Integer> minorityClass,
-      Map<FeatureVector<Integer>, Integer> majorityClass, TestRelation<Integer> test ) {
+      Map<FeatureVector<Integer>, Integer> majorityClass,
+      TestRelation<Integer> test ) {
     // prepare the data for the ranking function
-    TrainRelation<Integer> trainRelation = new TrainRelation<Integer>(
-        "train", bow.getTrainingData().getMetadata() );
+    TrainRelation<Integer> trainRelation = new TrainRelation<Integer>( "train",
+        bow.getTrainingData().getMetadata() );
     // add minority instances
     for ( FeatureVector<Integer> fv : minorityClass.keySet() ) {
       LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<Integer>(
@@ -186,9 +197,11 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
 
     // undersampling the majority class
     // add majority instances
-    int numNegSamples = ( minorityClass.size()*UNDERSAMPLING_MULTIPLIER >= majorityClass.size() ) ?
-        majorityClass.size() : minorityClass.size()*UNDERSAMPLING_MULTIPLIER;
-    ArrayList<FeatureVector<Integer>> shuffled = new ArrayList<>( majorityClass.keySet() );
+    int numNegSamples = ( minorityClass.size() * UNDERSAMPLING_MULTIPLIER >= majorityClass
+        .size() ) ? majorityClass.size() : minorityClass.size()
+        * UNDERSAMPLING_MULTIPLIER;
+    ArrayList<FeatureVector<Integer>> shuffled = new ArrayList<>(
+        majorityClass.keySet() );
     Collections.shuffle( shuffled );
     for ( int i = 0; i < numNegSamples; i++ ) {
       FeatureVector<Integer> fv = shuffled.get( i );
@@ -211,8 +224,8 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
       for ( Double rank : results.keySet() ) {
         for ( FeatureVector<Integer> fv : results.get( rank ) ) {
           try {
-            PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
-                Long.valueOf( fv.getId() ) );
+            PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid( Long
+                .valueOf( fv.getId() ) );
             ranking.add( pmid );
           } catch ( NumberFormatException e ) {
             LOG.error( "Could not parse pmid: " + fv.getId(), e );
@@ -222,7 +235,7 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends OfflineSimulatorBowR
     } catch ( IncomparableFeatureVectorException e ) {
       LOG.error( "Could not compare feature vectors.", e );
     }
-    
+
     return ranking;
   }
 }

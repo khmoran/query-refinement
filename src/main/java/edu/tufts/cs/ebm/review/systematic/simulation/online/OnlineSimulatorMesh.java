@@ -19,15 +19,18 @@ import edu.tufts.cs.ml.text.BagOfWords;
  * An online simulation of a systematic review using a Bag of Words
  * representation.
  */
-public abstract class OnlineSimulatorMesh extends OnlineSimulator<PubmedId, FeatureVector<Integer>> {
+public abstract class OnlineSimulatorMesh extends
+    OnlineSimulator<PubmedId, FeatureVector<Integer>> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorMesh.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorMesh.class );
 
   /** The Bag of Words. */
   protected BagOfWords<Integer> bow;
+
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -37,6 +40,7 @@ public abstract class OnlineSimulatorMesh extends OnlineSimulator<PubmedId, Feat
 
   /**
    * Turn the Citations into FeatureVectors.
+   * 
    * @param citations
    * @return
    */
@@ -44,9 +48,9 @@ public abstract class OnlineSimulatorMesh extends OnlineSimulator<PubmedId, Feat
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
     // initialize the bag of words
-    bow = new BagOfWords<Integer>(
-        new File( "src/main/resources/stoplists/en.txt" ) );
-   
+    bow = new BagOfWords<Integer>( new File(
+        "src/main/resources/stoplists/en.txt" ) );
+
     // create the features
     List<String> texts = new ArrayList<String>();
     for ( Citation c : citations ) {
@@ -59,15 +63,15 @@ public abstract class OnlineSimulatorMesh extends OnlineSimulator<PubmedId, Feat
       // seed citations are in the positive class
       bow.train( c.getPmid().toString(), c.getTitle() + " " + c.getAbstr(), 1 );
     }
-    
+
     // create the feature vectors
     Map<PubmedId, FeatureVector<Integer>> fvs = new HashMap<>();
     for ( Citation c : citations ) {
       String mesh = c.getMeshStr().replaceAll( ",", " " );
-      fvs.put( c.getPmid(), bow.createUnlabeledFV( c.getPmid().toString(),
-          mesh ) );
+      fvs.put( c.getPmid(),
+          bow.createUnlabeledFV( c.getPmid().toString(), mesh ) );
     }
-    
+
     return fvs;
   }
 }

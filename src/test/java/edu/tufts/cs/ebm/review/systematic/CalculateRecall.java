@@ -17,11 +17,12 @@ public class CalculateRecall extends AbstractTest {
 
   /**
    * Calculate recall.
+   * 
    * @throws AxisFault
    * @throws InterruptedException
    */
   public void testCalculateRecallLevel1( SystematicReview r ) throws AxisFault,
-    InterruptedException {
+      InterruptedException {
     String popQuery = r.getQueryP();
     String icQuery = r.getQueryIC();
     String query = "(" + popQuery + ") AND (" + icQuery + ")";
@@ -47,17 +48,18 @@ public class CalculateRecall extends AbstractTest {
     Set<PubmedId> all = new HashSet<>( r.getRelevantLevel1() );
     all.removeAll( found );
 
-    LOG.info( r.getName() + "[L1]: Ids not found by initial query (" +
-        all.size() + "): \n\n" + all.toString() );
+    LOG.info( r.getName() + "[L1]: Ids not found by initial query ("
+        + all.size() + "): \n\n" + all.toString() );
   }
 
   /**
    * Calculate recall.
+   * 
    * @throws AxisFault
    * @throws InterruptedException
    */
   public void testCalculateRecallLevel2( SystematicReview r ) throws AxisFault,
-    InterruptedException {
+      InterruptedException {
     String popQuery = r.getQueryP();
     String icQuery = r.getQueryIC();
     String query = "(" + popQuery + ") AND (" + icQuery + ")";
@@ -83,30 +85,32 @@ public class CalculateRecall extends AbstractTest {
     Set<PubmedId> all = new HashSet<>( r.getRelevantLevel2() );
     all.removeAll( found );
 
-    LOG.info( r.getName() + "[L2]: Ids not found by initial query (" +
-        all.size() + "): \n\n" + all.toString() );
+    LOG.info( r.getName() + "[L2]: Ids not found by initial query ("
+        + all.size() + "): \n\n" + all.toString() );
   }
 
   /**
    * Calculate recall.
+   * 
    * @throws AxisFault
    * @throws InterruptedException
    */
   @Test
   public void testCalculatePbRecallLevel1() throws AxisFault,
-    InterruptedException {
+      InterruptedException {
     testCalculateRecallLevel1( protonBeamReview );
     testCalculateRecallLevel2( protonBeamReview );
   }
 
   /**
    * Calculate recall.
+   * 
    * @throws AxisFault
    * @throws InterruptedException
    */
   @Test
   public void testCalculateClRecallLevel1() throws AxisFault,
-    InterruptedException {
+      InterruptedException {
     testCalculateRecallLevel1( clopidogrelReview );
     testCalculateRecallLevel2( clopidogrelReview );
   }

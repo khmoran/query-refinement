@@ -21,16 +21,17 @@ import edu.tufts.cs.ml.classify.NaiveBayesClassifier;
 import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
 
 /**
- * An online simulation of a systematic review using an LDA representation and
- * a naive bayes classifier.
+ * An online simulation of a systematic review using an LDA representation and a
+ * naive bayes classifier.
  */
 public class OnlineSimulatorLdaNaiveBayes extends OnlineSimulatorLda {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorLdaNaiveBayes.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorLdaNaiveBayes.class );
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -40,6 +41,7 @@ public class OnlineSimulatorLdaNaiveBayes extends OnlineSimulatorLda {
 
   /**
    * Create a training data set from the LDA features.
+   * 
    * @param lda
    * @param expertRelevantPapers
    * @param expertIrrelevantPapers
@@ -52,15 +54,16 @@ public class OnlineSimulatorLdaNaiveBayes extends OnlineSimulatorLda {
     for ( int i = 0; i < NUM_TOPICS; i++ ) {
       m.put( String.valueOf( i ), "numeric" );
     }
-    TrainRelation<Integer> relation = new TrainRelation<Integer>(
-        "lda", m );
+    TrainRelation<Integer> relation = new TrainRelation<Integer>( "lda", m );
     for ( FeatureVector<Integer> fv : expertRelevantPapers ) {
-      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( POS, fv.getId() );
+      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( POS,
+          fv.getId() );
       lfv.putAll( fv );
       relation.add( lfv );
     }
     for ( FeatureVector<Integer> fv : expertIrrelevantPapers ) {
-      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( NEG, fv.getId() );
+      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<>( NEG,
+          fv.getId() );
       lfv.putAll( fv );
       relation.add( lfv );
     }
@@ -72,9 +75,10 @@ public class OnlineSimulatorLdaNaiveBayes extends OnlineSimulatorLda {
   protected void initializeClassifier( Set<Citation> citations ) {
     // this will happen in rank(...) method
   }
-  
+
   /**
    * Rank the query results using cosine similarity.
+   * 
    * @param searcher
    * @return
    */
@@ -109,8 +113,10 @@ public class OnlineSimulatorLdaNaiveBayes extends OnlineSimulatorLda {
       } catch ( IncomparableFeatureVectorException e ) {
         LOG.error( e );
       }
-      if ( ufv.getClassification().equals( POS ) ) val = cert;
-      else val = -1*cert;
+      if ( ufv.getClassification().equals( POS ) )
+        val = cert;
+      else
+        val = -1 * cert;
       rankMap.put( val, pmid );
     }
 

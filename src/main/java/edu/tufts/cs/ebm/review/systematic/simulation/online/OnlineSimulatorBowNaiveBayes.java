@@ -25,13 +25,14 @@ import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
  */
 public class OnlineSimulatorBowNaiveBayes extends OnlineSimulatorBow {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBowNaiveBayes.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorBowNaiveBayes.class );
   /** The instances. */
   protected InstanceList instances;
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -59,7 +60,7 @@ public class OnlineSimulatorBowNaiveBayes extends OnlineSimulatorBow {
     for ( FeatureVector<Integer> fv : expertIrrelevantPapers.values() ) {
       bow.train( fv, NEG );
     }
-    
+
     // put the classified Citations into a training set
     TrainRelation<Integer> relation = bow.getTrainingData();
     // classify the unclassified Citations using the model
@@ -84,8 +85,10 @@ public class OnlineSimulatorBowNaiveBayes extends OnlineSimulatorBow {
       } catch ( IncomparableFeatureVectorException e ) {
         LOG.error( e );
       }
-      if ( ufv.getClassification().equals( POS ) ) val = cert;
-      else val = -1*cert;
+      if ( ufv.getClassification().equals( POS ) )
+        val = cert;
+      else
+        val = -1 * cert;
       rankMap.put( val, pmid );
     }
 

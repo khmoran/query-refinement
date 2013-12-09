@@ -28,17 +28,16 @@ public class TestLoadMeshRanking {
 
   /**
    * Load the PMIDs.
-   *
+   * 
    * @return
    * @throws IOException
    * @throws ParseException
    */
   @Test
-  @Parameters( { "csvFile" } )
+  @Parameters({ "csvFile" })
   public void loadInfoGainsTest(
-      @Optional( "src/test/resources/cl-mesh-ranking-major.out" )
-      String csvFile )
-    throws IOException, ParseException {
+      @Optional("src/test/resources/cl-mesh-ranking-major.out") String csvFile )
+      throws IOException, ParseException {
 
     Reader r = new FileReader( csvFile );
     TreeSet<RankedMesh> rankedMeshes = loadInfoGains( r );
@@ -52,14 +51,14 @@ public class TestLoadMeshRanking {
 
   /**
    * Load the info gain data.
-   *
+   * 
    * @param input
    * @return
    * @throws IOException
    * @throws ParseException
    */
-  public TreeSet<RankedMesh> loadInfoGains( Reader input )
-    throws IOException, ParseException {
+  public TreeSet<RankedMesh> loadInfoGains( Reader input ) throws IOException,
+      ParseException {
     CSVParser parser = new CSVParser( input, CSVFormat.TDF );
     List<CSVRecord> records = parser.getRecords();
 
@@ -70,8 +69,8 @@ public class TestLoadMeshRanking {
       String term = parts[1].trim();
       boolean isPos = parts[0].contains( "+" ) ? true : false;
 
-      RankedMesh rm = new RankedMesh(
-          term, infoGain, isPos, PicoElement.POPULATION );
+      RankedMesh rm = new RankedMesh( term, infoGain, isPos,
+          PicoElement.POPULATION );
       meshes.add( rm );
     }
 

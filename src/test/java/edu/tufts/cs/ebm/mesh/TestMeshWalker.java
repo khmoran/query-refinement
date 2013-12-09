@@ -20,8 +20,7 @@ public class TestMeshWalker {
     StructuredNode r = walker.getTerm( "Platelet Aggregation Inhibitors" );
     long loadEnd = System.currentTimeMillis();
 
-    double loadDuration = ( (double) loadEnd - (double) loadStart )
-        / (double) 1000;
+    double loadDuration = ( (double) loadEnd - (double) loadStart ) / 1000;
     System.out.println( "Load duration: " + loadDuration + "sec" );
 
     assert r != null;

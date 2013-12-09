@@ -21,10 +21,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +31,12 @@ import edu.tufts.cs.ebm.util.Util;
 
 public class CreateReviewController implements Initializable {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      CreateReviewController.class );
+  protected static final Log LOG = LogFactory
+      .getLog( CreateReviewController.class );
   /** Key combo to catch TAB + another key. */
-  protected final KeyCombination combo = new KeyCodeCombination(
-      KeyCode.ENTER );
+  protected final KeyCombination combo = new KeyCodeCombination( KeyCode.ENTER );
   /** Error message for a blank name. */
-  public static final String INVALID_SEED =
-      "Invalid PubMed id. Format is dddddddd.";
+  public static final String INVALID_SEED = "Invalid PubMed id. Format is dddddddd.";
   /** Error message for a blank name. */
   public static final String BLANK_NAME = "Please enter a review name.";
   /** Error message for a blank creator. */
@@ -83,8 +77,8 @@ public class CreateReviewController implements Initializable {
   /** The review being created. */
   protected SystematicReview review;
   /** The seed list items. */
-  protected final ObservableList<PubmedId> listItems =
-      FXCollections.observableArrayList();
+  protected final ObservableList<PubmedId> listItems = FXCollections
+      .observableArrayList();
 
   @Override
   public void initialize( URL location, ResourceBundle resources ) {
@@ -93,7 +87,7 @@ public class CreateReviewController implements Initializable {
 
   /**
    * Get the view.
-   *
+   * 
    * @return
    */
   public Pane getView() {
@@ -102,7 +96,7 @@ public class CreateReviewController implements Initializable {
 
   /**
    * Handle the "add" seed button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -110,10 +104,9 @@ public class CreateReviewController implements Initializable {
     addSeed();
   }
 
-
   /**
    * Handle the "add" seed button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -149,6 +142,7 @@ public class CreateReviewController implements Initializable {
 
   /**
    * Handle the "cancel" button action.
+   * 
    * @param e
    */
   @FXML
@@ -156,16 +150,15 @@ public class CreateReviewController implements Initializable {
     mainController.handleMenuHomeAction( e );
   }
 
-
   /**
    * Handle deletion of a seed.
+   * 
    * @param e
    */
   @FXML
   protected void handleDeleteSeedAction( ActionEvent e ) {
     if ( e.getSource() instanceof MenuItem && listView.isFocused() ) {
-      PubmedId toDelete =
-          listView.getSelectionModel().getSelectedItem();
+      PubmedId toDelete = listView.getSelectionModel().getSelectedItem();
 
       if ( toDelete != null ) {
         listItems.remove( toDelete );
@@ -175,7 +168,7 @@ public class CreateReviewController implements Initializable {
 
   /**
    * Handle the "create review" button press.
-   *
+   * 
    * @param e
    */
   @FXML

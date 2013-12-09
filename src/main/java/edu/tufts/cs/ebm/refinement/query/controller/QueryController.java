@@ -63,8 +63,8 @@ public class QueryController implements Initializable {
   public void initialize( URL location, ResourceBundle resources ) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
-      URL url =  QueryController.class.getClassLoader().getResource(
-              "TabPage.fxml" );
+      URL url = QueryController.class.getClassLoader().getResource(
+          "TabPage.fxml" );
       GridPane pane = (GridPane) fxmlLoader.load( url.openStream() );
       pTabController = fxmlLoader.getController();
       pTabController.setQueryController( this );
@@ -91,6 +91,7 @@ public class QueryController implements Initializable {
 
   /**
    * Get the view.
+   * 
    * @return
    */
   public Pane getView() {
@@ -99,9 +100,10 @@ public class QueryController implements Initializable {
 
   /**
    * Display the citation details in the detail pane.
+   * 
    * @param c
    */
-  public void displayCitationDetails( Citation c  ) {
+  public void displayCitationDetails( Citation c ) {
     citationController.setCitation( c );
 
     if ( secondaryStage == null ) {
@@ -119,6 +121,7 @@ public class QueryController implements Initializable {
 
   /**
    * Set the main stage.
+   * 
    * @param mainStage
    */
   public void setStage( Stage mainStage ) {
@@ -127,6 +130,7 @@ public class QueryController implements Initializable {
 
   /**
    * Set the active review.
+   * 
    * @param activeReview
    */
   public void setActiveReview( SystematicReview activeReview ) {

@@ -21,10 +21,10 @@ import edu.tufts.cs.ml.topics.lda.LDA;
 /**
  * An online simulation of a systematic review using an LDA representation.
  */
-public abstract class OnlineSimulatorLda extends OnlineSimulator<PubmedId, FeatureVector<Integer>> {
+public abstract class OnlineSimulatorLda extends
+    OnlineSimulator<PubmedId, FeatureVector<Integer>> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorLda.class );
+  protected static final Log LOG = LogFactory.getLog( OnlineSimulatorLda.class );
   /** The expected number of topics. */
   public static final int NUM_TOPICS = 20;
   /** The alpha sum prior. */
@@ -38,6 +38,7 @@ public abstract class OnlineSimulatorLda extends OnlineSimulator<PubmedId, Featu
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -51,8 +52,8 @@ public abstract class OnlineSimulatorLda extends OnlineSimulator<PubmedId, Featu
     StringBuilder sb = new StringBuilder();
 
     for ( Citation c : citations ) {
-      sb.append( c.getPmid() + "\tX\t\"" + c.getTitle() + " " + c.getAbstr() +
-          "\"\n" );
+      sb.append( c.getPmid() + "\tX\t\"" + c.getTitle() + " " + c.getAbstr()
+          + "\"\n" );
     }
 
     this.lda = new BasicLDA( NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
@@ -61,28 +62,28 @@ public abstract class OnlineSimulatorLda extends OnlineSimulator<PubmedId, Featu
     } catch ( IOException e ) {
       LOG.error( e );
     }
-    
+
     // create the feature vectors
     Map<PubmedId, FeatureVector<Integer>> fvs = new HashMap<>();
     for ( Citation c : citations ) {
       fvs.put( c.getPmid(), createUnlabeledVector( c ) );
     }
-    
+
     return fvs;
   }
 
   /**
    * Create a FeatureVector from the LDA data.
+   * 
    * @param c
    * @param relevant
    * @return
    */
-  protected UnlabeledFeatureVector<Integer> createUnlabeledVector(
-      Citation c ) {
-    UnlabeledFeatureVector<Integer> fv = new UnlabeledFeatureVector<Integer>(
-        c.getPmid().toString() );
-    Multimap<Double, Integer> topicDist = lda.getTopics(
-        c.getPmid().toString() );
+  protected UnlabeledFeatureVector<Integer> createUnlabeledVector( Citation c ) {
+    UnlabeledFeatureVector<Integer> fv = new UnlabeledFeatureVector<Integer>( c
+        .getPmid().toString() );
+    Multimap<Double, Integer> topicDist = lda
+        .getTopics( c.getPmid().toString() );
     for ( double pct : topicDist.keySet() ) {
       for ( int topic : topicDist.get( pct ) ) {
         String str = String.valueOf( topic );

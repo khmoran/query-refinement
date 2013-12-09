@@ -39,9 +39,11 @@ public class TestCorrelateMeshTerms extends AbstractTest {
 
   /**
    * Set up the test suite.
+   * 
    * @throws IOException
    * @throws BiffException
    */
+  @Override
   @BeforeSuite
   public void setUp() throws Exception {
     super.setUp();
@@ -68,12 +70,13 @@ public class TestCorrelateMeshTerms extends AbstractTest {
       LOG.error( "Error intitializing prefetching cache.", e );
       e.printStackTrace();
     }
-    
+
     this.stopWords = loadStopWords();
   }
 
   /**
    * Load the stop words.
+   * 
    * @return
    * @throws IOException
    */
@@ -89,28 +92,28 @@ public class TestCorrelateMeshTerms extends AbstractTest {
       String[] split = line.split( "," );
       for ( String s : split ) {
         String normalized = Util.normalize( s );
-        
+
         if ( !normalized.isEmpty() ) {
           stopWords.add( normalized );
         }
       }
     }
     br.close();
-    
+
     System.out.println( stopWords );
-    
+
     return stopWords;
   }
-  
+
   /**
    * Simulate the Clopidogrel query refinement process.
-   *
+   * 
    * @throws InterruptedException
    * @throws IOException
    */
   @Test
-  public void simulateCorrelateMeshTerms()
-    throws InterruptedException, IOException {
+  public void simulateCorrelateMeshTerms() throws InterruptedException,
+      IOException {
     StringBuffer popQuery = new StringBuffer( activeReview.getQueryP() );
     StringBuffer icQuery = new StringBuffer( activeReview.getQueryIC() );
 
@@ -119,10 +122,10 @@ public class TestCorrelateMeshTerms extends AbstractTest {
 
     // run the initial query
     String query = "(" + popQuery + ") AND (" + icQuery + ")".toLowerCase();
-    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
-        query, activeReview );
+    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher( query,
+        activeReview );
     search( searcher );
-    
+
     Map<String, Map<String, Integer>> meshToWordMap = new HashMap<>();
     Map<String, Integer> wordCounts = new HashMap<String, Integer>();
     Map<String, Integer> meshCounts = new HashMap<>();
@@ -130,7 +133,8 @@ public class TestCorrelateMeshTerms extends AbstractTest {
       for ( String mesh : c.getMeshTerms() ) {
         // get a tally of how often this MeSH term is seen
         Integer meshCount = meshCounts.get( mesh );
-        if ( meshCount == null ) meshCount = 0;
+        if ( meshCount == null )
+          meshCount = 0;
         meshCounts.put( mesh, ++meshCount );
 
         // tally how often words are seen in articles tagged with this MeSH
@@ -139,17 +143,20 @@ public class TestCorrelateMeshTerms extends AbstractTest {
           wordCount = new HashMap<String, Integer>();
           meshToWordMap.put( mesh, wordCount );
         }
-        
+
         for ( String word : Util.tokenize( c.getAbstr() ) ) {
-          word = word.toLowerCase(); // to normalize     
-          if ( stopWords.contains( word ) || query.contains( word ) ) continue;
+          word = word.toLowerCase(); // to normalize
+          if ( stopWords.contains( word ) || query.contains( word ) )
+            continue;
 
           Integer count = wordCount.get( word );
-          if ( count == null ) count = 0;
+          if ( count == null )
+            count = 0;
           wordCount.put( word, ++count );
-          
+
           count = wordCounts.get( word );
-          if ( count == null ) count = 0;
+          if ( count == null )
+            count = 0;
           wordCounts.put( word, ++count );
         }
       }
@@ -163,35 +170,42 @@ public class TestCorrelateMeshTerms extends AbstractTest {
       List<Integer> wordFreqs = new ArrayList<Integer>();
       for ( Map<String, Integer> wordMap : meshToWordMap.values() ) {
         Integer count = wordMap.get( word );
-        if ( count != null ) wordFreqs.add( count );
-        else wordFreqs.add( 0 );
+        if ( count != null )
+          wordFreqs.add( count );
+        else
+          wordFreqs.add( 0 );
       }
       // we have all the counts for this word... now get shannon entropy
       double entropy = MathUtil.calculateShannonEntropy( wordFreqs );
       entropyMap.put( word, entropy );
     }
-    List<String> orderedEntropy = Ordering.natural().onResultOf(
-        Functions.forMap( entropyMap ) ).immutableSortedCopy( entropyMap.keySet() ).reverse();
+    List<String> orderedEntropy = Ordering.natural()
+        .onResultOf( Functions.forMap( entropyMap ) )
+        .immutableSortedCopy( entropyMap.keySet() ).reverse();
 
-    List<String> sortedMesh = Ordering.natural().onResultOf(
-        Functions.forMap( meshCounts ) ).immutableSortedCopy( meshCounts.keySet() ).reverse();
+    List<String> sortedMesh = Ordering.natural()
+        .onResultOf( Functions.forMap( meshCounts ) )
+        .immutableSortedCopy( meshCounts.keySet() ).reverse();
     StringBuilder output = new StringBuilder();
     for ( String mesh : sortedMesh ) {
       Map<String, Integer> freqMap = meshToWordMap.get( mesh );
-      List<String> sortedKeys = Ordering.natural().onResultOf(
-          Functions.forMap( freqMap) ).immutableSortedCopy( freqMap.keySet() ).reverse();
+      List<String> sortedKeys = Ordering.natural()
+          .onResultOf( Functions.forMap( freqMap ) )
+          .immutableSortedCopy( freqMap.keySet() ).reverse();
       output.append( mesh + " (" + meshCounts.get( mesh ) + "):\t" );
       int i = 0;
       for ( String word : sortedKeys ) {
         // don't look at things that are too infrequent or too frequent
-        if ( word.length() < 4 || wordCounts.get( word ) == 1 ||
-            orderedEntropy.indexOf( word ) < ( orderedEntropy.size()*.8 ) ) {
+        if ( word.length() < 4 || wordCounts.get( word ) == 1
+            || orderedEntropy.indexOf( word ) < ( orderedEntropy.size() * .8 ) ) {
           continue;
         } else if ( i > 10 ) {
           break;
         } else {
-          output.append( word + " (" + meshToWordMap.get( mesh ).get( word ) + ")");
-          if ( i < 10 ) output.append( ", " );
+          output.append( word + " (" + meshToWordMap.get( mesh ).get( word )
+              + ")" );
+          if ( i < 10 )
+            output.append( ", " );
           i++;
         }
       }

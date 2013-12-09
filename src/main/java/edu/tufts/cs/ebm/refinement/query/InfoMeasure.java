@@ -18,6 +18,7 @@ public class InfoMeasure {
 
   /**
    * Default constructor.
+   * 
    * @param truePositives
    * @param allRetrieved
    * @param allRelevant
@@ -28,8 +29,10 @@ public class InfoMeasure {
 
     this.recall = calculateRecall( truePositives, allRelevant );
   }
+
   /**
    * Default constructor.
+   * 
    * @param truePositives
    * @param allRetrieved
    * @param allRelevant
@@ -46,17 +49,18 @@ public class InfoMeasure {
 
   /**
    * Calculate the precision.
+   * 
    * @param truePositives
    * @param allRetrieved
    * @return
    */
-  public static double calculatePrecision( int truePositives,
-      int allRetrieved ) {
+  public static double calculatePrecision( int truePositives, int allRetrieved ) {
     return (double) truePositives / (double) allRetrieved;
   }
 
   /**
    * Calculate the recall.
+   * 
    * @param truePositives
    * @param allRelevant
    * @return
@@ -67,6 +71,7 @@ public class InfoMeasure {
 
   /**
    * Calculate the f-measure (harmonic mean).
+   * 
    * @param precision
    * @param recall
    * @return
@@ -77,6 +82,7 @@ public class InfoMeasure {
 
   /**
    * Get the true positives.
+   * 
    * @return
    */
   public int getTruePositives() {
@@ -85,6 +91,7 @@ public class InfoMeasure {
 
   /**
    * Get all retrieved.
+   * 
    * @return
    */
   public int getAllRetrieved() {
@@ -93,6 +100,7 @@ public class InfoMeasure {
 
   /**
    * Get all relevant.
+   * 
    * @return
    */
   public int getAllRelevant() {
@@ -101,6 +109,7 @@ public class InfoMeasure {
 
   /**
    * Get the precision.
+   * 
    * @return
    */
   public double getPrecision() {
@@ -109,6 +118,7 @@ public class InfoMeasure {
 
   /**
    * Get the recall.
+   * 
    * @return
    */
   public double getRecall() {
@@ -117,6 +127,7 @@ public class InfoMeasure {
 
   /**
    * Get the f-measure.
+   * 
    * @return
    */
   public double getFmeasure() {
@@ -125,19 +136,18 @@ public class InfoMeasure {
 
   /**
    * Long-form String output.
+   * 
    * @return
    */
   public String toStringVerbose() {
-    return
-        "\t Precision:" + MathUtil.round( precision, 4 ) +
-        "\t Recall:" + MathUtil.round( recall, 4 ) +
-        "\t F-measure: " + MathUtil.round( fmeasure, 4 );
+    return "\t Precision:" + MathUtil.round( precision, 4 ) + "\t Recall:"
+        + MathUtil.round( recall, 4 ) + "\t F-measure: "
+        + MathUtil.round( fmeasure, 4 );
   }
 
   @Override
   public String toString() {
-    return
-        "\t Recall:" + MathUtil.round( recall, 4 );
+    return "\t Recall:" + MathUtil.round( recall, 4 );
   }
 
 }

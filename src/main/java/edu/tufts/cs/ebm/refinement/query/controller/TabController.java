@@ -39,10 +39,6 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,8 +61,7 @@ public class TabController implements Observer, Initializable {
   protected final KeyCombination enterCombo = new KeyCodeCombination(
       KeyCode.ENTER );
   /** Key combo to catch ENTER + another key. */
-  protected final KeyCombination tabCombo = new KeyCodeCombination(
-      KeyCode.TAB );
+  protected final KeyCombination tabCombo = new KeyCodeCombination( KeyCode.TAB );
   /** The article table view. */
   protected ListProperty<Citation> citations = new SimpleListProperty<>(
       FXCollections.observableList( new ArrayList<Citation>() ) );
@@ -148,6 +143,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Get the view.
+   * 
    * @return
    */
   public Pane getView() {
@@ -156,42 +152,44 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Set the active review.
+   * 
    * @param activeReview
    */
   protected void setActiveReview( SystematicReview activeReview ) {
     this.activeReview = activeReview;
 
     if ( activeReview != null ) {
-      switch( picoElement ) {
-        case POPULATION:
-          if ( activeReview.getQueryP() != null ) {
-            this.queryBox.setText( activeReview.getQueryP() );
-          }
-          break;
-        case INTERVENTION:
-          if ( activeReview.getQueryIC() != null ) {
-            this.queryBox.setText( activeReview.getQueryIC() );
-          }
-          break;
-        case OUTCOME:
-          if ( activeReview.getQueryO() != null ) {
-            this.queryBox.setText( activeReview.getQueryO() );
-          }
-          break;
-        default:
-          LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
-          break;
+      switch ( picoElement ) {
+      case POPULATION:
+        if ( activeReview.getQueryP() != null ) {
+          this.queryBox.setText( activeReview.getQueryP() );
+        }
+        break;
+      case INTERVENTION:
+        if ( activeReview.getQueryIC() != null ) {
+          this.queryBox.setText( activeReview.getQueryIC() );
+        }
+        break;
+      case OUTCOME:
+        if ( activeReview.getQueryO() != null ) {
+          this.queryBox.setText( activeReview.getQueryO() );
+        }
+        break;
+      default:
+        LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
+        break;
       }
 
       for ( PubmedId pmid : activeReview.getSeeds() ) {
-        MainController.EM.find( PubmedId.class, pmid.getValue() );  // load the seeds
+        MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
+                                                                   // seeds
       }
     }
   }
 
   /**
    * Handle the "submit" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -203,7 +201,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle the "submit" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -213,7 +211,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle the "cancel" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -225,7 +223,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle the "clear" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -235,7 +233,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle the "clear" button press.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -251,7 +249,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle marking a citation relevant.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -268,7 +266,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle marking a citation's population irrelevant.
-   *
+   * 
    * @param e
    */
   @FXML
@@ -276,19 +274,19 @@ public class TabController implements Observer, Initializable {
     Citation c = articleTable.getSelectionModel().getSelectedItem();
 
     if ( c != null ) {
-      switch( picoElement ) {
-        case POPULATION:
-          activeReview.addIrrelevantP( c.getPmid() );
-          break;
-        case INTERVENTION:
-          activeReview.addIrrelevantIC( c.getPmid() );
-          break;
-        case OUTCOME:
-          activeReview.addIrrelevantO( c.getPmid() );
-          break;
-        default:
-          LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
-          break;
+      switch ( picoElement ) {
+      case POPULATION:
+        activeReview.addIrrelevantP( c.getPmid() );
+        break;
+      case INTERVENTION:
+        activeReview.addIrrelevantIC( c.getPmid() );
+        break;
+      case OUTCOME:
+        activeReview.addIrrelevantO( c.getPmid() );
+        break;
+      default:
+        LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
+        break;
       }
 
       MainController.EM.getTransaction().begin();
@@ -299,6 +297,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Handle the "details" menu item.
+   * 
    * @param e
    */
   @FXML
@@ -312,18 +311,20 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Transfer the focus from the pane to the query box.
+   * 
    * @param e
    */
   @FXML
   public void transferFocus( Event e ) {
-    if ( e instanceof MouseEvent ||
-        ( e instanceof KeyEvent && tabCombo.match( (KeyEvent) e ) ) ) {
+    if ( e instanceof MouseEvent
+        || ( e instanceof KeyEvent && tabCombo.match( (KeyEvent) e ) ) ) {
       queryBox.requestFocus();
     }
   }
 
   /**
    * Transfer the focus from the pane to the query box.
+   * 
    * @param e
    */
   public void transferFocus() {
@@ -352,21 +353,21 @@ public class TabController implements Observer, Initializable {
     }
 
     // then update the database
-    switch( picoElement ) {
-      case POPULATION:
-        activeReview.setQueryP( query );
-        break;
-      case INTERVENTION:
-        activeReview.setQueryIC( query );
-        break;
-      case OUTCOME:
-        activeReview.setQueryO( query );
-        break;
-      default:
-        LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
-        break;
+    switch ( picoElement ) {
+    case POPULATION:
+      activeReview.setQueryP( query );
+      break;
+    case INTERVENTION:
+      activeReview.setQueryIC( query );
+      break;
+    case OUTCOME:
+      activeReview.setQueryO( query );
+      break;
+    default:
+      LOG.error( "No PICO element assigned to Tab with id " + tab.getId() );
+      break;
     }
-    
+
     MainController.EM.getTransaction().begin();
     MainController.EM.persist( activeReview );
     MainController.EM.getTransaction().commit();
@@ -376,27 +377,23 @@ public class TabController implements Observer, Initializable {
   public void update( Observable o, final Object arg ) {
     if ( arg != null ) {
       if ( arg instanceof Collection ) {
-        Platform.runLater(
-            new Runnable() {
-              @Override
-              @SuppressWarnings( "unchecked" )
-              public void run() {
-                Collection<Citation> c = (Collection<Citation>) arg;
-                citations.addAll( c );
-              }
-            }
-        );
+        Platform.runLater( new Runnable() {
+          @Override
+          @SuppressWarnings("unchecked")
+          public void run() {
+            Collection<Citation> c = (Collection<Citation>) arg;
+            citations.addAll( c );
+          }
+        } );
       }
       if ( arg instanceof Citation && arg != null ) {
-        Platform.runLater(
-            new Runnable() {
-              @Override
-              public void run() {
-                Citation c = (Citation) arg;
-                citations.add( c );
-              }
-            }
-        );
+        Platform.runLater( new Runnable() {
+          @Override
+          public void run() {
+            Citation c = (Citation) arg;
+            citations.add( c );
+          }
+        } );
       } else if ( arg instanceof String ) {
         searchInProg.set( false );
       }
@@ -405,6 +402,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * Set the query controller.
+   * 
    * @param qc
    */
   public void setQueryController( QueryController qc ) {
@@ -413,7 +411,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * The id change listener.
-   *
+   * 
    */
   public class IdChangeListener implements ChangeListener<String> {
     @Override
@@ -427,7 +425,7 @@ public class TabController implements Observer, Initializable {
 
   /**
    * The id change listener.
-   *
+   * 
    */
   public class VisibilityListener implements ChangeListener<Boolean> {
 
@@ -440,6 +438,5 @@ public class TabController implements Observer, Initializable {
     }
 
   }
-
 
 }

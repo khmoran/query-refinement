@@ -25,7 +25,7 @@ public class Util {
   protected Util() {
     // purposely not instantiable
   }
-  
+
   public static SystematicReview createReview( String name, String creator ) {
     MainController.EM.getTransaction().begin();
     SystematicReview review = new SystematicReview();
@@ -39,6 +39,7 @@ public class Util {
 
   /**
    * Create or update the PMID with this value.
+   * 
    * @param l
    * @return
    */
@@ -60,6 +61,7 @@ public class Util {
 
   /**
    * Get the citation.
+   * 
    * @param id
    * @return
    */
@@ -71,6 +73,7 @@ public class Util {
 
   /**
    * Strip the punctuation, capitalization from the given String.
+   * 
    * @param s
    * @return
    */
@@ -80,6 +83,7 @@ public class Util {
 
   /**
    * Strip the punctuation, capitalization from the given String.
+   * 
    * @param s
    * @return
    */
@@ -89,6 +93,7 @@ public class Util {
 
   /**
    * Strip the punctuation, capitalization from the given String.
+   * 
    * @param s
    * @return
    */
@@ -98,7 +103,7 @@ public class Util {
 
   /**
    * Tokenize the input text.
-   *
+   * 
    * @param text
    * @return
    */
@@ -123,12 +128,12 @@ public class Util {
 
   /**
    * Sort the map by its values.
-   *
+   * 
    * @param map
    * @return
    */
-  public static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>>
-  sortByEntries( Map<K, V> map ) {
+  public static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> sortByEntries(
+      Map<K, V> map ) {
     SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
         new Comparator<Map.Entry<K, V>>() {
           @Override

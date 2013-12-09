@@ -20,8 +20,7 @@ import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
 
 public class MathUtil {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      MathUtil.class );
+  protected static final Log LOG = LogFactory.getLog( MathUtil.class );
   /** The random number generator. */
   protected static final Random RND = new Random();
 
@@ -33,9 +32,8 @@ public class MathUtil {
   }
 
   /**
-   * Get k unique random integers according to the 1/r distribution
-   * from 0..n.
-   *
+   * Get k unique random integers according to the 1/r distribution from 0..n.
+   * 
    * @param n
    * @param k
    * @return
@@ -52,9 +50,8 @@ public class MathUtil {
   }
 
   /**
-   * Get k unique random integers according to the 1/r^2 distribution
-   * from 0..n.
-   *
+   * Get k unique random integers according to the 1/r^2 distribution from 0..n.
+   * 
    * @param n
    * @param k
    * @return
@@ -72,6 +69,7 @@ public class MathUtil {
 
   /**
    * Generate a random number from 0..n according to a 1/r distribution.
+   * 
    * @param n
    * @return
    */
@@ -79,8 +77,8 @@ public class MathUtil {
     double w = 0;
     double[] weights = new double[n];
     for ( int i = 1; i <= n; i++ ) {
-      w += 1/(double) i;
-      weights[i-1] = w;
+      w += 1 / (double) i;
+      weights[i - 1] = w;
     }
 
     Random r = new Random();
@@ -98,6 +96,7 @@ public class MathUtil {
 
   /**
    * Generate a random number from 0..n according to a 1/r^2 distribution.
+   * 
    * @param n
    * @return
    */
@@ -105,8 +104,8 @@ public class MathUtil {
     double w = 0;
     double[] weights = new double[n];
     for ( int i = 1; i <= n; i++ ) {
-      w += 1/(double) ( i*i );
-      weights[i-1] = w;
+      w += 1 / (double) ( i * i );
+      weights[i - 1] = w;
     }
 
     Random r = new Random();
@@ -131,6 +130,7 @@ public class MathUtil {
 
   /**
    * Calculate entropy with a collection of class instances.
+   * 
    * @param values
    * @return
    */
@@ -156,6 +156,7 @@ public class MathUtil {
 
   /**
    * Calculate entropy with the frequency values for each class.
+   * 
    * @param freqMap
    * @return
    */
@@ -166,6 +167,7 @@ public class MathUtil {
 
   /**
    * Calculate entropy with the frequency values for each class.
+   * 
    * @param freqMap
    * @return
    */
@@ -181,7 +183,8 @@ public class MathUtil {
     for ( int freq : frequencies ) {
       double frequency = (double) freq / totalVals;
       double numerator = frequency * Math.log( frequency );
-      if ( Double.isNaN( numerator ) ) numerator = 0;
+      if ( Double.isNaN( numerator ) )
+        numerator = 0;
       result -= numerator / Math.log( 2 );
     }
 
@@ -190,6 +193,7 @@ public class MathUtil {
 
   /**
    * Calculate the information gain.
+   * 
    * @param entropyT
    * @param entropyTA
    * @return
@@ -200,10 +204,10 @@ public class MathUtil {
 
     double total = entropyT;
     for ( double entropyTsub : entropyTsubs ) {
-      double term = ( 1.0/entropyTsubs.length * entropyTsub );
+      double term = ( 1.0 / entropyTsubs.length * entropyTsub );
       total = total - term;
-      eq += " - (1/" + entropyTsubs.length + ")(" +
-          MathUtil.round( entropyTsub, 5 ) + ")";
+      eq += " - (1/" + entropyTsubs.length + ")("
+          + MathUtil.round( entropyTsub, 5 ) + ")";
     }
 
     eq += " = " + total;
@@ -214,7 +218,7 @@ public class MathUtil {
 
   /**
    * Round the double to the provided number of places.
-   *
+   * 
    * @param value
    * @param numPlaces
    * @return
@@ -225,9 +229,9 @@ public class MathUtil {
     return Math.round( zeroDPs ) / multFactor;
   }
 
-
   /**
    * Get a random sample of size m from items.
+   * 
    * @param items
    * @param m
    * @return
@@ -248,7 +252,7 @@ public class MathUtil {
 
   /**
    * Calculate the median of a collection of doubles.
-   *
+   * 
    * @param vals
    * @return
    */
@@ -269,7 +273,7 @@ public class MathUtil {
 
   /**
    * Calculate the mean of a collection of doubles.
-   *
+   * 
    * @param vals
    * @return
    */
@@ -287,7 +291,7 @@ public class MathUtil {
 
   /**
    * Calculate the covariance.
-   *
+   * 
    * @param x
    * @param y
    * @return
@@ -309,7 +313,7 @@ public class MathUtil {
 
   /**
    * Calculate the sample standard deviation for the given feature.
-   *
+   * 
    * @param featureName
    * @return
    */
@@ -333,16 +337,16 @@ public class MathUtil {
 
   /**
    * Calculate the Pearson Correlation Coefficient.
+   * 
    * @param x
    * @param y
    * @return
    * @throws IncomparableFeatureVectorException
    */
   public static double calcPCC( List<Double> x, List<Double> y )
-    throws ArithmeticException {
+      throws ArithmeticException {
     if ( x.size() != y.size() ) {
-      throw new ArithmeticException(
-          "The vectors are different sizes." );
+      throw new ArithmeticException( "The vectors are different sizes." );
     }
     double n = x.size();
 
@@ -373,20 +377,21 @@ public class MathUtil {
 
   /**
    * Calculate the z-score for the value given the sample.
+   * 
    * @param sample
    * @param example
    * @return
    */
-  public static double calcZscore( Collection<Double> sample,
-      Double rawScore ) {
+  public static double calcZscore( Collection<Double> sample, Double rawScore ) {
     double sampleMean = calcMean( sample );
     double sampleSd = calcStandardDeviation( sample );
-    double zscore = ( rawScore - sampleMean )/sampleSd;
+    double zscore = ( rawScore - sampleMean ) / sampleSd;
     return zscore;
   }
 
   /**
    * Normalize the values from [0, 1].
+   * 
    * @param infoGains
    * @return
    */
@@ -398,7 +403,7 @@ public class MathUtil {
     TreeMultimap<Double, String> normalized = TreeMultimap.create();
     for ( Double d : data.keySet() ) {
       Set<String> values = data.get( d );
-      Double zscore = ( d - mean )/sampleStdDev;
+      Double zscore = ( d - mean ) / sampleStdDev;
       normalized.putAll( zscore, values );
     }
 

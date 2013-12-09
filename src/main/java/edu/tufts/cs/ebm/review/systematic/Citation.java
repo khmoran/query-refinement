@@ -44,29 +44,29 @@ public class Citation implements Comparable<Citation>, Serializable {
   @Id
   protected long id;
   /** The PubMed id. */
-  @OneToOne( cascade = CascadeType.PERSIST )
+  @OneToOne(cascade = CascadeType.PERSIST)
   protected PubmedId pmid;
   /** The title. */
-  @Column( length = 5000 )
+  @Column(length = 5000)
   @Lob
   protected String title;
   /** The abstract. */
-  @Column( length = 100000 )
+  @Column(length = 100000)
   @Lob
   protected String abstr;
   /** The date completed. */
   @Transient
   protected PubmedDate date;
   /** The authors. */
-  @Column( length = 5000 )
+  @Column(length = 5000)
   @Lob
   protected String authors;
   /** The journal. */
-  @Column( length = 5000 )
+  @Column(length = 5000)
   @Lob
   protected String journal;
   /** The MeSH terms. */
-  @Column( length = 5000 )
+  @Column(length = 5000)
   @Lob
   protected String meshStr;
   /** The MeSH terms. */
@@ -75,6 +75,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the simple id.
+   * 
    * @return
    */
   public long getId() {
@@ -83,12 +84,12 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the simple id.
+   * 
    * @param id
    */
   public void setId( long id ) {
     this.id = id;
   }
-
 
   /**
    * Default constructor.
@@ -124,6 +125,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Constructor with PubmedId.
+   * 
    * @param pmid
    */
   public Citation( PubmedId pmid ) {
@@ -133,6 +135,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Complete constructor.
+   * 
    * @param pmid
    * @param abstr
    * @param dateCompleted
@@ -140,8 +143,7 @@ public class Citation implements Comparable<Citation>, Serializable {
    * @param meshTerms
    */
   public Citation( PubmedId pmid, String title, String abstr, String journal,
-      PubmedDate dateCompleted, String authors,
-      ObservableSet<String> meshTerms ) {
+      PubmedDate dateCompleted, String authors, ObservableSet<String> meshTerms ) {
     this.id = pmid.longValue();
     setPmid( pmid );
     setTitle( title );
@@ -154,6 +156,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the journal.
+   * 
    * @return
    */
   public String getJournal() {
@@ -162,6 +165,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the journal.
+   * 
    * @param journal
    */
   public void setJournal( String journal ) {
@@ -175,22 +179,26 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the PubMed id.
+   * 
    * @param pmid
    */
   public void setPmid( PubmedId pmid ) {
     this.pmid = pmid;
-    //this.id = pmid.longValue();
+    // this.id = pmid.longValue();
   }
 
   /**
    * Get the abstract.
+   * 
    * @return
    */
   public String getAbstr() {
     return this.abstr;
   }
 
-  /** Set the abstract.
+  /**
+   * Set the abstract.
+   * 
    * @param abstr
    */
   public void setAbstr( String abstr ) {
@@ -199,6 +207,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the data completed.
+   * 
    * @return
    */
   public PubmedDate getDate() {
@@ -207,6 +216,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the date completed.
+   * 
    * @param dateCompleted
    */
   public void setDate( PubmedDate date ) {
@@ -215,6 +225,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the investigators.
+   * 
    * @return
    */
   public String getAuthors() {
@@ -223,6 +234,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the authors.
+   * 
    * @param authors
    */
   public void setAuthors( String authors ) {
@@ -231,6 +243,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the MeSH terms.
+   * 
    * @return
    */
   public Set<String> getMeshTerms() {
@@ -239,6 +252,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Get the MeSH string.
+   * 
    * @return
    */
   public String getMeshStr() {
@@ -247,6 +261,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the MeSH terms.
+   * 
    * @param terms
    */
   public void setMeshTerms( ObservableSet<String> terms ) {
@@ -257,25 +272,27 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   /**
    * Set the MeSH string.
+   * 
    * @param mesh
    */
   public void setMeshStr( String mesh ) {
     this.meshStr = mesh;
-    this.meshTerms = Sets.newHashSet( Splitter.on( ',' )
-      .trimResults()
-      .omitEmptyStrings()
-      .split( mesh ) );
+    this.meshTerms = Sets.newHashSet( Splitter.on( ',' ).trimResults()
+        .omitEmptyStrings().split( mesh ) );
   }
 
   /**
    * Get the title.
+   * 
    * @return
    */
   public String getTitle() {
     return this.title;
   }
 
-  /** Set the title.
+  /**
+   * Set the title.
+   * 
    * @param abstr
    */
   public void setTitle( String abstr ) {
@@ -289,8 +306,7 @@ public class Citation implements Comparable<Citation>, Serializable {
 
   @Override
   public String toString() {
-    if ( this.title != null && this.title != null &&
-         this.title.isEmpty() ) {
+    if ( this.title != null && this.title != null && this.title.isEmpty() ) {
       return this.title + " [" + this.pmid + "]";
     } else {
       return this.pmid.toString();

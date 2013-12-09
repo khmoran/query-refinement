@@ -23,13 +23,15 @@ import edu.tufts.cs.ebm.util.Util;
  */
 public class TestLoadProtonBeamData extends AbstractTest {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      TestLoadProtonBeamData.class );
+  protected static final Log LOG = LogFactory
+      .getLog( TestLoadProtonBeamData.class );
 
   /**
    * Set up the review.
+   * 
    * @throws Exception
    */
+  @Override
   @BeforeSuite
   public void setUp() throws Exception {
     super.setUp();
@@ -41,6 +43,7 @@ public class TestLoadProtonBeamData extends AbstractTest {
 
   /**
    * Set the initial query.
+   * 
    * @throws Exception
    */
   @Test
@@ -51,18 +54,18 @@ public class TestLoadProtonBeamData extends AbstractTest {
     }
 
     String pQuery = "Cancer";
-    String icQuery = "Brachytherapy[MH] OR \"Neutron Capture Therapy\"[MH] " +
-      "OR Proton Therapy OR Radiotherapy, High-Energy OR Proton Beam OR " +
-      "Charged Particle Therapy OR Proton Irradiation OR Helium Irradiation " +
-      "OR Ion Radiotherapy";
+    String icQuery = "Brachytherapy[MH] OR \"Neutron Capture Therapy\"[MH] "
+        + "OR Proton Therapy OR Radiotherapy, High-Energy OR Proton Beam OR "
+        + "Charged Particle Therapy OR Proton Irradiation OR Helium Irradiation "
+        + "OR Ion Radiotherapy";
 
     // Begin a new local transaction so that we can persist a new entity
     MainController.EM.getTransaction().begin();
-    
+
     review.setQueryP( pQuery );
     review.setQueryIC( icQuery );
     MainController.EM.merge( review );
-    
+
     // Commit the transaction, which will cause the entity to
     // be stored in the database
     MainController.EM.getTransaction().commit();
@@ -70,13 +73,14 @@ public class TestLoadProtonBeamData extends AbstractTest {
 
   /**
    * Test inserting a review.
+   * 
    * @throws Exception
    */
   @Test
-  @Parameters( { "seeds" } )
+  @Parameters({ "seeds" })
   public void loadSeeds(
-      @Optional( "src/test/resources/pb-seeds.txt" ) String seeds )
-    throws Exception {
+      @Optional("src/test/resources/pb-seeds.txt") String seeds )
+      throws Exception {
     SystematicReview review = reviews().get( 1 );
     if ( !review.getName().equals( "Proton Beam Therapy" ) ) {
       throw new Exception( "Incorrect review." );
@@ -107,14 +111,14 @@ public class TestLoadProtonBeamData extends AbstractTest {
 
   /**
    * Test loading a MeSH term.
+   * 
    * @throws Exception
    */
   @Test
-  @Parameters( { "relevantFile" } )
+  @Parameters({ "relevantFile" })
   public void testLoadLevel1Relevant(
-      @Optional( "src/test/resources/pb-relevant-l1.txt" )
-      String relevantFile )
-    throws Exception {
+      @Optional("src/test/resources/pb-relevant-l1.txt") String relevantFile )
+      throws Exception {
     SystematicReview review = reviews().get( 1 );
     if ( !review.getName().equals( "Proton Beam Therapy" ) ) {
       throw new Exception( "Incorrect review." );
@@ -148,14 +152,14 @@ public class TestLoadProtonBeamData extends AbstractTest {
 
   /**
    * Test loading a MeSH term.
+   * 
    * @throws Exception
    */
   @Test
-  @Parameters( { "relevantFile" } )
+  @Parameters({ "relevantFile" })
   public void testLoadLevel2Relevant(
-      @Optional( "src/test/resources/pb-relevant-l2.txt" )
-      String relevantFile )
-    throws Exception {
+      @Optional("src/test/resources/pb-relevant-l2.txt") String relevantFile )
+      throws Exception {
     SystematicReview review = reviews().get( 1 );
     if ( !review.getName().equals( "Proton Beam Therapy" ) ) {
       throw new Exception( "Incorrect review." );
@@ -190,96 +194,96 @@ public class TestLoadProtonBeamData extends AbstractTest {
     }
   }
 
-//  @Test
-//  @Parameters( { "xmlFile" } )
-//  public void testLoadIrrelevant( @Optional(
-//    "src/test/resources/all-pb.xml" )
-//    String xmlFile ) {
-//
-//    XMLReader r = new XMLReader();
-//    RecordHandler th = new RecordHandler();
-//    r.addHandler( "record", th );
-//
-//    try {
-//      r.parse( new FileInputStream( xmlFile ) );
-//    } catch ( ParserConfigurationException | SAXException | IOException e ) {
-//      LOG.error( e );
-//    }
-//    
-//    Collection<PubmedId> irrelevant = th.getPmids();
-//    System.out.println( "# irrelevant pmids: " + irrelevant.size() );
-//  }
-//
-//  public class RecordHandler implements NodeHandler {
-//    /** The "rec-number" node name. */
-//    protected static final String REC_NUMBER_NODE_NAME = "rec-number";
-//    /** The "notes" node name. */
-//    protected static final String NOTES_NODE_NAME = "notes";
-//    /** The terms to find. */
-//    protected Collection<PubmedId> ids = new HashSet<PubmedId>();
-//    /** The terms found. */
-//    protected Set<String> relevant = new HashSet<>();
-//    /** The number of nodes. */
-//    protected int numNodes = 0;
-//
-//    /**
-//     * Default constructor.
-//     * @param terms
-//     */
-//    public RecordHandler() {
-//      
-//    }
-//
-//    /**
-//     * Get the found pmids.
-//     * @return
-//     */
-//    public Collection<PubmedId> getPmids() {
-//      return this.ids;
-//    }
-//
-//    /**
-//     * Get the number of nodes.
-//     * @return
-//     */
-//    public int getNumNodes() {
-//      return this.numNodes;
-//    }
-//
-//    @Override
-//    public void process( StructuredNode node ) {
-//      try {
-//        numNodes++;
-//        Value v = node.queryValue( REC_NUMBER_NODE_NAME );
-//        String notes = node.queryValue( NOTES_NODE_NAME ).toString();
-//        int idx = 0;
-//        for ( int i = 0; i < notes.length(); i++ ) {
-//          if ( !Character.isDigit( notes.charAt( i ) ) ) {
-//            idx = i;
-//            break;
-//          }
-//        }
-//        if ( idx > 0 ) {
-//          String idStr = notes.substring( 0, idx );
-//          long id = Long.valueOf( idStr );
-//          PubmedId pmid = Util.createOrUpdatePmid( id );
-//
-//          if ( pmid != null ) {
-//            ids.add( pmid );
-//          } else {
-//            LOG.warn( "No pmid found for record #" + v.toString() +
-//              " in notes '" + notes + "'\n\tTitle: " +
-//                node.queryValue( "titles" ) );
-//          }
-//        } else {
-//          LOG.warn( "No pmid found for record #" + v.toString() +
-//            " in notes '" + notes + "'\n\tTitle: " +
-//              node.queryValue( "titles" ) );
-//        }
-//      } catch ( XPathExpressionException e ) {
-//        LOG.error( e );
-//      }
-//    }
-//  }
+  // @Test
+  // @Parameters( { "xmlFile" } )
+  // public void testLoadIrrelevant( @Optional(
+  // "src/test/resources/all-pb.xml" )
+  // String xmlFile ) {
+  //
+  // XMLReader r = new XMLReader();
+  // RecordHandler th = new RecordHandler();
+  // r.addHandler( "record", th );
+  //
+  // try {
+  // r.parse( new FileInputStream( xmlFile ) );
+  // } catch ( ParserConfigurationException | SAXException | IOException e ) {
+  // LOG.error( e );
+  // }
+  //
+  // Collection<PubmedId> irrelevant = th.getPmids();
+  // System.out.println( "# irrelevant pmids: " + irrelevant.size() );
+  // }
+  //
+  // public class RecordHandler implements NodeHandler {
+  // /** The "rec-number" node name. */
+  // protected static final String REC_NUMBER_NODE_NAME = "rec-number";
+  // /** The "notes" node name. */
+  // protected static final String NOTES_NODE_NAME = "notes";
+  // /** The terms to find. */
+  // protected Collection<PubmedId> ids = new HashSet<PubmedId>();
+  // /** The terms found. */
+  // protected Set<String> relevant = new HashSet<>();
+  // /** The number of nodes. */
+  // protected int numNodes = 0;
+  //
+  // /**
+  // * Default constructor.
+  // * @param terms
+  // */
+  // public RecordHandler() {
+  //
+  // }
+  //
+  // /**
+  // * Get the found pmids.
+  // * @return
+  // */
+  // public Collection<PubmedId> getPmids() {
+  // return this.ids;
+  // }
+  //
+  // /**
+  // * Get the number of nodes.
+  // * @return
+  // */
+  // public int getNumNodes() {
+  // return this.numNodes;
+  // }
+  //
+  // @Override
+  // public void process( StructuredNode node ) {
+  // try {
+  // numNodes++;
+  // Value v = node.queryValue( REC_NUMBER_NODE_NAME );
+  // String notes = node.queryValue( NOTES_NODE_NAME ).toString();
+  // int idx = 0;
+  // for ( int i = 0; i < notes.length(); i++ ) {
+  // if ( !Character.isDigit( notes.charAt( i ) ) ) {
+  // idx = i;
+  // break;
+  // }
+  // }
+  // if ( idx > 0 ) {
+  // String idStr = notes.substring( 0, idx );
+  // long id = Long.valueOf( idStr );
+  // PubmedId pmid = Util.createOrUpdatePmid( id );
+  //
+  // if ( pmid != null ) {
+  // ids.add( pmid );
+  // } else {
+  // LOG.warn( "No pmid found for record #" + v.toString() +
+  // " in notes '" + notes + "'\n\tTitle: " +
+  // node.queryValue( "titles" ) );
+  // }
+  // } else {
+  // LOG.warn( "No pmid found for record #" + v.toString() +
+  // " in notes '" + notes + "'\n\tTitle: " +
+  // node.queryValue( "titles" ) );
+  // }
+  // } catch ( XPathExpressionException e ) {
+  // LOG.error( e );
+  // }
+  // }
+  // }
 
 }

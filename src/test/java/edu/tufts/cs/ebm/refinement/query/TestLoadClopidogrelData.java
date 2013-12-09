@@ -32,17 +32,19 @@ import edu.tufts.cs.ebm.util.Util;
 
 /**
  * Test connecting to the data source.
- *
+ * 
  */
 public class TestLoadClopidogrelData extends AbstractTest {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      TestLoadClopidogrelData.class );
+  protected static final Log LOG = LogFactory
+      .getLog( TestLoadClopidogrelData.class );
 
   /**
    * Set up the review.
+   * 
    * @throws Exception
    */
+  @Override
   @BeforeSuite
   public void setUp() throws Exception {
     super.setUp();
@@ -54,6 +56,7 @@ public class TestLoadClopidogrelData extends AbstractTest {
 
   /**
    * Set the initial query.
+   * 
    * @throws Exception
    */
   @Test
@@ -64,16 +67,16 @@ public class TestLoadClopidogrelData extends AbstractTest {
     }
 
     String pQuery = "clopidogrel OR antiplatelet therapy";
-    String icQuery = "cyp2c19 OR platelet reactivity OR verifynow " +
-      "OR platelet aggregation";
+    String icQuery = "cyp2c19 OR platelet reactivity OR verifynow "
+        + "OR platelet aggregation";
 
     // Begin a new local transaction so that we can persist a new entity
     MainController.EM.getTransaction().begin();
-    
+
     review.setQueryP( pQuery );
     review.setQueryIC( icQuery );
     MainController.EM.merge( review );
-    
+
     // Commit the transaction, which will cause the entity to
     // be stored in the database
     MainController.EM.getTransaction().commit();
@@ -81,6 +84,7 @@ public class TestLoadClopidogrelData extends AbstractTest {
 
   /**
    * Test inserting a review.
+   * 
    * @throws SQLException
    * @throws NamingException
    * @throws ClassNotFoundException
@@ -88,10 +92,10 @@ public class TestLoadClopidogrelData extends AbstractTest {
    * @throws NumberFormatException
    */
   @Test
-  @Parameters( { "seeds" } )
+  @Parameters({ "seeds" })
   public void loadSeeds(
-      @Optional( "src/test/resources/cl-seeds.txt" ) String seeds )
-    throws ClassNotFoundException, NamingException, SQLException,
+      @Optional("src/test/resources/cl-seeds.txt") String seeds )
+      throws ClassNotFoundException, NamingException, SQLException,
       NumberFormatException, IOException {
     SystematicReview review = reviews().get( 0 );
 
@@ -122,9 +126,9 @@ public class TestLoadClopidogrelData extends AbstractTest {
    * Test inserting a review.
    */
   @Test
-  @Parameters( { "csvFile" } )
+  @Parameters({ "csvFile" })
   public void loadRelevantIrrelevant(
-      @Optional( "src/test/resources/cl-relevant-all.csv" ) String csvFile ) {
+      @Optional("src/test/resources/cl-relevant-all.csv") String csvFile ) {
     // Begin a new local transaction so that we can persist a new entity
 
     try {
@@ -160,26 +164,26 @@ public class TestLoadClopidogrelData extends AbstractTest {
         LOG.error( "Duplicate id error.", ex ); // TODO fix this
       }
 
-
       System.out.println( "L1 size: " + review.getRelevantLevel1().size() );
       System.out.println( "L2 size: " + review.getRelevantLevel2().size() );
       System.out.println( "P irrel size: " + review.getIrrelevantP().size() );
       System.out.println( "IC irrel size: " + review.getIrrelevantIC().size() );
       System.out.println( "O irrel size: " + review.getIrrelevantO().size() );
-    } catch ( ClassNotFoundException | NamingException
-        | SQLException | IOException | ParseException e ) {
+    } catch ( ClassNotFoundException | NamingException | SQLException
+        | IOException | ParseException e ) {
       LOG.error( "Could not load reviews.", e );
     }
   }
 
   /**
    * Load the PMIDs.
+   * 
    * @return
    * @throws IOException
    * @throws ParseException
    */
   protected Map<PubmedId, Boolean> loadPmids( Reader input )
-    throws IOException, ParseException {
+      throws IOException, ParseException {
     Map<PubmedId, Boolean> pmids = new HashMap<>();
 
     CSVParser parser = new CSVParser( input, CSVFormat.EXCEL );
@@ -194,8 +198,8 @@ public class TestLoadClopidogrelData extends AbstractTest {
 
           PubmedId pmid = Util.createOrUpdatePmid( Long.valueOf( pmidStr ) );
 
-          boolean include = (
-              r.get( 1 ).trim().toLowerCase().equals( "yes" ) ) ? true : false;
+          boolean include = ( r.get( 1 ).trim().toLowerCase().equals( "yes" ) ) ? true
+              : false;
 
           pmids.put( pmid, include );
         } catch ( NumberFormatException e ) {

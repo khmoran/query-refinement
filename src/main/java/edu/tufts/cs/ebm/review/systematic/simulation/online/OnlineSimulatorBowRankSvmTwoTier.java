@@ -20,8 +20,8 @@ import edu.tufts.cs.ml.UnlabeledFeatureVector;
  */
 public class OnlineSimulatorBowRankSvmTwoTier extends OnlineSimulatorBowRankSvm {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBowRankSvmTwoTier.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorBowRankSvmTwoTier.class );
   /** The positive class label for L2. */
   protected static final int POS_L2 = 1;
   /** The positive class label for L1. */
@@ -35,6 +35,7 @@ public class OnlineSimulatorBowRankSvmTwoTier extends OnlineSimulatorBowRankSvm 
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -47,25 +48,24 @@ public class OnlineSimulatorBowRankSvmTwoTier extends OnlineSimulatorBowRankSvm 
       Map<PubmedId, FeatureVector<Integer>> citations,
       Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers,
       Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers ) {
-    
+
     TreeMultimap<Double, PubmedId> rankMap = TreeMultimap.create();
 
     // can't classify w/o samples from each class
     if ( !( expertRelevantPapers.isEmpty() || expertIrrelevantPapers.isEmpty() ) ) {
       // create the training data, which is the expert-identified relevant
       // and irrelevant sets
-      Map<FeatureVector<Integer>, Integer> minorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> minorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : expertRelevantPapers.values() ) {
         fv.setQid( 1 );
         PubmedId pmid = Util.createOrUpdatePmid( Long.valueOf( fv.getId() ) );
         int pos = POS_L1;
-        if ( activeReview.getRelevantLevel2().contains( pmid ) ) pos = POS_L2;
+        if ( activeReview.getRelevantLevel2().contains( pmid ) )
+          pos = POS_L2;
         fv.setRank( pos );
         minorityMap.put( fv, pos );
       }
-      Map<FeatureVector<Integer>, Integer> majorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> majorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : expertIrrelevantPapers.values() ) {
         fv.setQid( 1 );
         fv.setRank( NEG );
@@ -73,13 +73,14 @@ public class OnlineSimulatorBowRankSvmTwoTier extends OnlineSimulatorBowRankSvm 
       }
 
       // create the test set
-      TestRelation<Integer> test = new TestRelation<Integer>(
-          "test", bow.getTrainingData().getMetadata() );
+      TestRelation<Integer> test = new TestRelation<Integer>( "test", bow
+          .getTrainingData().getMetadata() );
       for ( FeatureVector<Integer> c : citations.values() ) {
-        if ( c.getQid() == null ) c.setQid( 1 );
+        if ( c.getQid() == null )
+          c.setQid( 1 );
         test.add( (UnlabeledFeatureVector<Integer>) c );
       }
-      
+
       rankMap = ensembleRank( minorityMap, majorityMap, test );
     } else { // essentially random
       for ( PubmedId c : citations.keySet() ) {

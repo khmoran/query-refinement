@@ -18,7 +18,7 @@ public class MathUtilTest {
     for ( int i = 0; i < 1000; i++ ) {
       int rand = MathUtil.harmonicRandom( n );
       if ( freqMap.containsKey( rand ) ) {
-        freqMap.put( rand, freqMap.get( rand )+1 );
+        freqMap.put( rand, freqMap.get( rand ) + 1 );
       } else {
         freqMap.put( rand, 1 );
       }
@@ -40,7 +40,7 @@ public class MathUtilTest {
     for ( int i = 0; i < 1000; i++ ) {
       int rand = MathUtil.exponentialRandom( n );
       if ( freqMap.containsKey( rand ) ) {
-        freqMap.put( rand, freqMap.get( rand )+1 );
+        freqMap.put( rand, freqMap.get( rand ) + 1 );
       } else {
         freqMap.put( rand, 1 );
       }

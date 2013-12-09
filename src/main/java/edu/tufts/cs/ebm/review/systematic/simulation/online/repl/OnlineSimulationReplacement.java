@@ -25,56 +25,55 @@ import edu.tufts.cs.ebm.util.MathUtil;
  * Test the MeshWalker class.
  */
 public abstract class OnlineSimulationReplacement<I, C> extends
-  OnlineSimulator<I, C> {
+    OnlineSimulator<I, C> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulationReplacement.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulationReplacement.class );
   /** The number of papers to propose to the expert per iteration. */
   protected static final int PAPER_PROPOSALS_PER_ITERATION = 50;
   /** The portion of documents to observe. */
   protected static final double PERCENT_TO_OBSERVE = .5;
-  
+
   public OnlineSimulationReplacement( String dataset ) throws Exception {
-     super( dataset );
+    super( dataset );
   }
 
   /**
    * Get the papers terms to propose.
+   * 
    * @param query
    * @return
    */
   @Override
-  protected Set<I> getPaperProposals( 
-      TreeMultimap<Double, I> rankMap,
-      Set<I> expertRelevantPapers,
-      Set<I> expertIrrelevantPapers ) {
+  protected Set<I> getPaperProposals( TreeMultimap<Double, I> rankMap,
+      Set<I> expertRelevantPapers, Set<I> expertIrrelevantPapers ) {
     Set<I> results = new HashSet<>();
 
     List<I> citList = new ArrayList<>();
     for ( Double sim : rankMap.keySet().descendingSet() ) {
       for ( I pmid : rankMap.get( sim ) ) {
         // WITH REPLACEMENT:
-          citList.add( pmid );
+        citList.add( pmid );
       }
     }
 
     LOG.info( "Getting paper proposal set..." );
-    Set<Integer> rands = MathUtil.uniqueHarmonicRandom(
-        citList.size(), PAPER_PROPOSALS_PER_ITERATION );
-    //Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
-    //    n, PAPER_PROPOSALS_PER_ITERATION );
+    Set<Integer> rands = MathUtil.uniqueHarmonicRandom( citList.size(),
+        PAPER_PROPOSALS_PER_ITERATION );
+    // Set<Integer> rands = MathUtil.uniqueQuadraticRandom(
+    // n, PAPER_PROPOSALS_PER_ITERATION );
     LOG.info( "\tGetting citations at ranks " + rands );
     for ( int r : rands ) {
       results.add( citList.get( r ) );
     }
 
-    LOG.info(  "Paper proposals: " + results );
+    LOG.info( "Paper proposals: " + results );
     return results;
   }
 
   @Override
-  protected void recordRank( TreeMultimap<Double, I> rankMap,
-     Set<I> proposals, Set<I> expertIrrelevantPapers ) {
+  protected void recordRank( TreeMultimap<Double, I> rankMap, Set<I> proposals,
+      Set<I> expertIrrelevantPapers ) {
 
     // get probability information
     if ( z == -1 ) {
@@ -93,7 +92,7 @@ public abstract class OnlineSimulationReplacement<I, C> extends
         rankStr += String.valueOf( rank );
         rankOutput.put( pmid, rankStr );
 
-        double prob = (double) 1/ (double) rank / z;
+        double prob = (double) 1 / (double) rank / z;
         prob = MathUtil.round( prob, 7 );
 
         String probStr = probOutput.get( pmid );
@@ -123,16 +122,14 @@ public abstract class OnlineSimulationReplacement<I, C> extends
     iteration++;
   }
 
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   @Override
-  public void simulateReview()
-    throws InterruptedException, IOException {
+  public void simulateReview() throws InterruptedException, IOException {
     // prepare the CSV output
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
-   // header row
-    out.write(
-      "i,papers proposed,papers added,L1 cost,L1 recall,L2cost,L2recall" );
+    // header row
+    out.write( "i,papers proposed,papers added,L1 cost,L1 recall,L2cost,L2recall" );
     out.newLine();
     out.flush();
 
@@ -146,14 +143,12 @@ public abstract class OnlineSimulationReplacement<I, C> extends
     Map<I, C> expertIrrelevantPapers = new HashMap<>();
 
     // run the initial query
-    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher(
-        "(" + popQuery + ") AND (" + icQuery + ")",
-        activeReview );
+    ParallelPubmedSearcher searcher = new ParallelPubmedSearcher( "("
+        + popQuery + ") AND (" + icQuery + ")", activeReview );
     search( searcher );
 
     initializeClassifier( searcher.getCitations() );
-    Map<I, C> citations =
-        createFeatureVectors( searcher.getCitations() );
+    Map<I, C> citations = createFeatureVectors( searcher.getCitations() );
 
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {
@@ -161,21 +156,20 @@ public abstract class OnlineSimulationReplacement<I, C> extends
     }
 
     // gather initial statistics on the results
-    TreeMultimap<Double, I> rankMap = rank( citations,
-        expertRelevantPapers, expertIrrelevantPapers );
+    TreeMultimap<Double, I> rankMap = rank( citations, expertRelevantPapers,
+        expertIrrelevantPapers );
     evaluateQuery( rankMap, expertRelevantPapers.keySet(),
         expertIrrelevantPapers.keySet() );
-    
-    int numPapersToObserve = (int) Math.ceil(
-        searcher.getCitations().size() * PERCENT_TO_OBSERVE );
-    
-    LOG.info( "Observing at least " + PERCENT_TO_OBSERVE +
-        " of available papers ("+ numPapersToObserve + ")" );
+
+    int numPapersToObserve = (int) Math.ceil( searcher.getCitations().size()
+        * PERCENT_TO_OBSERVE );
+
+    LOG.info( "Observing at least " + PERCENT_TO_OBSERVE
+        + " of available papers (" + numPapersToObserve + ")" );
 
     int i = 0;
-    while ( ( expertRelevantPapers.size() + expertIrrelevantPapers.size() )
-        < numPapersToObserve ) {
-      LOG.info(  "\n\nIteration " + ++i + ":\n" );
+    while ( ( expertRelevantPapers.size() + expertIrrelevantPapers.size() ) < numPapersToObserve ) {
+      LOG.info( "\n\nIteration " + ++i + ":\n" );
 
       Set<I> paperProposals = getPaperProposals( rankMap,
           expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
@@ -186,8 +180,8 @@ public abstract class OnlineSimulationReplacement<I, C> extends
         break;
       } else {
         Set<I> accepted = proposePapers( paperProposals,
-          expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
-        
+            expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
+
         // update the relevant/irrelevant lists
         for ( I pmid : paperProposals ) {
           if ( accepted.contains( pmid ) ) {
@@ -197,9 +191,12 @@ public abstract class OnlineSimulationReplacement<I, C> extends
           }
         }
 
-        double observedRel = (double) accepted.size() / (double) paperProposals.size();
-        double expectedRel = ( activeReview.getRelevantLevel1().size() - expertRelevantPapers.size() )
-            / ( (double) searcher.getCitations().size() - expertRelevantPapers.size() - expertIrrelevantPapers.size() );
+        double observedRel = (double) accepted.size()
+            / (double) paperProposals.size();
+        double expectedRel = ( activeReview.getRelevantLevel1().size() - expertRelevantPapers
+            .size() )
+            / ( (double) searcher.getCitations().size()
+                - expertRelevantPapers.size() - expertIrrelevantPapers.size() );
         LOG.info( "% observed relevant: " + observedRel );
         LOG.info( "%cR expected relevant: " + expectedRel );
 
@@ -208,27 +205,27 @@ public abstract class OnlineSimulationReplacement<I, C> extends
 
         // if new papers are proposed, update the ranking
         if ( expertRelevantPapers.size() > numRelevant ) {
-          rankMap = rank( citations,
-              expertRelevantPapers, expertIrrelevantPapers );
+          rankMap = rank( citations, expertRelevantPapers,
+              expertIrrelevantPapers );
         } else { // but either way record the ranks
           recordRank( rankMap, paperProposals, new HashSet<I>() );
         }
       }
 
       Map<String, InfoMeasure> im = evaluateQuery( rankMap,
-        expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
+          expertRelevantPapers.keySet(), expertIrrelevantPapers.keySet() );
 
       if ( im != null ) {
         // write out the current stats
-        int observed = expertRelevantPapers.size() + expertIrrelevantPapers.size();
-        double costL1 = observed + activeReview
-            .getRelevantLevel1().size() - im.get( "L1" ).getTruePositives();
-        double costL2 = observed + activeReview
-            .getRelevantLevel1().size() - im.get( "L2" ).getTruePositives();
-        out.write( i + "," + observed + "," +
-          expertRelevantPapers.size() +
-          "," + costL1 + "," + im.get( "L1" ).getRecall() +
-          "," + costL2 + "," + im.get( "L2" ).getRecall() );
+        int observed = expertRelevantPapers.size()
+            + expertIrrelevantPapers.size();
+        double costL1 = observed + activeReview.getRelevantLevel1().size()
+            - im.get( "L1" ).getTruePositives();
+        double costL2 = observed + activeReview.getRelevantLevel1().size()
+            - im.get( "L2" ).getTruePositives();
+        out.write( i + "," + observed + "," + expertRelevantPapers.size() + ","
+            + costL1 + "," + im.get( "L1" ).getRecall() + "," + costL2 + ","
+            + im.get( "L2" ).getRecall() );
       }
 
       out.newLine();

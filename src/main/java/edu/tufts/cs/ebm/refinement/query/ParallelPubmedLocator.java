@@ -2,10 +2,6 @@ package edu.tufts.cs.ebm.refinement.query;
 
 import java.rmi.RemoteException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,8 +20,8 @@ import gov.nih.nlm.ncbi.www.soap.eutils.EFetchPubmedServiceStub.PubmedArticleTyp
  */
 public class ParallelPubmedLocator extends PubmedService implements Runnable {
   /** The logger. */
-  private static final Log LOG = LogFactory.getLog(
-      ParallelPubmedLocator.class );
+  private static final Log LOG = LogFactory
+      .getLog( ParallelPubmedLocator.class );
   /** The PubmedId to look up. */
   protected PubmedId pmid;
   /** The citation found. */
@@ -35,6 +31,7 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
 
   /**
    * Default constructor.
+   * 
    * @throws AxisFault
    */
   public ParallelPubmedLocator( PubmedId pmid ) throws AxisFault {
@@ -44,10 +41,11 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
 
   /**
    * Default constructor.
+   * 
    * @throws AxisFault
    */
-  public ParallelPubmedLocator( SystematicReview activeReview,
-      PubmedId pmid ) throws AxisFault {
+  public ParallelPubmedLocator( SystematicReview activeReview, PubmedId pmid )
+      throws AxisFault {
     init();
     this.activeReview = activeReview;
     this.pmid = pmid;
@@ -55,7 +53,7 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
 
   /**
    * Get the citation from the PubmedId.
-   *
+   * 
    * @param pmid
    */
   public void locate() {
@@ -85,8 +83,8 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
         this.activeReview.addBlacklisted( pmid );
         MainController.EM.persist( this.activeReview );
         MainController.EM.getTransaction().commit();
-        LOG.warn( "Null citation: " + pmid + "; adding to blacklist (" +
-          activeReview.getBlacklist().size() + " total)" );
+        LOG.warn( "Null citation: " + pmid + "; adding to blacklist ("
+            + activeReview.getBlacklist().size() + " total)" );
       } else {
         LOG.warn( "Null citation: " + pmid );
       }
@@ -101,8 +99,7 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
       return c;
     }
 
-    EFetchPubmedServiceStub.EFetchRequest req =
-        new EFetchPubmedServiceStub.EFetchRequest();
+    EFetchPubmedServiceStub.EFetchRequest req = new EFetchPubmedServiceStub.EFetchRequest();
     req.setId( pmid.toString() );
     EFetchPubmedServiceStub.EFetchResult res;
 
@@ -127,17 +124,18 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
       return null;
     }
 
-    //try { // add the result to the cache
-    //  defaultCache.put( pmid, c );
-    //} catch ( CacheException e ) {
-    //  LOG.error( e );
-    //}
+    // try { // add the result to the cache
+    // defaultCache.put( pmid, c );
+    // } catch ( CacheException e ) {
+    // LOG.error( e );
+    // }
 
     return c;
   }
 
   /**
    * Get the citation.
+   * 
    * @return
    */
   public Citation getCitation() {

@@ -2,7 +2,6 @@ package edu.tufts.cs.ebm.mesh;
 
 import edu.tufts.cs.ebm.refinement.query.PicoElement;
 
-
 public class RankedMesh implements Comparable<Object> {
   /** The MeSH term. */
   protected String term;
@@ -15,6 +14,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Default constructor.
+   * 
    * @param term
    * @param infoGain
    * @param positivity
@@ -30,6 +30,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * The MeSH term.
+   * 
    * @return
    */
   public String getTerm() {
@@ -38,6 +39,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Set the MeSH term.
+   * 
    * @param term
    */
   public void setTerm( String term ) {
@@ -46,6 +48,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * The info gain w.r.t. the active review.
+   * 
    * @return
    */
   public double getInfoGain() {
@@ -54,6 +57,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Set the info gain w.r.t. to active review.
+   * 
    * @param infoGain
    */
   public void setInfoGain( double infoGain ) {
@@ -62,6 +66,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Whether the term is "positive" w.r.t. the active review.
+   * 
    * @return
    */
   public boolean isPositive() {
@@ -70,6 +75,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Set the positivity of the term.
+   * 
    * @param positivity
    */
   public void setPositivity( boolean positivity ) {
@@ -78,6 +84,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Get the PICO element.
+   * 
    * @return
    */
   public PicoElement getPico() {
@@ -86,6 +93,7 @@ public class RankedMesh implements Comparable<Object> {
 
   /**
    * Set the PICO element.
+   * 
    * @param pico
    */
   public void setPico( PicoElement pico ) {
@@ -118,8 +126,8 @@ public class RankedMesh implements Comparable<Object> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (
-        ( this.term == null ) ? 0 : this.term.hashCode() );
+    result = prime * result
+        + ( ( this.term == null ) ? 0 : this.term.hashCode() );
     return result;
   }
 

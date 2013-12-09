@@ -32,6 +32,7 @@ public class PubmedLocator extends PubmedService implements Observer {
 
   /**
    * Default constructor.
+   * 
    * @throws AxisFault
    */
   public PubmedLocator() throws AxisFault {
@@ -40,7 +41,7 @@ public class PubmedLocator extends PubmedService implements Observer {
 
   /**
    * Get the citation from the PubmedId.
-   *
+   * 
    * @param pmid
    */
   public Citation getCitation( PubmedId pmid ) {
@@ -64,7 +65,7 @@ public class PubmedLocator extends PubmedService implements Observer {
 
   /**
    * Get the citations for the PubmedIds.
-   *
+   * 
    */
   public Set<Citation> getCitations( Collection<PubmedId> pmids ) {
     LOG.debug( "Searching for " + pmids.size() + " citations." );
@@ -79,8 +80,9 @@ public class PubmedLocator extends PubmedService implements Observer {
 
   /**
    * Get the citations for the PubmedIds.
+   * 
    * @throws AxisFault
-   *
+   * 
    */
   public Set<Citation> getCitations( String[] pmids ) throws AxisFault {
     LOG.debug( "Looking up " + pmids.length + " citations." );

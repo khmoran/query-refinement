@@ -12,11 +12,12 @@ import edu.tufts.cs.ebm.util.Util;
 
 /**
  * Test connecting to the data source.
- *
+ * 
  */
 public class TestDataSource {
   /**
    * Test the connection.
+   * 
    * @param args
    */
   @Test
@@ -37,8 +38,8 @@ public class TestDataSource {
     SystematicReview review1 = Util.createReview( "Test", "test" );
 
     // find the inserted entity by its id
-    SystematicReview review2 = MainController.EM.find(
-        SystematicReview.class, review1.getId() );
+    SystematicReview review2 = MainController.EM.find( SystematicReview.class,
+        review1.getId() );
     assert review2 != null;
     assert review2.getName().equals( "Test" );
 
@@ -47,8 +48,8 @@ public class TestDataSource {
     MainController.EM.getTransaction().commit();
 
     // find the inserted entity by its id
-    SystematicReview review3 = MainController.EM.find(
-        SystematicReview.class, review1.getId() );
+    SystematicReview review3 = MainController.EM.find( SystematicReview.class,
+        review1.getId() );
     assert review3 == null;
   }
 }

@@ -36,6 +36,7 @@ public class MeshRanker extends AbstractTest {
 
   /**
    * Set up the test suite.
+   * 
    * @throws IOException
    */
   @BeforeSuite
@@ -44,21 +45,20 @@ public class MeshRanker extends AbstractTest {
     super.setUp();
   }
 
-
   /**
    * Simulate the Clopidogrel query refinement process.
-   *
+   * 
    * @throws RemoteException
    * @throws InterruptedException
    */
   @Test
-  public void simulateClopidogrelReview()
-    throws RemoteException, InterruptedException {
+  public void simulateClopidogrelReview() throws RemoteException,
+      InterruptedException {
     PubmedLocator locator = new PubmedLocator();
 
     // Get the MeSH terms for the relevant papers
-    Set<Citation> relevant = new HashSet<>( locator.getCitations(
-        clopidogrelReview.getRelevantLevel1() ) );
+    Set<Citation> relevant = new HashSet<>(
+        locator.getCitations( clopidogrelReview.getRelevantLevel1() ) );
 
     Set<String> relevantMesh = new HashSet<>();
     for ( Citation c : relevant ) {
@@ -67,8 +67,8 @@ public class MeshRanker extends AbstractTest {
     LOG.info( "# MeSH terms from relevant papers: " + relevantMesh.size() );
 
     // Get the MeSH terms for the irrelevant papers
-    Set<Citation> irrelevant = new HashSet<>( locator.getCitations(
-        clopidogrelReview.getIrrelevantP() ) );
+    Set<Citation> irrelevant = new HashSet<>(
+        locator.getCitations( clopidogrelReview.getIrrelevantP() ) );
 
     Set<String> irrelevantMesh = new HashSet<>();
     for ( Citation c : irrelevant ) {
@@ -84,7 +84,7 @@ public class MeshRanker extends AbstractTest {
     allMesh.addAll( relevantMesh );
     allMesh.addAll( irrelevantMesh );
 
-    LOG.info(  "# total terms: " + allMesh.size() );
+    LOG.info( "# total terms: " + allMesh.size() );
 
     StringBuilder posStr = new StringBuilder();
     TreeMultimap<Double, String> infoGains = TreeMultimap.create();
@@ -104,24 +104,25 @@ public class MeshRanker extends AbstractTest {
       }
       positivityMap.put( mesh, numRelevant - numIrrelevant );
 
-      posStr.append( mesh + " \t#relevant: " + numRelevant +
-          "; #irrelevant:" + numIrrelevant + "\n" );
+      posStr.append( mesh + " \t#relevant: " + numRelevant + "; #irrelevant:"
+          + numIrrelevant + "\n" );
 
       // calculate the info gain
-      double entropyPresent = MathUtil.calculateShannonEntropy(
-          numRelevant, numIrrelevant );
+      double entropyPresent = MathUtil.calculateShannonEntropy( numRelevant,
+          numIrrelevant );
       double entropyNotPresent = MathUtil.calculateShannonEntropy(
           relevant.size() - numRelevant, irrelevant.size() - numIrrelevant );
 
-      posStr.append( " \tentropyPresent: " + entropyPresent +
-          "; entropyNotPresent:" + entropyNotPresent + "\n" );
+      posStr.append( " \tentropyPresent: " + entropyPresent
+          + "; entropyNotPresent:" + entropyNotPresent + "\n" );
 
-      double infoGain = MathUtil.calculateInfoGain(
-          initialEntropy, entropyPresent, entropyNotPresent );
+      double infoGain = MathUtil.calculateInfoGain( initialEntropy,
+          entropyPresent, entropyNotPresent );
       infoGains.put( infoGain, mesh );
     }
 
-    //TreeMultimap<Double, String> normalized = MathUtil.normalize( infoGains );
+    // TreeMultimap<Double, String> normalized = MathUtil.normalize( infoGains
+    // );
 
     StringBuilder igStr = new StringBuilder();
     for ( Double infoGain : infoGains.keySet().descendingSet() ) {
@@ -131,7 +132,7 @@ public class MeshRanker extends AbstractTest {
       for ( String term : terms ) {
         boolean positive = positivityMap.get( term ) > 0;
         String posChar = positive ? "+" : "-";
-        igStr.append( rounded + " \t" + " (" + posChar + "): " + term  + "\n" );
+        igStr.append( rounded + " \t" + " (" + posChar + "): " + term + "\n" );
       }
     }
 

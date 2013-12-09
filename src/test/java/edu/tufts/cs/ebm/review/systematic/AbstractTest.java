@@ -19,8 +19,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.testng.annotations.BeforeSuite;
 
+import edu.tufts.cs.ebm.refinement.Launcher;
 import edu.tufts.cs.ebm.refinement.query.InfoMeasure;
-import edu.tufts.cs.ebm.refinement.query.Launcher;
 import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 
@@ -28,7 +28,7 @@ public class AbstractTest extends TestCase {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( AbstractTest.class );
   /** Megabytes. */
-  protected static final int MB = 1024*1024;
+  protected static final int MB = 1024 * 1024;
   /** The active review. */
   protected SystematicReview clopidogrelReview;
   /** The active review. */
@@ -36,8 +36,10 @@ public class AbstractTest extends TestCase {
 
   /**
    * Set up the test suite.
+   * 
    * @throws Exception
    */
+  @Override
   @BeforeSuite
   public void setUp() throws Exception {
     setProxy();
@@ -69,12 +71,14 @@ public class AbstractTest extends TestCase {
 
     // load up the seeds
     for ( PubmedId pmid : clopidogrelReview.getSeeds() ) {
-      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
+                                                                 // seeds
     }
 
     // load up the seeds
     for ( PubmedId pmid : protonBeamReview.getSeeds() ) {
-      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
+                                                                 // seeds
     }
   }
 
@@ -100,12 +104,12 @@ public class AbstractTest extends TestCase {
     LOG.info( "Proxy set: " + System.getProperty( "http.proxySet" ) );
     LOG.info( "Proxy host: " + System.getProperty( "http.proxyHost" ) );
     LOG.info( "Proxy port: " + System.getProperty( "http.proxyPort" ) );
-    LOG.info( "Non-proxy hosts: " +
-        System.getProperty( "http.nonProxyHosts" ) );
+    LOG.info( "Non-proxy hosts: " + System.getProperty( "http.nonProxyHosts" ) );
   }
 
   /**
    * Perform the search and rank the results.
+   * 
    * @param searcher
    * @return
    * @throws InterruptedException
@@ -124,7 +128,7 @@ public class AbstractTest extends TestCase {
 
   /**
    * Load up the systematic reviews from the database.
-   *
+   * 
    * @return
    * @throws NamingException
    * @throws ClassNotFoundException
@@ -136,12 +140,12 @@ public class AbstractTest extends TestCase {
     String sql = "select t from SystematicReview t";
     Query q = MainController.EM.createQuery( sql );
     List<SystematicReview> list = q.getResultList();
-    
+
     System.out.println( "# systematic reviews: " + list.size() );
-  
+
     ObservableList<SystematicReview> reviews = FXCollections
         .observableArrayList( list );
-    
+
     if ( !reviews.isEmpty() ) {
       Collections.sort( reviews );
     }
@@ -151,67 +155,71 @@ public class AbstractTest extends TestCase {
 
   /**
    * Calculate the info measures for the searcher.
+   * 
    * @param s
    * @return
    */
   protected InfoMeasure calculateInfoMeasureL1( SystematicReview r,
       int truePositives, int total ) {
-    InfoMeasure im = new InfoMeasure( truePositives,
-        total, r.getRelevantLevel1().size() );
+    InfoMeasure im = new InfoMeasure( truePositives, total, r
+        .getRelevantLevel1().size() );
 
     return im;
   }
 
   /**
    * Calculate the info measures for the searcher.
+   * 
    * @param s
    * @return
    */
   protected InfoMeasure calculateInfoMeasureL2( SystematicReview r,
       int truePositives, int total ) {
-    InfoMeasure im = new InfoMeasure( truePositives,
-        total, r.getRelevantLevel2().size() );
+    InfoMeasure im = new InfoMeasure( truePositives, total, r
+        .getRelevantLevel2().size() );
 
     return im;
   }
 
   /**
    * Calculate the info measures for the searcher.
+   * 
    * @param s
    * @return
    */
   protected InfoMeasure calculateInfoMeasureL1( SystematicReview r,
       int truePositives ) {
-    InfoMeasure im = new InfoMeasure( truePositives,
-        r.getRelevantLevel1().size() );
+    InfoMeasure im = new InfoMeasure( truePositives, r.getRelevantLevel1()
+        .size() );
 
     return im;
   }
 
   /**
    * Calculate the info measures for the searcher.
+   * 
    * @param s
    * @return
    */
   protected InfoMeasure calculateInfoMeasureL2( SystematicReview r,
       int truePositives ) {
-    InfoMeasure im = new InfoMeasure( truePositives,
-        r.getRelevantLevel2().size() );
+    InfoMeasure im = new InfoMeasure( truePositives, r.getRelevantLevel2()
+        .size() );
 
     return im;
   }
 
   /**
    * Load up the systematic reviews from the database.
-   *
+   * 
    * @return
    * @throws NamingException
    * @throws ClassNotFoundException
    * @throws SQLException
    */
   @Bean
-  protected Set<Citation> citations()
-    throws NamingException, ClassNotFoundException, SQLException {
+  protected Set<Citation> citations() throws NamingException,
+      ClassNotFoundException, SQLException {
     String sql = "select t from Citation t";
     Query q = MainController.EM.createQuery( sql );
     Set<Citation> citations = new HashSet<Citation>( q.getResultList() );

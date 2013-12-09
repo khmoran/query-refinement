@@ -2,7 +2,6 @@ package edu.tufts.cs.rank;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,16 +12,14 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.TreeMultimap;
 
-import edu.tufts.cs.ebm.review.systematic.PubmedId;
-import edu.tufts.cs.ml.FeatureVector;
-
 public class BordaAggregator<E extends Comparable<E>> {
   /**
    * Aggregate the <n> Multimaps into one ranked list.
+   * 
    * @param ranks
    * @return
    */
-  @SuppressWarnings( "unchecked" )
+  @SuppressWarnings("unchecked")
   public <F extends Comparable<F>> List<E> aggregate(
       TreeMultimap<F, E>... ranks ) {
     return aggregate( ranks );
@@ -30,6 +27,7 @@ public class BordaAggregator<E extends Comparable<E>> {
 
   /**
    * Aggregate the <n> Lists into one ranked list.
+   * 
    * @param ranks
    * @return
    */
@@ -44,9 +42,9 @@ public class BordaAggregator<E extends Comparable<E>> {
     return aggregate( matrix );
   }
 
-
   /**
    * Aggregate the <n> arrays into one ranked list.
+   * 
    * @param ranks
    * @return
    */
@@ -63,7 +61,7 @@ public class BordaAggregator<E extends Comparable<E>> {
 
   /**
    * Aggregate the n rankings.
-   *
+   * 
    * @param rankings
    * @return
    */
@@ -86,12 +84,10 @@ public class BordaAggregator<E extends Comparable<E>> {
       }
     }
 
-    List<Entry<E, Double>> list = new LinkedList<>(
-        accumulatorMap.entrySet() );
+    List<Entry<E, Double>> list = new LinkedList<>( accumulatorMap.entrySet() );
     Collections.sort( list, new Comparator<Entry<E, Double>>() {
       @Override
-      public int compare( Entry<E, Double> o1,
-          Entry<E, Double> o2 ) {
+      public int compare( Entry<E, Double> o1, Entry<E, Double> o2 ) {
         // descending
         return (int) Math.signum( o2.getValue() - o1.getValue() );
       }

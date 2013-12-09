@@ -25,10 +25,11 @@ import edu.tufts.cs.ml.topics.lda.LDA;
 /**
  * An online simulation of a systematic review using an LDA representation.
  */
-public abstract class OnlineSimulatorLdaMesh extends OnlineSimulator<PubmedId, FeatureVector<Integer>> {
+public abstract class OnlineSimulatorLdaMesh extends
+    OnlineSimulator<PubmedId, FeatureVector<Integer>> {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorLdaMesh.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorLdaMesh.class );
   /** The expected number of topics. */
   public static final int NUM_TOPICS = 20;
   /** The alpha sum prior. */
@@ -42,6 +43,7 @@ public abstract class OnlineSimulatorLdaMesh extends OnlineSimulator<PubmedId, F
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -53,17 +55,17 @@ public abstract class OnlineSimulatorLdaMesh extends OnlineSimulator<PubmedId, F
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
       Set<Citation> citations ) {
     StringBuilder sb = new StringBuilder();
-    BagOfWords<Integer> meshBow = new BagOfWords<Integer>(
-        new File( "src/main/resources/stoplists/en.txt" ) );
+    BagOfWords<Integer> meshBow = new BagOfWords<Integer>( new File(
+        "src/main/resources/stoplists/en.txt" ) );
 
     List<String> meshStr = new ArrayList<String>();
     for ( Citation c : citations ) {
       String mesh = c.getMeshStr().replaceAll( ",", " " );
       meshStr.add( mesh );
-      sb.append( c.getPmid() + "\tX\t\"" + c.getTitle() + " " + c.getAbstr() +
-          " " + mesh + "\"\n" );
+      sb.append( c.getPmid() + "\tX\t\"" + c.getTitle() + " " + c.getAbstr()
+          + " " + mesh + "\"\n" );
     }
-    
+
     meshBow.createFeatures( meshStr );
 
     this.lda = new BasicLDA( NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
@@ -72,31 +74,32 @@ public abstract class OnlineSimulatorLdaMesh extends OnlineSimulator<PubmedId, F
     } catch ( IOException e ) {
       LOG.error( e );
     }
-    
+
     // create the feature vectors
     Map<PubmedId, FeatureVector<Integer>> fvs = new HashMap<>();
     for ( Citation c : citations ) {
       String mesh = c.getMeshStr().replaceAll( ",", " " );
       fvs.put( c.getPmid(), createUnlabeledVector( c, meshBow, mesh ) );
     }
-    
+
     return fvs;
   }
 
   /**
    * Create a FeatureVector from the LDA data.
+   * 
    * @param c
    * @param relevant
    * @return
    */
-  protected UnlabeledFeatureVector<Integer> createUnlabeledVector(
-      Citation c, BagOfWords<Integer> bow, String mesh ) {
+  protected UnlabeledFeatureVector<Integer> createUnlabeledVector( Citation c,
+      BagOfWords<Integer> bow, String mesh ) {
     // start with a BoW representation for the MeSH terms
-    UnlabeledFeatureVector<Integer> fv = bow.createUnlabeledFV(
-        c.getPmid().toString(), mesh );
-    // then appen the LDA topics as features 
-    Multimap<Double, Integer> topicDist = lda.getTopics(
-        c.getPmid().toString() );
+    UnlabeledFeatureVector<Integer> fv = bow.createUnlabeledFV( c.getPmid()
+        .toString(), mesh );
+    // then appen the LDA topics as features
+    Multimap<Double, Integer> topicDist = lda
+        .getTopics( c.getPmid().toString() );
     for ( double pct : topicDist.keySet() ) {
       for ( int topic : topicDist.get( pct ) ) {
         String str = String.valueOf( topic );

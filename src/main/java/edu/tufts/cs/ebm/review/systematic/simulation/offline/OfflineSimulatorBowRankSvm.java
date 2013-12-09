@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultimap;
 
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
@@ -27,12 +26,14 @@ import edu.tufts.cs.rank.BordaAggregator;
  */
 public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OfflineSimulatorBowRankSvm.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OfflineSimulatorBowRankSvm.class );
   /** The ensemble size (number of classifiers) for bagging. */
-  protected static final int ENSEMBLE_SIZE = 10;
-  /** The number of times the size of the minority class to sample.
-   * NOTE: can make this number very high to eliminate undersampling. */
+  protected static final int ENSEMBLE_SIZE = 5;
+  /**
+   * The number of times the size of the minority class to sample. NOTE: can
+   * make this number very high to eliminate undersampling.
+   */
   protected static final int UNDERSAMPLING_MULTIPLIER = 1;
   /** The positive class label for L2. */
   protected static final int POS = 1;
@@ -45,6 +46,7 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -55,15 +57,15 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
   @Override
   protected List<PubmedId> rank(
       Map<PubmedId, FeatureVector<Integer>> training,
-      Map<PubmedId, FeatureVector<Integer>> test ) {    
+      Map<PubmedId, FeatureVector<Integer>> test ) {
     List<PubmedId> ranking = new ArrayList<PubmedId>();
-    
+
     List<FeatureVector<Integer>> pos = new ArrayList<FeatureVector<Integer>>();
     List<FeatureVector<Integer>> neg = new ArrayList<FeatureVector<Integer>>();
-    
+
     for ( PubmedId id : training.keySet() ) {
       if ( activeReview.getRelevantLevel1().contains( id )
-        || activeReview.getRelevantLevel2().contains( id ) ) {
+          || activeReview.getRelevantLevel2().contains( id ) ) {
         pos.add( training.get( id ) );
       } else {
         neg.add( training.get( id ) );
@@ -74,15 +76,13 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
     if ( !( pos.isEmpty() || neg.isEmpty() ) ) {
       // create the training data, which is the expert-identified relevant
       // and irrelevant sets
-      Map<FeatureVector<Integer>, Integer> minorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> minorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : pos ) {
         fv.setQid( 1 );
         fv.setRank( POS );
         minorityMap.put( fv, POS );
       }
-      Map<FeatureVector<Integer>, Integer> majorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> majorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : neg ) {
         fv.setQid( 1 );
         fv.setRank( NEG );
@@ -90,31 +90,33 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
       }
 
       // create the test set
-      TestRelation<Integer> testRelation = new TestRelation<Integer>(
-          "test", bow.getTrainingData().getMetadata() );
+      TestRelation<Integer> testRelation = new TestRelation<Integer>( "test",
+          bow.getTrainingData().getMetadata() );
       for ( FeatureVector<Integer> c : test.values() ) {
-        if ( c.getQid() == null ) c.setQid( 1 );
+        if ( c.getQid() == null )
+          c.setQid( 1 );
         testRelation.add( (UnlabeledFeatureVector<Integer>) c );
       }
-      
+
       ranking = ensembleRank( minorityMap, majorityMap, testRelation );
     }
 
     return ranking;
   }
 
-
   /**
-   * Do an ensemble ranking with undersampling and bagging, merged by the
-   * Borda algorithm.
+   * Do an ensemble ranking with undersampling and bagging, merged by the Borda
+   * algorithm.
+   * 
    * @param minorityClass
    * @param majorityClass
    * @param test
    * @return
    */
-  protected List<PubmedId> ensembleRank( 
+  protected List<PubmedId> ensembleRank(
       Map<FeatureVector<Integer>, Integer> minorityClass,
-      Map<FeatureVector<Integer>, Integer> majorityClass, TestRelation<Integer> test ) {
+      Map<FeatureVector<Integer>, Integer> majorityClass,
+      TestRelation<Integer> test ) {
 
     LOG.info( "Ensemble ranking..." );
     List<List<PubmedId>> rankings = new ArrayList<List<PubmedId>>();
@@ -122,15 +124,16 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
     // there will be no undersampling if the majority class is smaller than
     // the minority class, so only rank once
     int ensembleSize = ENSEMBLE_SIZE;
-    if ( minorityClass.size()*UNDERSAMPLING_MULTIPLIER >= majorityClass.size() ) {
+    if ( minorityClass.size() * UNDERSAMPLING_MULTIPLIER >= majorityClass
+        .size() ) {
       ensembleSize = 1;
     }
-    
+
     for ( int i = 1; i <= ensembleSize; i++ ) {
       LOG.info( "\tRanking ensemble #" + i );
       rankings.add( bag( minorityClass, majorityClass, test ) );
     }
-    
+
     BordaAggregator<PubmedId> borda = new BordaAggregator<PubmedId>();
     List<PubmedId> merged = borda.aggregate( rankings );
 
@@ -144,6 +147,7 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
 
   /**
    * Bag and run the classifier on an undersampled subset.
+   *
    * @param minorityClass
    * @param majorityClass
    * @param test
@@ -151,10 +155,11 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
    */
   protected List<PubmedId> bag(
       Map<FeatureVector<Integer>, Integer> minorityClass,
-      Map<FeatureVector<Integer>, Integer> majorityClass, TestRelation<Integer> test ) {
+      Map<FeatureVector<Integer>, Integer> majorityClass,
+      TestRelation<Integer> test ) {
     // prepare the data for the ranking function
-    TrainRelation<Integer> trainRelation = new TrainRelation<Integer>(
-        "train", bow.getTrainingData().getMetadata() );
+    TrainRelation<Integer> trainRelation = new TrainRelation<Integer>( "train",
+        bow.getTrainingData().getMetadata() );
     // add minority instances
     for ( FeatureVector<Integer> fv : minorityClass.keySet() ) {
       LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<Integer>(
@@ -167,9 +172,11 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
 
     // undersampling the majority class
     // add majority instances
-    int numNegSamples = ( minorityClass.size()*UNDERSAMPLING_MULTIPLIER >= majorityClass.size() ) ?
-        majorityClass.size() : minorityClass.size()*UNDERSAMPLING_MULTIPLIER;
-    ArrayList<FeatureVector<Integer>> shuffled = new ArrayList<>( majorityClass.keySet() );
+    int numNegSamples = ( minorityClass.size() * UNDERSAMPLING_MULTIPLIER >= majorityClass
+        .size() ) ? majorityClass.size() : minorityClass.size()
+        * UNDERSAMPLING_MULTIPLIER;
+    ArrayList<FeatureVector<Integer>> shuffled = new ArrayList<>(
+        majorityClass.keySet() );
     Collections.shuffle( shuffled );
     for ( int i = 0; i < numNegSamples; i++ ) {
       FeatureVector<Integer> fv = shuffled.get( i );
@@ -192,8 +199,8 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
       for ( Double rank : results.keySet() ) {
         for ( FeatureVector<Integer> fv : results.get( rank ) ) {
           try {
-            PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
-                Long.valueOf( fv.getId() ) );
+            PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid( Long
+                .valueOf( fv.getId() ) );
             ranking.add( pmid );
           } catch ( NumberFormatException e ) {
             LOG.error( "Could not parse pmid: " + fv.getId(), e );
@@ -203,7 +210,7 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
     } catch ( IncomparableFeatureVectorException e ) {
       LOG.error( "Could not compare feature vectors.", e );
     }
-    
+
     return ranking;
   }
 

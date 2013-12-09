@@ -62,29 +62,28 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public PubmedSearcher( String query, SystematicReview activeReview )
-    throws AxisFault {
+      throws AxisFault {
     this( query, activeReview, -1 );
   }
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public PubmedSearcher( String query, SystematicReview activeReview,
-      Set<Citation> compareTo )
-    throws AxisFault {
+      Set<Citation> compareTo ) throws AxisFault {
     this( query, activeReview, -1 );
     compareTo.addAll( compareTo );
   }
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public PubmedSearcher( String query, SystematicReview activeReview,
@@ -98,8 +97,8 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     if ( activeReview != null ) {
       if ( activeReview.getSeedCitations().isEmpty() ) {
         PubmedLocator locator = new PubmedLocator();
-        Set<Citation> seedCitations = locator.getCitations(
-            activeReview.getSeeds() );
+        Set<Citation> seedCitations = locator.getCitations( activeReview
+            .getSeeds() );
         activeReview.setSeedCitations( seedCitations );
       }
     }
@@ -119,7 +118,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Get all of the citations.
-   *
+   * 
    * @return
    */
   public ListProperty<Citation> getCitations() {
@@ -128,7 +127,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Get all of the MeSH terms.
-   *
+   * 
    * @return
    */
   public SortedMultiset<String> getMeshTerms() {
@@ -137,6 +136,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Get the search-in-progress indicator.
+   * 
    * @return
    */
   public BooleanProperty getSearchInProg() {
@@ -145,7 +145,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Get the current query.
-   *
+   * 
    * @return
    */
   public String getQuery() {
@@ -183,8 +183,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     /*
      * Search PubMed.
      */
-    EUtilsServiceStub.ESearchRequest req =
-        new EUtilsServiceStub.ESearchRequest();
+    EUtilsServiceStub.ESearchRequest req = new EUtilsServiceStub.ESearchRequest();
     req.setDb( "pubmed" );
     req.setTerm( query );
     req.setUsehistory( "y" ); // important!
@@ -194,7 +193,8 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     String webEnv = res.getWebEnv();
     String query_key = res.getQueryKey();
 
-    if ( maxResults == -1 ) maxResults = count;
+    if ( maxResults == -1 )
+      maxResults = count;
 
     /*
      * Fetch the results.
@@ -203,10 +203,9 @@ public class PubmedSearcher extends PubmedService implements Runnable {
     int runs = (int) Math.ceil( count / new Double( fetchesPerRun ) );
     int start = 0;
     for ( int i = 0; i < runs; i++ ) {
-      LOG.debug( "Fetching results from id " + start + " to id " + ( start
-          + fetchesPerRun ) );
-      EFetchPubmedServiceStub.EFetchRequest req2 =
-          new EFetchPubmedServiceStub.EFetchRequest();
+      LOG.debug( "Fetching results from id " + start + " to id "
+          + ( start + fetchesPerRun ) );
+      EFetchPubmedServiceStub.EFetchRequest req2 = new EFetchPubmedServiceStub.EFetchRequest();
       req2.setWebEnv( webEnv );
       req2.setQuery_key( query_key );
       req2.setRetstart( String.valueOf( start ) );
@@ -251,7 +250,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Set the done signal.
-   *
+   * 
    * @param doneSignal
    */
   public void setDoneSignal( CountDownLatch doneSignal ) {
@@ -260,7 +259,7 @@ public class PubmedSearcher extends PubmedService implements Runnable {
 
   /**
    * Set the start signal.
-   *
+   * 
    * @param startSignal
    */
   public void setStartSignal( CountDownLatch startSignal ) {

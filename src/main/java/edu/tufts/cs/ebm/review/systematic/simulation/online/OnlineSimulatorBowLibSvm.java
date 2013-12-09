@@ -25,35 +25,36 @@ import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
  */
 public class OnlineSimulatorBowLibSvm extends OnlineSimulatorBow {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OnlineSimulatorBowLibSvm.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OnlineSimulatorBowLibSvm.class );
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
   public OnlineSimulatorBowLibSvm( String review ) throws Exception {
     super( review );
   }
-  
+
   /**
    * Get the papers terms to propose.
+   * 
    * @param query
    * @return
    */
   @Override
-  protected Set<PubmedId> getPaperProposals( 
+  protected Set<PubmedId> getPaperProposals(
       TreeMultimap<Double, PubmedId> rankMap,
-      Set<PubmedId> expertRelevantPapers,
-      Set<PubmedId> expertIrrelevantPapers ) {
+      Set<PubmedId> expertRelevantPapers, Set<PubmedId> expertIrrelevantPapers ) {
     Set<PubmedId> results = new HashSet<>();
 
     List<PubmedId> citList = new ArrayList<>();
     for ( Double sim : rankMap.keySet() ) {
       for ( PubmedId pmid : rankMap.get( sim ) ) {
-        if ( !expertRelevantPapers.contains( pmid ) &&
-            !expertIrrelevantPapers.contains( pmid ) ) {
+        if ( !expertRelevantPapers.contains( pmid )
+            && !expertIrrelevantPapers.contains( pmid ) ) {
           citList.add( pmid );
         }
       }
@@ -61,10 +62,11 @@ public class OnlineSimulatorBowLibSvm extends OnlineSimulatorBow {
 
     LOG.info( "Getting deterministic paper proposal set..." );
     // TODO temporarily removing stochastic element
-    int lastIdx = ( citList.size() < PAPER_PROPOSALS_PER_ITERATION ) ? citList.size() : PAPER_PROPOSALS_PER_ITERATION;
+    int lastIdx = ( citList.size() < PAPER_PROPOSALS_PER_ITERATION ) ? citList
+        .size() : PAPER_PROPOSALS_PER_ITERATION;
     results.addAll( citList.subList( 0, lastIdx ) );
 
-    LOG.info(  "Paper proposals: " + results );
+    LOG.info( "Paper proposals: " + results );
     return results;
   }
 
@@ -81,7 +83,7 @@ public class OnlineSimulatorBowLibSvm extends OnlineSimulatorBow {
       Map<PubmedId, FeatureVector<Integer>> citations,
       Map<PubmedId, FeatureVector<Integer>> expertRelevantPapers,
       Map<PubmedId, FeatureVector<Integer>> expertIrrelevantPapers ) {
-    
+
     TreeMultimap<Double, PubmedId> rankMap = TreeMultimap.create();
 
     // can't classify w/o samples from each class
@@ -96,8 +98,8 @@ public class OnlineSimulatorBowLibSvm extends OnlineSimulatorBow {
       }
 
       // create the test set
-      TestRelation<Integer> test = new TestRelation<Integer>(
-          "test", bow.getTrainingData().getMetadata() );
+      TestRelation<Integer> test = new TestRelation<Integer>( "test", bow
+          .getTrainingData().getMetadata() );
       for ( FeatureVector<Integer> c : citations.values() ) {
         test.add( (UnlabeledFeatureVector<Integer>) c );
       }
@@ -110,8 +112,8 @@ public class OnlineSimulatorBowLibSvm extends OnlineSimulatorBow {
         for ( Double rank : results.keySet().descendingSet() ) {
           for ( FeatureVector<Integer> fv : results.get( rank ) ) {
             try {
-              PubmedId pmid = edu.tufts.cs.ebm.util.Util.createOrUpdatePmid(
-                  Long.valueOf( fv.getId() ) );
+              PubmedId pmid = edu.tufts.cs.ebm.util.Util
+                  .createOrUpdatePmid( Long.valueOf( fv.getId() ) );
               rankMap.put( rank, pmid );
             } catch ( NumberFormatException e ) {
               LOG.error( "Could not parse pmid: " + fv.getId(), e );

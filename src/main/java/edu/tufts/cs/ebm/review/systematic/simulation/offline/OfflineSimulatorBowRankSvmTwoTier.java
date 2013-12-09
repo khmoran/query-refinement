@@ -18,10 +18,11 @@ import edu.tufts.cs.ml.UnlabeledFeatureVector;
  * An online simulation of a systematic review using a Bag of Words
  * representation and an SVM classifier.
  */
-public class OfflineSimulatorBowRankSvmTwoTier extends OfflineSimulatorBowRankSvm {
+public class OfflineSimulatorBowRankSvmTwoTier extends
+    OfflineSimulatorBowRankSvm {
   /** The Logger for this class. */
-  protected static final Log LOG = LogFactory.getLog(
-      OfflineSimulatorBowRankSvmTwoTier.class );
+  protected static final Log LOG = LogFactory
+      .getLog( OfflineSimulatorBowRankSvmTwoTier.class );
   /** The positive class label for L2. */
   protected static final int POS_L2 = 1;
   /** The positive class label for L1. */
@@ -31,6 +32,7 @@ public class OfflineSimulatorBowRankSvmTwoTier extends OfflineSimulatorBowRankSv
 
   /**
    * Default constructor.
+   * 
    * @param review
    * @throws Exception
    */
@@ -43,13 +45,13 @@ public class OfflineSimulatorBowRankSvmTwoTier extends OfflineSimulatorBowRankSv
       Map<PubmedId, FeatureVector<Integer>> training,
       Map<PubmedId, FeatureVector<Integer>> test ) {
     List<PubmedId> ranking = new ArrayList<PubmedId>();
-    
+
     List<FeatureVector<Integer>> pos = new ArrayList<FeatureVector<Integer>>();
     List<FeatureVector<Integer>> neg = new ArrayList<FeatureVector<Integer>>();
-    
+
     for ( PubmedId id : training.keySet() ) {
       if ( activeReview.getRelevantLevel1().contains( id )
-        || activeReview.getRelevantLevel2().contains( id ) ) {
+          || activeReview.getRelevantLevel2().contains( id ) ) {
         pos.add( training.get( id ) );
       } else {
         neg.add( training.get( id ) );
@@ -60,18 +62,17 @@ public class OfflineSimulatorBowRankSvmTwoTier extends OfflineSimulatorBowRankSv
     if ( !( pos.isEmpty() || neg.isEmpty() ) ) {
       // create the training data, which is the expert-identified relevant
       // and irrelevant sets
-      Map<FeatureVector<Integer>, Integer> minorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> minorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : pos ) {
         fv.setQid( 1 );
         PubmedId pmid = Util.createOrUpdatePmid( Long.valueOf( fv.getId() ) );
         int posRank = POS_L1;
-        if ( activeReview.getRelevantLevel2().contains( pmid ) ) posRank = POS_L2;
+        if ( activeReview.getRelevantLevel2().contains( pmid ) )
+          posRank = POS_L2;
         fv.setRank( posRank );
         minorityMap.put( fv, posRank );
       }
-      Map<FeatureVector<Integer>, Integer> majorityMap =
-          new HashMap<FeatureVector<Integer>, Integer>();
+      Map<FeatureVector<Integer>, Integer> majorityMap = new HashMap<FeatureVector<Integer>, Integer>();
       for ( FeatureVector<Integer> fv : neg ) {
         fv.setQid( 1 );
         fv.setRank( NEG );
@@ -79,16 +80,17 @@ public class OfflineSimulatorBowRankSvmTwoTier extends OfflineSimulatorBowRankSv
       }
 
       // create the test set
-      TestRelation<Integer> testRelation = new TestRelation<Integer>(
-          "test", bow.getTrainingData().getMetadata() );
+      TestRelation<Integer> testRelation = new TestRelation<Integer>( "test",
+          bow.getTrainingData().getMetadata() );
       for ( FeatureVector<Integer> c : test.values() ) {
-        if ( c.getQid() == null ) c.setQid( 1 );
+        if ( c.getQid() == null )
+          c.setQid( 1 );
         testRelation.add( (UnlabeledFeatureVector<Integer>) c );
       }
-      
+
       ranking = ensembleRank( minorityMap, majorityMap, testRelation );
     }
-    
+
     return ranking;
   }
 }

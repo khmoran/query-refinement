@@ -31,11 +31,11 @@ import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 /**
  * Thread to query PubMed.
  */
-public class ParallelPubmedSearcher extends PubmedService
-  implements Runnable, Observer {
+public class ParallelPubmedSearcher extends PubmedService implements Runnable,
+    Observer {
   /** The logger. */
-  private static final Log LOG = LogFactory.getLog(
-      ParallelPubmedSearcher.class );
+  private static final Log LOG = LogFactory
+      .getLog( ParallelPubmedSearcher.class );
   /** The default number of documents to retrieve per fetch. */
   protected static final int DEFAULT_FETCH_SIZE = 100;
   /** The number of threads to fork off at a time. */
@@ -63,17 +63,17 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public ParallelPubmedSearcher( String query, SystematicReview activeReview )
-    throws AxisFault {
+      throws AxisFault {
     this( query, activeReview, -1 );
   }
 
   /**
    * Default constructor.
-   *
+   * 
    * @throws AxisFault
    */
   public ParallelPubmedSearcher( String query, SystematicReview activeReview,
@@ -101,7 +101,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Get all of the citations.
-   *
+   * 
    * @return
    */
   public Set<Citation> getCitations() {
@@ -110,7 +110,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Get all of the MeSH terms.
-   *
+   * 
    * @return
    */
   public SortedMultiset<String> getMeshTerms() {
@@ -119,6 +119,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Get the search-in-progress indicator.
+   * 
    * @return
    */
   public BooleanProperty getSearchInProg() {
@@ -127,7 +128,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Get the current query.
-   *
+   * 
    * @return
    */
   public String getQuery() {
@@ -165,8 +166,7 @@ public class ParallelPubmedSearcher extends PubmedService
     /*
      * Search PubMed.
      */
-    EUtilsServiceStub.ESearchRequest req =
-        new EUtilsServiceStub.ESearchRequest();
+    EUtilsServiceStub.ESearchRequest req = new EUtilsServiceStub.ESearchRequest();
     req.setDb( "pubmed" );
     req.setTerm( query );
     req.setUsehistory( "y" ); // important!
@@ -178,22 +178,21 @@ public class ParallelPubmedSearcher extends PubmedService
     LOG.debug( "# citations to look up: " + res.getIdList().getId().length );
 
     String[] ids = res.getIdList().getId();
-    int iterations = (int) Math.ceil( (double) ids.length/
-        (double) DEFAULT_FETCH_SIZE );
+    int iterations = (int) Math.ceil( (double) ids.length
+        / (double) DEFAULT_FETCH_SIZE );
     for ( int i = 0; i < iterations; i++ ) {
-      int min = i*DEFAULT_FETCH_SIZE;
-      int max = Math.min( min+DEFAULT_FETCH_SIZE, ids.length );
-      LOG.debug( "Searching from " +  min + " to " + max );
+      int min = i * DEFAULT_FETCH_SIZE;
+      int max = Math.min( min + DEFAULT_FETCH_SIZE, ids.length );
+      LOG.debug( "Searching from " + min + " to " + max );
       String[] part = Arrays.copyOfRange( ids, min, max );
       getCitations( part );
-      LOG.debug( "\tFound " +  citations.size() + " so far" );
+      LOG.debug( "\tFound " + citations.size() + " so far" );
     }
 
     setChanged();
     notifyObservers( citations );
 
-    LOG.debug( "Fetched " + citations.size() + " results of expected "
-        + total );
+    LOG.debug( "Fetched " + citations.size() + " results of expected " + total );
 
     setChanged();
     notifyObservers( QUERY_COMPLETE );
@@ -201,19 +200,19 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Get the citations for the PubmedIds.
+   * 
    * @throws AxisFault
-   *
+   * 
    */
   public void getCitations( String[] pmids ) throws AxisFault {
-    //init();
+    // init();
 
     ExecutorService executorService = Executors.newFixedThreadPool( NUM_FORKS );
     for ( int i = 0; i < pmids.length; i++ ) {
       Long l = Long.valueOf( pmids[i] );
       PubmedId id = Util.createOrUpdatePmid( l );
 
-      if ( activeReview != null &&
-          activeReview.getBlacklist().contains( id ) ) {
+      if ( activeReview != null && activeReview.getBlacklist().contains( id ) ) {
         LOG.warn( "\tOn blacklist: " + id );
         continue;
       }
@@ -240,7 +239,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Set the done signal.
-   *
+   * 
    * @param doneSignal
    */
   public void setDoneSignal( CountDownLatch doneSignal ) {
@@ -249,7 +248,7 @@ public class ParallelPubmedSearcher extends PubmedService
 
   /**
    * Set the start signal.
-   *
+   * 
    * @param startSignal
    */
   public void setStartSignal( CountDownLatch startSignal ) {
@@ -266,7 +265,6 @@ public class ParallelPubmedSearcher extends PubmedService
 
     return c;
   }
-
 
   @Override
   public void update( Observable o, Object arg ) {
