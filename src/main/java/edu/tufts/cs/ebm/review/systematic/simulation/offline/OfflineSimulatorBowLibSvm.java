@@ -80,6 +80,7 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
       for ( FeatureVector<Integer> c : test.values() ) {
         testRelation.add( (UnlabeledFeatureVector<Integer>) c );
       }
+      System.out.println( "Test relation: " +  testRelation.size() );
 
       LibSvmClassifier c = new LibSvmClassifier();
       c.train( trainRelation );
@@ -87,7 +88,9 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
         TreeMultimap<Double, FeatureVector<Integer>> results = c
             .rank( testRelation );
 
-        for ( Double rank : results.keySet().descendingSet() ) {
+        System.out.println( "Key set: " + results.keySet().size() );
+        System.out.println( "Values: " +  results.values().size() );
+        for ( Double rank : results.keySet() ) {
           for ( FeatureVector<Integer> fv : results.get( rank ) ) {
             try {
               PubmedId pmid = edu.tufts.cs.ebm.util.Util
@@ -103,7 +106,8 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
       }
     }
 
-    return Lists.reverse( ranking );
+    System.out.println( "Ranking: " + ranking.size() );
+    return ranking;
   }
 
 }

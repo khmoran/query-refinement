@@ -29,7 +29,7 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
   protected static final Log LOG = LogFactory
       .getLog( OfflineSimulatorBowRankSvm.class );
   /** The ensemble size (number of classifiers) for bagging. */
-  protected static final int ENSEMBLE_SIZE = 5;
+  protected static final int ENSEMBLE_SIZE = 10;
   /**
    * The number of times the size of the minority class to sample. NOTE: can
    * make this number very high to eliminate undersampling.

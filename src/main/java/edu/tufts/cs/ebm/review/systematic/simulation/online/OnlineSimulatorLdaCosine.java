@@ -2,7 +2,6 @@ package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,7 +71,7 @@ public class OnlineSimulatorLdaCosine extends OnlineSimulatorLda {
   }
 
   @Override
-  protected void initializeClassifier( Set<Citation> citations ) {
+  protected void initializeClassifier( Collection<Citation> citations ) {
     // initialize the cosine similarity
     cs = new CachedCosineSimilarity<Integer>( defaultCache,
         new TrainRelation<Integer>( "", new Metadata() ) );

@@ -81,7 +81,7 @@ public class ParallelPubmedLocator extends PubmedService implements Runnable {
       if ( activeReview != null ) {
         MainController.EM.getTransaction().begin();
         this.activeReview.addBlacklisted( pmid );
-        MainController.EM.persist( this.activeReview );
+        MainController.EM.merge( this.activeReview );
         MainController.EM.getTransaction().commit();
         LOG.warn( "Null citation: " + pmid + "; adding to blacklist ("
             + activeReview.getBlacklist().size() + " total)" );

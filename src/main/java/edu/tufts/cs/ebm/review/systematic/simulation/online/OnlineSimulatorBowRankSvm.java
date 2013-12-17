@@ -1,6 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,7 +105,7 @@ public class OnlineSimulatorBowRankSvm extends OnlineSimulatorBow {
    * Initialize the classifier.
    */
   @Override
-  protected void initializeClassifier( Set<Citation> citations ) {
+  protected void initializeClassifier( Collection<Citation> citations ) {
     // this will all happen in the rank(...) method
   }
 

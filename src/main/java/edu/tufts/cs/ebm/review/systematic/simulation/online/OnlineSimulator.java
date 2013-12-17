@@ -57,14 +57,14 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Set up the test suite.
-   * 
+   *
    * @throws IOException
    * @throws BiffException
    */
   public OnlineSimulator( String review ) throws Exception {
     Collection<SystematicReview> reviews = reviews();
     this.dataset = Util.normalize( review );
-    ;
+
     for ( SystematicReview r : reviews ) {
       if ( Util.normalize( r.getName() ).contains( this.dataset ) ) {
         this.activeReview = r;
@@ -104,15 +104,16 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Turn the Citations into FeatureVectors.
-   * 
+   *
    * @param citations
    * @return
    */
-  protected abstract Map<I, C> createFeatureVectors( Set<Citation> citations );
+  protected abstract Map<I, C> createFeatureVectors(
+      Collection<Citation> citations );
 
   /**
    * Get the training data in MALLET form.
-   * 
+   *
    * @param relevant
    * @param irrelevant
    * @return
@@ -140,7 +141,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Evaluate the query.
-   * 
+   *
    * @param searcher
    * @return
    */
@@ -188,7 +189,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Get the papers terms to propose.
-   * 
+   *
    * @param query
    * @return
    */
@@ -228,11 +229,12 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
   /**
    * Initialize the classifier.
    */
-  protected abstract void initializeClassifier( Set<Citation> citations );
+  protected abstract void initializeClassifier(
+      Collection<Citation> citations );
 
   /**
    * Initialize the Mallet vectors.
-   * 
+   *
    * @param fvs
    */
   protected InstanceList initializeMallet(
@@ -270,7 +272,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
   /**
    * Propose the papers to the expert and add them to the appropriate bins:
    * relevant and irrelevant.
-   * 
+   *
    * @param proposals
    * @param relevant
    * @param irrelevant
@@ -295,7 +297,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Rank the query results using cosine similarity.
-   * 
+   *
    * @param searcher
    * @return
    */
@@ -304,7 +306,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Record the current ranking.
-   * 
+   *
    * @param rankMap
    */
   protected void recordRank( TreeMultimap<Double, I> rankMap,
@@ -360,7 +362,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Refine the query.
-   * 
+   *
    * @param popQuery
    * @param icQuery
    * @param newRelevant
@@ -399,24 +401,19 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Simulate the Clopidogrel query refinement process.
-   * 
-   * @throws InterruptedException
-   * @throws IOException
-   */
-  /**
-   * Simulate the Clopidogrel query refinement process.
-   * 
+   *
    * @throws InterruptedException
    * @throws IOException
    */
   @Override
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings( "unchecked" )
   public void simulateReview() throws InterruptedException, IOException {
     // prepare the CSV output
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
     // header row
-    out.write( "i,papers proposed,papers added,L1 cost,L1 recall,L2cost,L2recall" );
+    out.write( "i,papers proposed,papers added,L1 cost," +
+      "L1 recall,L2cost,L2recall" );
     out.newLine();
     out.flush();
 
@@ -436,8 +433,13 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     LOG.info( "Initial query: " + query );
     search( searcher );
 
-    initializeClassifier( searcher.getCitations() );
-    Map<I, C> citations = createFeatureVectors( searcher.getCitations() );
+    Collection<Citation> downsampled = downsample(
+        searcher.getCitations(), activeReview );
+    LOG.info( "Downsampled from " + searcher.getCitations().size() +
+        " to " + downsampled.size() );
+
+    initializeClassifier( downsampled );
+    Map<I, C> citations = createFeatureVectors( downsampled );
 
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {
@@ -494,7 +496,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
       // if new papers are proposed, update the ranking
       if ( expertRelevantPapers.size() > numRelevant || i <= 1 ) {
-        rankMap = rank( citations, expertRelevantPapers, expertIrrelevantPapers );
+        rankMap = rank(
+            citations, expertRelevantPapers, expertIrrelevantPapers );
         // record the ranks
         recordRank( rankMap, expertRelevantPapers.keySet(),
             expertIrrelevantPapers.keySet() );
@@ -527,7 +530,7 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
 
   /**
    * Tear down the test harness.
-   * 
+   *
    * @throws IOException
    * @throws WriteException
    */

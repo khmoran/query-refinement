@@ -1,7 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,13 +39,13 @@ public class OnlineSimulatorBowCosine extends OnlineSimulatorBow {
    * Initialize the classifier.
    */
   @Override
-  protected void initializeClassifier( Set<Citation> citations ) {
+  protected void initializeClassifier( Collection<Citation> citations ) {
     // initialize the cosine similarity
   }
 
   @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
-      Set<Citation> citations ) {
+      Collection<Citation> citations ) {
     Map<PubmedId, FeatureVector<Integer>> fvs = super
         .createFeatureVectors( citations );
     cs = new CachedCosineSimilarity<Integer>( defaultCache,

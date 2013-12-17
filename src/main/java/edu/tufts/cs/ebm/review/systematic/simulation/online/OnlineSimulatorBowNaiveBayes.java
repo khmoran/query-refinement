@@ -1,7 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +44,7 @@ public class OnlineSimulatorBowNaiveBayes extends OnlineSimulatorBow {
    * Initialize the classifier.
    */
   @Override
-  protected void initializeClassifier( Set<Citation> citations ) {
+  protected void initializeClassifier( Collection<Citation> citations ) {
     // this will all happen in the rank(...) method
   }
 

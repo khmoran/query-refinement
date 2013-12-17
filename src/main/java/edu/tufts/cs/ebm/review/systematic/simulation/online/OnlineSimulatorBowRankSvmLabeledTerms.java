@@ -7,11 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,7 +75,7 @@ public class OnlineSimulatorBowRankSvmLabeledTerms extends
    */
   @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
-      Set<Citation> citations ) {
+      Collection<Citation> citations ) {
     Map<PubmedId, FeatureVector<Integer>> fvs = super
         .createFeatureVectors( citations );
     File f = new File( "src/test/resources/" + this.dataset

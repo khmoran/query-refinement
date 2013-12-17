@@ -7,11 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,13 +43,14 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends
   /** The pseduo document positive class label. */
   protected static final int PSEUDO_POS = 0;
   /** The pseduo document negative class label. */
-  protected static final int PSEUDO_NEG = 4;
+  protected static final int PSEUDO_NEG = 3;
   /** Labeled terms. */
-  protected Map<FeatureVector<Integer>, Integer> labeledTerms = new HashMap<FeatureVector<Integer>, Integer>();
+  protected Map<FeatureVector<Integer>, Integer> labeledTerms =
+      new HashMap<FeatureVector<Integer>, Integer>();
 
   /**
    * Default constructor.
-   * 
+   *
    * @param review
    * @throws Exception
    */
@@ -66,7 +67,7 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends
    */
   @Override
   protected Map<PubmedId, FeatureVector<Integer>> createFeatureVectors(
-      Set<Citation> citations ) {
+      Collection<Citation> citations ) {
     Map<PubmedId, FeatureVector<Integer>> fvs = super
         .createFeatureVectors( citations );
     File f = new File( "src/test/resources/" + this.dataset
@@ -91,18 +92,31 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends
     Path path = Paths.get( f.getPath() );
     List<String> terms = Files.readAllLines( path, Charset.defaultCharset() );
 
+    LOG.info( "Loaded " + terms.size()
+        + " labeled terms for psueodocuments." );
+
+    StringBuilder posPseudoDoc = new StringBuilder();
+    StringBuilder negPseudoDoc = new StringBuilder();
     for ( String term : terms ) {
-      FeatureVector<Integer> pseudo = bow.createUnlabeledFV( PSEUDO_PREFIX
-          + term, term );
-      if ( term.contains( "+" ) ) {
-        labeledTerms.put( pseudo, PSEUDO_POS );
+      if ( term.contains( "-" ) ) {
+        negPseudoDoc.append( " " + term.substring( 0, term.length()-2 ) );
+      } else if ( term.contains( "+" ) ) {
+        posPseudoDoc.append( " " + term.substring( 0, term.length()-2 ) );
       } else {
-        labeledTerms.put( pseudo, PSEUDO_NEG );
+        posPseudoDoc.append( " " + term );
       }
     }
 
-    LOG.info( "Loaded " + labeledTerms.size()
-        + " labeled terms for psueodocuments." );
+    LOG.info( "Creating positive pseudo-doc: " + posPseudoDoc );
+    LOG.info( "Creating negative pseudo-doc: " + negPseudoDoc );
+
+    FeatureVector<Integer> pseudoPos = bow.createUnlabeledFV(
+        PSEUDO_PREFIX + "pos", posPseudoDoc.toString() );
+    labeledTerms.put( pseudoPos, PSEUDO_POS );
+    FeatureVector<Integer> pseudoNeg = bow.createUnlabeledFV(
+        PSEUDO_PREFIX + "neg", negPseudoDoc.toString() );
+    labeledTerms.put( pseudoPos, PSEUDO_POS );
+    labeledTerms.put( pseudoNeg, PSEUDO_NEG );
   }
 
   @Override

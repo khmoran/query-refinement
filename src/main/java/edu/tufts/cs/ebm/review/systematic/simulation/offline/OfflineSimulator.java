@@ -3,7 +3,6 @@ package edu.tufts.cs.ebm.review.systematic.simulation.offline;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,13 +34,21 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
   /** The name of the dataset. */
   protected String dataset;
   /** The default number of iterations. */
-  protected static final int DEFAULT_NUM_IT = 5;
+  protected static final int DEFAULT_NUM_IT = 10;
   /** The number of iterations. */
   protected static int numIt = DEFAULT_NUM_IT;
+  /** The default minimum amount of training data to use (out of 10). */
+  protected static final int DEFAULT_MIN_TRAINED = 1;
+  /** The minimum amount of training data to use (out of 10). */
+  protected static int minTrained = DEFAULT_MIN_TRAINED;
+  /** The default minimum amount of training data to use (out of 10). */
+  protected static final int DEFAULT_MAX_TRAINED = 9;
+  /** The maximum amount of training data to use (out of 10). */
+  protected static int maxTrained = DEFAULT_MAX_TRAINED;
 
   /**
    * Set up the test suite.
-   * 
+   *
    * @throws IOException
    * @throws BiffException
    */
@@ -52,14 +59,6 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
       if ( Util.normalize( r.getName() ).contains( this.dataset ) ) {
         this.activeReview = r;
       }
-    }
-
-    // TODO temporary
-    SimpleDateFormat sdf = new SimpleDateFormat( "MM/ss/yyyy" );
-    if ( dataset.equalsIgnoreCase( "clopidogrel" ) ) {
-      activeReview.setCreatedOn( sdf.parse( "07/27/2012" ) );
-    } else if ( dataset.equalsIgnoreCase( "protonbeam" ) ) {
-      activeReview.setCreatedOn( sdf.parse( "07/11/2009" ) );
     }
 
     if ( this.activeReview == null )
@@ -91,29 +90,46 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
     // header row
-    out.write( "pct held out, iteration, L1 AUC, L2 AUC" );
+    out.write( "% trained, iteration, L1 AUC, L2 AUC" );
     out.newLine();
     out.flush();
 
-    StringBuffer popQuery = new StringBuffer( activeReview.getQueryP() );
-    StringBuffer icQuery = new StringBuffer( activeReview.getQueryIC() );
+    String popQuery = activeReview.getQueryP();
+    String icQuery = activeReview.getQueryIC();
+    String oQuery = activeReview.getQueryO();
 
     LOG.info( "Initial POPULATION query: " + popQuery );
     LOG.info( "Initial INTERVENTION query: " + icQuery );
+    LOG.info( "Initial OUTCOME query: " + oQuery );
 
     // run the initial query
-    String query = "(" + popQuery + ") AND (" + icQuery + ")";
+    String query = "";
+    if ( popQuery != null ) query += popQuery;
+    if ( icQuery != null ) {
+      if ( query.isEmpty() ) query = icQuery;
+      else query = "(" + query + ") AND (" + icQuery + ")";
+    }
+    if ( oQuery != null ) {
+      if ( query.isEmpty() ) query = oQuery;
+      else query = query + " AND(" + oQuery + ")";
+    }
+
     ParallelPubmedSearcher searcher = new ParallelPubmedSearcher( query,
         activeReview );
     LOG.info( "Initial query: " + query );
     search( searcher );
 
-    Set<Citation> citations = removePostStudyArticles( searcher.getCitations() );
+    Set<Citation> citations = removePostStudyArticles(
+        searcher.getCitations() );
+    Collection<Citation> downsampled = downsample(
+        citations, activeReview );
+    LOG.info( "Downsampled from " + citations.size() +
+        " to " + downsampled.size() );
 
-    for ( int heldOut = 1; heldOut < 10; heldOut++ ) {
+    for ( int trainPct = minTrained; trainPct <= maxTrained; trainPct++ ) {
       for ( int it = 1; it <= numIt; it++ ) {
-        Map<I, C> fvs = createFeatureVectors( citations );
-        Map<I, C> trainingSet = createTrainingSet( fvs, heldOut * .1 );
+        Map<I, C> fvs = createFeatureVectors( downsampled );
+        Map<I, C> trainingSet = createTrainingSet( fvs, trainPct * .1 );
         Map<I, C> testSet = createTestSet( fvs, trainingSet );
 
         LOG.info( "Iteration " + it + ": train " + trainingSet.size()
@@ -123,9 +139,9 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
         List<PubmedId> ranks = rank( trainingSet, testSet );
         String stats = evaluate( ranks );
 
-        out.write( ( heldOut * 10 ) + "," + it + "," + stats );
+        out.write( ( trainPct * 10 ) + "," + it + "," + stats );
         out.newLine();
-	out.flush();
+        out.flush();
       }
     }
 
@@ -154,13 +170,14 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
     double aucL1 = computeAUC( ranking, relevantL1 );
     double aucL2 = computeAUC( ranking, relevantL2 );
+    //String prL1 = computePrecisionAndRecall( ranking, relevantL1 );
 
     return aucL1 + "," + aucL2;
   }
 
   /**
    * Calculate the precision and recall.
-   * 
+   *
    * @param ranking
    * @param relevant
    * @return
@@ -173,9 +190,8 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     StringBuilder sb = new StringBuilder();
     for ( int pos = 0; pos < ranking.size(); pos++ ) {
       E item = ranking.get( pos );
-      if ( relevant.contains( item ) )
-        relevantFound++;
-      double precision = (double) relevantFound / (double) pos;
+      if ( relevant.contains( item ) ) relevantFound++;
+      double precision = (double) relevantFound / ( (double) pos + 1 );
       precisionAtThreshold.add( precision );
       double recall = (double) relevantFound / (double) relevant.size();
       recallAtThreshold.add( recall );
@@ -307,5 +323,5 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
    * @param citations
    * @return
    */
-  protected abstract Map<I, C> createFeatureVectors( Set<Citation> citations );
+  protected abstract Map<I, C> createFeatureVectors( Collection<Citation> citations );
 }

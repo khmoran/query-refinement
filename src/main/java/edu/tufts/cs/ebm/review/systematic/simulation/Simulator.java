@@ -1,6 +1,8 @@
 package edu.tufts.cs.ebm.review.systematic.simulation;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -56,6 +58,10 @@ public abstract class Simulator {
   protected long iteration = 0;
   /** The z value for probability calculations. */
   protected double z = -1;
+  /** The default maximum number of negative citations. */
+  protected static final int DEFAULT_MAX_NEGATIVE = 5000;
+  /** The maximum number of negative citations. */
+  protected static int maxNegative = DEFAULT_MAX_NEGATIVE;
 
   /**
    * Calculate the info measures for the searcher.
@@ -218,8 +224,36 @@ public abstract class Simulator {
 
   /**
    * Simulate the review.
-   * 
+   *
    * @throws Exception
    */
   public abstract void simulateReview() throws Exception;
+
+  /**
+   * Downsample the negative instances.
+   * @param citations
+   * @param r
+   * @return
+   */
+  protected Collection<Citation> downsample( Collection<Citation> citations,
+      SystematicReview r ) {
+    List<Citation> downsampled = new ArrayList<Citation>();
+
+    ArrayList<Citation> shuffled = new ArrayList<>(
+        citations );
+    Collections.shuffle( shuffled );
+
+    int negativeAdded = 0;
+    for ( Citation c : shuffled ) {
+      if ( r.getRelevantLevel1().contains( c.getPmid() )
+        || r.getRelevantLevel2().contains( c.getPmid() ) ) {
+        downsampled.add( c );
+      } else if ( negativeAdded <= maxNegative ) {
+        downsampled.add( c );
+        negativeAdded++;
+      }
+    }
+
+    return downsampled;
+  }
 }

@@ -1,6 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.online;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class OnlineSimulatorBowSvmLightPairwiseTransform extends
    * Initialize the classifier.
    */
   @Override
-  protected void initializeClassifier( Set<Citation> citations ) {
+  protected void initializeClassifier( Collection<Citation> citations ) {
     // all this is done in rank(...)
   }
 
