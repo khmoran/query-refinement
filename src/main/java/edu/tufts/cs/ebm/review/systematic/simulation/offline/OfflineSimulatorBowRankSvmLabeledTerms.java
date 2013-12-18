@@ -47,6 +47,10 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends
   /** Labeled terms. */
   protected Map<FeatureVector<Integer>, Integer> labeledTerms =
       new HashMap<FeatureVector<Integer>, Integer>();
+  /** The default number of times to replicate a pseudo document. */
+  protected static final int DEFAULT_NUM_REPLICATIONS = 5;
+  /** The number of times to replicate a pseudo document. */
+  protected static final int numReplications = DEFAULT_NUM_REPLICATIONS;
 
   /**
    * Default constructor.
@@ -110,13 +114,14 @@ public class OfflineSimulatorBowRankSvmLabeledTerms extends
     LOG.info( "Creating positive pseudo-doc: " + posPseudoDoc );
     LOG.info( "Creating negative pseudo-doc: " + negPseudoDoc );
 
-    FeatureVector<Integer> pseudoPos = bow.createUnlabeledFV(
-        PSEUDO_PREFIX + "pos", posPseudoDoc.toString() );
-    labeledTerms.put( pseudoPos, PSEUDO_POS );
-    FeatureVector<Integer> pseudoNeg = bow.createUnlabeledFV(
-        PSEUDO_PREFIX + "neg", negPseudoDoc.toString() );
-    labeledTerms.put( pseudoPos, PSEUDO_POS );
-    labeledTerms.put( pseudoNeg, PSEUDO_NEG );
+    for ( int i = 0; i < numReplications; i++ ) {
+      FeatureVector<Integer> pseudoNeg = bow.createUnlabeledFV(
+          PSEUDO_PREFIX + "neg_" + i, negPseudoDoc.toString() );
+      FeatureVector<Integer> pseudoPos = bow.createUnlabeledFV(
+          PSEUDO_PREFIX + "pos_" + i, posPseudoDoc.toString() );
+      labeledTerms.put( pseudoPos, PSEUDO_POS );
+      labeledTerms.put( pseudoNeg, PSEUDO_NEG );
+    }
   }
 
   @Override

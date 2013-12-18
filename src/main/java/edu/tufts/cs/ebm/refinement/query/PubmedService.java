@@ -3,7 +3,6 @@ package edu.tufts.cs.ebm.refinement.query;
 import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
-import edu.tufts.cs.ebm.util.PubmedDate;
 import edu.tufts.cs.ebm.util.Util;
 import gov.nih.nlm.ncbi.www.soap.eutils.EFetchPubmedServiceStub;
 import gov.nih.nlm.ncbi.www.soap.eutils.EFetchPubmedServiceStub.AbstractTextType;
@@ -26,6 +25,7 @@ import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Observable;
@@ -95,7 +95,7 @@ public abstract class PubmedService extends Observable {
     }
 
     if ( mct.getArticle() != null ) {
-      PubmedDate date = getDate( mct );
+      Date date = getDate( mct );
       String title = getTitle( mct );
       String authors = getAuthors( mct );
       String journal = getJournal( mct );
@@ -321,7 +321,7 @@ public abstract class PubmedService extends Observable {
    * @param mct
    * @return
    */
-  protected PubmedDate getDate( MedlineCitationType mct ) {
+  protected Date getDate( MedlineCitationType mct ) {
     Calendar cal = null;
 
     try {
@@ -350,9 +350,9 @@ public abstract class PubmedService extends Observable {
       LOG.error( "Could not parse date." );
     }
 
-    PubmedDate date = null;
+    Date date = null;
     if ( cal != null ) {
-      date = new PubmedDate( cal.getTime() );
+      date = cal.getTime();
     }
 
     return date;

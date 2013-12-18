@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -25,7 +28,6 @@ import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.PubmedId;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
-import edu.tufts.cs.ebm.util.PubmedDate;
 import edu.tufts.cs.ebm.util.Util;
 
 /**
@@ -38,6 +40,8 @@ import edu.tufts.cs.ebm.util.Util;
 public class CreateUTDReviews {
   /** The Logger for this class. */
   protected static final Log LOG = LogFactory.getLog( CreateUTDReviews.class );
+  /** The date format to parse. */
+  protected static final DateFormat DF = new SimpleDateFormat( "yyyy" );
 
   /**
    * Downloads all of the Pubmed entries for given (journal, year) pairs.
@@ -107,9 +111,9 @@ public class CreateUTDReviews {
 
         if ( c == null ) {
           String journal = parts[0];
-          PubmedDate date = null;
+          Date date = null;
           if ( parts[1] != null && !parts[1].isEmpty() ) {
-            date = new PubmedDate( PubmedDate.FORMAT.parse( parts[1] ) );
+            date = DF.parse( parts[1] );
           }
           String title = parts[3];
           String abstr = parts[4];
@@ -139,6 +143,15 @@ public class CreateUTDReviews {
                 LOG.error( ex2 ); // TODO fix this
               }
             }
+          }
+        } else {
+          Date date = null;
+          if ( parts[1] != null && !parts[1].isEmpty() ) {
+            date = DF.parse( parts[1] );
+            c.setDate( date );
+            MainController.EM.getTransaction().begin();
+            MainController.EM.merge( c );
+            MainController.EM.getTransaction().commit();
           }
         }
 

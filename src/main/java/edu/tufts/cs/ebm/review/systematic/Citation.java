@@ -1,6 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,13 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
-
-import edu.tufts.cs.ebm.util.PubmedDate;
 
 @Entity
 public class Citation implements Comparable<Citation>, Serializable {
@@ -55,8 +56,8 @@ public class Citation implements Comparable<Citation>, Serializable {
   @Lob
   protected String abstr;
   /** The date completed. */
-  @Transient
-  protected PubmedDate date;
+  @Temporal(TemporalType.DATE)
+  protected Date date;
   /** The authors. */
   @Column(length = 5000)
   @Lob
@@ -143,7 +144,7 @@ public class Citation implements Comparable<Citation>, Serializable {
    * @param meshTerms
    */
   public Citation( PubmedId pmid, String title, String abstr, String journal,
-      PubmedDate dateCompleted, String authors, ObservableSet<String> meshTerms ) {
+      Date dateCompleted, String authors, ObservableSet<String> meshTerms ) {
     this.id = pmid.longValue();
     setPmid( pmid );
     setTitle( title );
@@ -210,7 +211,7 @@ public class Citation implements Comparable<Citation>, Serializable {
    * 
    * @return
    */
-  public PubmedDate getDate() {
+  public Date getDate() {
     return this.date;
   }
 
@@ -219,7 +220,7 @@ public class Citation implements Comparable<Citation>, Serializable {
    * 
    * @param dateCompleted
    */
-  public void setDate( PubmedDate date ) {
+  public void setDate( Date date ) {
     this.date = date;
   }
 

@@ -4,8 +4,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,10 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
   protected static final int DEFAULT_MAX_TRAINED = 9;
   /** The maximum amount of training data to use (out of 10). */
   protected static int maxTrained = DEFAULT_MAX_TRAINED;
+  /** The default for whether to split temporally (TRUE) or randomly. */
+  protected static final boolean DEFAULT_TEMPORAL_SPLITS = true;
+  /** Whether to split temporally (TRUE) or randomly. */
+  protected static boolean temporalSplits = DEFAULT_TEMPORAL_SPLITS;
 
   /**
    * Set up the test suite.
@@ -74,8 +80,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
     // load up the seeds
     for ( PubmedId pmid : activeReview.getSeeds() ) {
-      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load the
-                                                                 // seeds
+      MainController.EM.find( PubmedId.class, pmid.getValue() ); // load seeds
     }
 
     // load up the relevant papers
@@ -90,7 +95,11 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     FileWriter fw = new FileWriter( statsFile );
     BufferedWriter out = new BufferedWriter( fw );
     // header row
-    out.write( "% trained, iteration, L1 AUC, L2 AUC" );
+    if ( temporalSplits ) {
+      out.write( "years held out, iteration, L1 AUC, L2 AUC" );
+    } else {
+      out.write( "% trained, iteration, L1 AUC, L2 AUC" );
+    }
     out.newLine();
     out.flush();
 
@@ -119,8 +128,10 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     LOG.info( "Initial query: " + query );
     search( searcher );
 
-    Set<Citation> citations = removePostStudyArticles(
-        searcher.getCitations() );
+    Set<Citation> citations = searcher.getCitations();
+    if ( !temporalSplits ) {
+      citations = removePostStudyArticles( citations );
+    }
     Collection<Citation> downsampled = downsample(
         citations, activeReview );
     LOG.info( "Downsampled from " + citations.size() +
@@ -128,9 +139,15 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
     for ( int trainPct = minTrained; trainPct <= maxTrained; trainPct++ ) {
       for ( int it = 1; it <= numIt; it++ ) {
-        Map<I, C> fvs = createFeatureVectors( downsampled );
-        Map<I, C> trainingSet = createTrainingSet( fvs, trainPct * .1 );
-        Map<I, C> testSet = createTestSet( fvs, trainingSet );
+        Collection<Citation> train = null;
+        if ( temporalSplits ) {
+          train = createTemporalTrainingSet( downsampled, trainPct );
+        } else {
+          train = createRandomTrainingSet( downsampled, trainPct * .1 );
+        }
+        Collection<Citation> test = createTestSet( downsampled, train );
+        Map<I, C> trainingSet = createFeatureVectors( train );
+        Map<I, C> testSet = createFeatureVectors( test );
 
         LOG.info( "Iteration " + it + ": train " + trainingSet.size()
             + ", test " + testSet.size() );
@@ -139,7 +156,11 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
         List<PubmedId> ranks = rank( trainingSet, testSet );
         String stats = evaluate( ranks );
 
-        out.write( ( trainPct * 10 ) + "," + it + "," + stats );
+        if ( temporalSplits ) {
+          out.write( trainPct + "," + it + "," + stats );
+        } else {
+          out.write( ( trainPct * 10 ) + "," + it + "," + stats );
+        }
         out.newLine();
         out.flush();
       }
@@ -236,32 +257,76 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
   }
 
   /**
-   * Create the training set.
-   * 
+   * Create the temporally-split training set.
+   *
    * @param fvs
    * @param numFolds
    * @param fold
    * @return
    */
-  protected Map<I, C> createTrainingSet( Map<I, C> fvs, double pctData ) {
-    Random generator = new Random();
-    I[] values = (I[]) fvs.keySet().toArray();
-    Map<I, C> training = new HashMap<I, C>();
+  protected Collection<Citation> createTemporalTrainingSet( Collection<Citation> citations, int numYears ) {
+    List<Citation> train = new ArrayList<Citation>();
 
-    int numInstances = (int) Math.ceil( fvs.size() * pctData );
+    Date oldest = null;
+    Date newest = null;
 
-    LOG.info( "Selecting " + numInstances + " random papers out of "
-        + fvs.size() + "..." );
-
-    while ( training.size() < numInstances ) {
-      int i = generator.nextInt( values.length );
-      I randPaper = values[i];
-      if ( !training.containsKey( randPaper ) ) {
-        training.put( randPaper, fvs.get( randPaper ) );
+    for ( Citation c : citations ) {
+      if ( c.getDate() != null ) {
+        if ( oldest == null || c.getDate().before( oldest ) ) {
+          oldest = c.getDate();
+        }
+        if ( newest == null || c.getDate().after( newest ) ) {
+          newest = c.getDate();
+        }
       }
     }
 
-    return training;
+    // find the time that will split the train and test sets
+    Calendar cal = new GregorianCalendar();
+    cal.setTime( newest );
+    cal.add( Calendar.YEAR, -1 * numYears ); // subtract numYears
+    Date cutoff = cal.getTime();
+
+    LOG.info( "Training set will be all documents before the year: " + newest );
+
+    for ( Citation c : citations ) {
+      if ( c.getDate() != null ) {
+        if ( c.getDate().before( cutoff ) ) {
+          train.add( c );
+        }
+      }
+    }
+
+    return train;
+  }
+
+  /**
+   * Create the training set.
+   *
+   * @param fvs
+   * @param numFolds
+   * @param fold
+   * @return
+   */
+  protected Collection<Citation> createRandomTrainingSet( Collection<Citation> citations, double pctData ) {
+    List<Citation> train = new ArrayList<Citation>();
+    Random generator = new Random();
+    Citation[] values = (Citation[]) citations.toArray();
+
+    int numInstances = (int) Math.ceil( citations.size() * pctData );
+
+    LOG.info( "Selecting " + numInstances + " random papers out of "
+        + citations.size() + "..." );
+
+    while ( train.size() < numInstances ) {
+      int i = generator.nextInt( values.length );
+      Citation randPaper = values[i];
+      if ( !train.contains( randPaper ) ) {
+        train.add( randPaper );
+      }
+    }
+
+    return train;
   }
 
   /**
@@ -271,12 +336,13 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
    * @param training
    * @return
    */
-  protected Map<I, C> createTestSet( Map<I, C> fvs, Map<I, C> training ) {
-    Map<I, C> test = new HashMap<I, C>();
+  protected Collection<Citation> createTestSet( Collection<Citation> citations,
+      Collection<Citation> train ) {
+    List<Citation> test = new ArrayList<Citation>();
 
-    for ( I key : fvs.keySet() ) {
-      if ( !training.containsKey( key ) ) {
-        test.put( key, fvs.get( key ) );
+    for ( Citation c : citations ) {
+      if ( !train.contains( c ) ) {
+        test.add( c );
       }
     }
 
@@ -285,7 +351,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Rank the documents.
-   * 
+   *
    * @param training
    * @param test
    * @return
@@ -294,13 +360,14 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Remove any articles occurring after the systematic review was conducted.
-   * 
+   *
    * @param citations
    * @return
    */
   protected Set<Citation> removePostStudyArticles( Set<Citation> citations ) {
     Set<Citation> filtered = new HashSet<Citation>();
     for ( Citation c : citations ) {
+      System.out.println( c.getDate() );
       if ( c.getDate() == null
           || !c.getDate().after( activeReview.getCreatedOn() ) ) {
         filtered.add( c );

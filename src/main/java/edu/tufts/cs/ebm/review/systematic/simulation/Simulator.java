@@ -239,21 +239,40 @@ public abstract class Simulator {
       SystematicReview r ) {
     List<Citation> downsampled = new ArrayList<Citation>();
 
-    ArrayList<Citation> shuffled = new ArrayList<>(
+    ArrayList<Citation> citList = new ArrayList<>(
         citations );
-    Collections.shuffle( shuffled );
 
-    int negativeAdded = 0;
-    for ( Citation c : shuffled ) {
+    // so we don't get stuck in an infinite loop
+    if ( maxNegative > citations.size() ) maxNegative = citations.size() -
+        r.getRelevantLevel1().size() - r.getRelevantLevel2().size();
+
+    int totalNegative = citations.size() - r.getRelevantLevel1().size()
+        - r.getRelevantLevel2().size();
+    double proportion = (double) totalNegative / (double) maxNegative;
+    int n = (int) Math.ceil( proportion );
+
+    // include every nth negative record for a deterministic downsampling
+    while ( downsampled.size() < maxNegative ) {
+      for ( int i = 0; i < citList.size(); i += n ) {
+        if ( downsampled.size() >= maxNegative ) break;
+        Citation c = citList.get( i );
+        if ( !( r.getRelevantLevel1().contains( c.getPmid() )
+            || r.getRelevantLevel2().contains( c.getPmid() ) ) ) {
+          downsampled.add( c );
+        }
+      }
+      citList.removeAll( downsampled );
+    }
+
+    // add in all positives
+    for ( Citation c : citations ) {
       if ( r.getRelevantLevel1().contains( c.getPmid() )
         || r.getRelevantLevel2().contains( c.getPmid() ) ) {
         downsampled.add( c );
-      } else if ( negativeAdded <= maxNegative ) {
-        downsampled.add( c );
-        negativeAdded++;
       }
     }
 
+    System.out.println( downsampled.size() );
     return downsampled;
   }
 }
