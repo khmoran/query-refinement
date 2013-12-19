@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ import edu.tufts.cs.ebm.refinement.query.ParallelPubmedSearcher;
 import edu.tufts.cs.ebm.refinement.query.controller.MainController;
 import edu.tufts.cs.ebm.review.systematic.Citation;
 import edu.tufts.cs.ebm.review.systematic.SystematicReview;
+import edu.tufts.cs.ml.FeatureVector;
 
 /**
  * Simulate a systematic review.
@@ -59,9 +62,22 @@ public abstract class Simulator {
   /** The z value for probability calculations. */
   protected double z = -1;
   /** The default maximum number of negative citations. */
-  protected static final int DEFAULT_MAX_NEGATIVE = 5000;
+  protected static final int DEFAULT_MAX_NEGATIVE = 10000;
   /** The maximum number of negative citations. */
   protected static int maxNegative = DEFAULT_MAX_NEGATIVE;
+  /** The document ID prefix for a pseudo document term. */
+  protected static final String PSEUDO_PREFIX = "pseudo_";
+  /** The pseduo document positive class label. */
+  protected static final int PSEUDO_POS = POS;
+  /** The pseduo document negative class label. */
+  protected static final int PSEUDO_NEG = NEG;
+  /** Labeled terms. */
+  protected Map<FeatureVector<Integer>, Integer> labeledTerms =
+      new HashMap<FeatureVector<Integer>, Integer>();
+  /** The default number of times to replicate a pseudo document. */
+  protected static final int DEFAULT_NUM_REPLICATIONS = 1;
+  /** The number of times to replicate a pseudo document. */
+  protected static final int numReplications = DEFAULT_NUM_REPLICATIONS;
 
   /**
    * Calculate the info measures for the searcher.
@@ -228,6 +244,7 @@ public abstract class Simulator {
    * @throws Exception
    */
   public abstract void simulateReview() throws Exception;
+
 
   /**
    * Downsample the negative instances.

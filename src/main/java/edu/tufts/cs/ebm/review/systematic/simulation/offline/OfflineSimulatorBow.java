@@ -1,6 +1,11 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.offline;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,7 +33,7 @@ public abstract class OfflineSimulatorBow extends
 
   /**
    * Default constructor.
-   * 
+   *
    * @param review
    * @throws Exception
    */
@@ -73,6 +78,51 @@ public abstract class OfflineSimulatorBow extends
               c.getTitle() + " " + c.getAbstr() ) );
     }
 
+    File f = new File( "src/test/resources/" + this.dataset
+        + "-labeled-terms.csv" );
+    try {
+      loadPseudoDocuments( f );
+    } catch ( IOException e ) {
+      LOG.error(
+          "Could not load labeled psuedodocument terms from " + f.toString(), e );
+    }
+
     return fvs;
   }
+
+  /**
+   * Load up the pseudo-documents (labeled terms).
+   * 
+   * @param f
+   * @throws IOException
+   */
+  protected void loadPseudoDocuments( File f ) throws IOException {
+    Path path = Paths.get( f.getPath() );
+    List<String> terms = Files.readAllLines( path, Charset.defaultCharset() );
+
+    LOG.info( "Loaded " + terms.size()
+        + " labeled terms for psueodocuments." );
+
+    StringBuilder posPseudoDoc = new StringBuilder();
+    StringBuilder negPseudoDoc = new StringBuilder();
+    for ( String term : terms ) {
+      if ( term.contains( "-" ) ) {
+        negPseudoDoc.append( " " + term.substring( 0, term.length()-2 ) );
+      } else if ( term.contains( "+" ) ) {
+        posPseudoDoc.append( " " + term.substring( 0, term.length()-2 ) );
+      } else {
+        posPseudoDoc.append( " " + term );
+      }
+    }
+
+    for ( int i = 0; i < numReplications; i++ ) {
+      FeatureVector<Integer> pseudoNeg = bow.createUnlabeledFV(
+          PSEUDO_PREFIX + "neg_" + i, negPseudoDoc.toString() );
+      FeatureVector<Integer> pseudoPos = bow.createUnlabeledFV(
+          PSEUDO_PREFIX + "pos_" + i, posPseudoDoc.toString() );
+      labeledTerms.put( pseudoPos, PSEUDO_POS );
+      labeledTerms.put( pseudoNeg, PSEUDO_NEG );
+    }
+  }
+
 }

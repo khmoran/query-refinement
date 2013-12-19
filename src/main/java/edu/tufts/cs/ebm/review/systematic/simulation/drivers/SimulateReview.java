@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 import edu.tufts.cs.ebm.review.systematic.simulation.Simulator;
 import edu.tufts.cs.ebm.review.systematic.simulation.online.OnlineSimulatorBowRankSvm;
+import edu.tufts.cs.ebm.review.systematic.simulation.offline.OfflineSimulatorBowRankSvm;
 import edu.tufts.cs.ml.exception.CommandLineArgumentException;
 
 public class SimulateReview {
@@ -45,8 +46,11 @@ public class SimulateReview {
         if ( s instanceof OnlineSimulatorBowRankSvm
             && cmd.getHyperparameter() != null ) {
           ( (OnlineSimulatorBowRankSvm) s ).setC( cmd.getHyperparameter() );
-        }
-        s.simulateReview();
+        } else if ( s instanceof OfflineSimulatorBowRankSvm && cmd.getHyperparameter() != null ) {
+	    ( (OfflineSimulatorBowRankSvm) s ).setUndersamplingMultiplier( cmd.getHyperparameter().intValue() );
+	}
+
+	    s.simulateReview();
       }
     } catch ( ClassNotFoundException | NoSuchMethodException
         | SecurityException | InstantiationException | IllegalAccessException

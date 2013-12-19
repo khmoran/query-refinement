@@ -55,6 +55,11 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
       }
     }
 
+    // add pseudo-documents
+    for ( FeatureVector<Integer> fv : labeledTerms.keySet() ) {
+      pos.add( fv ); // TODO fix this to handle negative pseudo documents
+    }
+
     // can't classify w/o samples from each class
     if ( !( pos.isEmpty() || neg.isEmpty() ) ) {
       // create the training data, which is the expert-identified relevant
@@ -80,7 +85,6 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
       for ( FeatureVector<Integer> c : test.values() ) {
         testRelation.add( (UnlabeledFeatureVector<Integer>) c );
       }
-      System.out.println( "Test relation: " +  testRelation.size() );
 
       LibSvmClassifier c = new LibSvmClassifier();
       c.train( trainRelation );
@@ -88,8 +92,6 @@ public class OfflineSimulatorBowLibSvm extends OfflineSimulatorBow {
         TreeMultimap<Double, FeatureVector<Integer>> results = c
             .rank( testRelation );
 
-        System.out.println( "Key set: " + results.keySet().size() );
-        System.out.println( "Values: " +  results.values().size() );
         for ( Double rank : results.keySet() ) {
           for ( FeatureVector<Integer> fv : results.get( rank ) ) {
             try {

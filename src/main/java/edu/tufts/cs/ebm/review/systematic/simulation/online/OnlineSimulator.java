@@ -433,13 +433,8 @@ public abstract class OnlineSimulator<I, C> extends Simulator {
     LOG.info( "Initial query: " + query );
     search( searcher );
 
-    Collection<Citation> downsampled = downsample(
-        searcher.getCitations(), activeReview );
-    LOG.info( "Downsampled from " + searcher.getCitations().size() +
-        " to " + downsampled.size() );
-
-    initializeClassifier( downsampled );
-    Map<I, C> citations = createFeatureVectors( downsampled );
+    initializeClassifier( searcher.getCitations() );
+    Map<I, C> citations = createFeatureVectors( searcher.getCitations() );
 
     // populate the relevant papers with the seed citations
     for ( Citation c : activeReview.getSeedCitations() ) {

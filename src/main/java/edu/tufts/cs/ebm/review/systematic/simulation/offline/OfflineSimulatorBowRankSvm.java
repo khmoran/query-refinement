@@ -34,7 +34,9 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
    * The number of times the size of the minority class to sample. NOTE: can
    * make this number very high to eliminate undersampling.
    */
-  protected static final int UNDERSAMPLING_MULTIPLIER = 1;
+  protected static final int DEFAULT_UNDERSAMPLING_MULTIPLIER = 1;
+  
+    protected static int undersamplingMultiplier = DEFAULT_UNDERSAMPLING_MULTIPLIER;
   /** The positive class label for L2. */
   protected static final int POS = 1;
   /** The negative class label. */
@@ -44,6 +46,10 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
   /** The c parameter for SVM. */
   protected double cParam = DEFAULT_C;
 
+    public void setUndersamplingMultiplier( int u ) {
+	this.undersamplingMultiplier = u;
+
+  }
   /**
    * Default constructor.
    * 
@@ -124,7 +130,7 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
     // there will be no undersampling if the majority class is smaller than
     // the minority class, so only rank once
     int ensembleSize = ENSEMBLE_SIZE;
-    if ( minorityClass.size() * UNDERSAMPLING_MULTIPLIER >= majorityClass
+    if ( minorityClass.size() * undersamplingMultiplier >= majorityClass
         .size() ) {
       ensembleSize = 1;
     }
@@ -172,9 +178,9 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
 
     // undersampling the majority class
     // add majority instances
-    int numNegSamples = ( minorityClass.size() * UNDERSAMPLING_MULTIPLIER >= majorityClass
+    int numNegSamples = ( minorityClass.size() * undersamplingMultiplier >= majorityClass
         .size() ) ? majorityClass.size() : minorityClass.size()
-        * UNDERSAMPLING_MULTIPLIER;
+        * undersamplingMultiplier;
     ArrayList<FeatureVector<Integer>> shuffled = new ArrayList<>(
         majorityClass.keySet() );
     Collections.shuffle( shuffled );
@@ -182,6 +188,16 @@ public class OfflineSimulatorBowRankSvm extends OfflineSimulatorBow {
       FeatureVector<Integer> fv = shuffled.get( i );
       LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<Integer>(
           majorityClass.get( fv ), fv.getId() );
+      lfv.setQid( fv.getQid() );
+      lfv.setRank( fv.getRank() );
+      lfv.putAll( fv );
+      trainRelation.add( lfv );
+    }
+
+    // add pseudo-documents
+    for ( FeatureVector<Integer> fv : labeledTerms.keySet() ) {
+      LabeledFeatureVector<Integer> lfv = new LabeledFeatureVector<Integer>(
+          labeledTerms.get( fv ), fv.getId() );
       lfv.setQid( fv.getQid() );
       lfv.setRank( fv.getRank() );
       lfv.putAll( fv );

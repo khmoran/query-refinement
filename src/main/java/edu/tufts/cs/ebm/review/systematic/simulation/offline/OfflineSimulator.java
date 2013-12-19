@@ -1,6 +1,7 @@
 package edu.tufts.cs.ebm.review.systematic.simulation.offline;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,6 +88,8 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     for ( PubmedId pmid : activeReview.getRelevantLevel2() ) {
       MainController.EM.find( PubmedId.class, pmid.getValue() );
     }
+
+    if ( temporalSplits ) numIt = 1;
   }
 
   @Override
@@ -96,7 +99,8 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     BufferedWriter out = new BufferedWriter( fw );
     // header row
     if ( temporalSplits ) {
-      out.write( "years held out, iteration, L1 AUC, L2 AUC" );
+      out.write( "years held out, training set size, test set size," +
+      		"# relevant in test set, L2 AUC" );
     } else {
       out.write( "% trained, iteration, L1 AUC, L2 AUC" );
     }
@@ -129,9 +133,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     search( searcher );
 
     Set<Citation> citations = searcher.getCitations();
-    if ( !temporalSplits ) {
-      citations = removePostStudyArticles( citations );
-    }
+    //citations = removePostStudyArticles( citations );
     Collection<Citation> downsampled = downsample(
         citations, activeReview );
     LOG.info( "Downsampled from " + citations.size() +
@@ -154,12 +156,21 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
         // gather initial statistics on the results
         List<PubmedId> ranks = rank( trainingSet, testSet );
-        String stats = evaluate( ranks );
+        writeRanking( ranks, it, trainPct );
+        double auc = evaluate( ranks );
 
         if ( temporalSplits ) {
-          out.write( trainPct + "," + it + "," + stats );
+          int numRelevantTest = 0;
+          for ( Citation c : test ) {
+            if ( activeReview.getRelevantLevel1().contains( c.getPmid() )
+                || activeReview.getRelevantLevel2().contains( c.getPmid() ) ) {
+              numRelevantTest++;
+            }
+          }
+          out.write( trainPct + "," + trainingSet.size() + "," +
+            testSet.size() + "," + numRelevantTest + "," + auc );
         } else {
-          out.write( ( trainPct * 10 ) + "," + it + "," + stats );
+          out.write( ( trainPct * 10 ) + "," + it + "," + auc );
         }
         out.newLine();
         out.flush();
@@ -171,13 +182,39 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
   }
 
   /**
+   * Write the ranking to a file.
+   * @param ranks
+   * @param it
+   * @param trainPct
+   */
+  protected void writeRanking( List<PubmedId> ranks, int it, int trainPct ) {
+    try {
+      File f = new File ( "ranks-" + it + "-" + trainPct + ".csv" );
+      FileWriter fw = new FileWriter( f );
+      BufferedWriter bw = new BufferedWriter( fw );
+  
+      for ( int i = 0; i < ranks.size(); i++ ) {
+        PubmedId pmid = ranks.get( i );
+        String relevant = ( activeReview.getRelevantLevel1().contains( pmid )
+            || activeReview.getRelevantLevel2().contains( pmid ) ) ? "1" : "0";
+        bw.append( (i+1) + "," + relevant + "\n" );
+      }
+      bw.flush();
+      bw.close();
+      fw.close();
+    } catch ( IOException e ) {
+      LOG.error( e );
+    }
+  }
+
+  /**
    * Evaluate the ranking.
    * 
    * @param ranks
    * @param fvs
    * @throws IOException
    */
-  protected String evaluate( List<PubmedId> ranking ) throws IOException {
+  protected double evaluate( List<PubmedId> ranking ) throws IOException {
     Set<PubmedId> relevantL1 = new HashSet<PubmedId>();
     Set<PubmedId> relevantL2 = new HashSet<PubmedId>();
     for ( PubmedId id : ranking ) {
@@ -189,11 +226,10 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
       }
     }
 
-    double aucL1 = computeAUC( ranking, relevantL1 );
     double aucL2 = computeAUC( ranking, relevantL2 );
     //String prL1 = computePrecisionAndRecall( ranking, relevantL1 );
 
-    return aucL1 + "," + aucL2;
+    return aucL2;
   }
 
   /**
@@ -224,7 +260,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
 
   /**
    * Compute the AUC for the ranking.
-   * 
+   *
    * @param ranking
    * @param relevant
    * @return
@@ -287,7 +323,7 @@ public abstract class OfflineSimulator<I, C> extends Simulator {
     cal.add( Calendar.YEAR, -1 * numYears ); // subtract numYears
     Date cutoff = cal.getTime();
 
-    LOG.info( "Training set will be all documents before the year: " + newest );
+    LOG.info( "Training set will be all documents before the year: " + cutoff );
 
     for ( Citation c : citations ) {
       if ( c.getDate() != null ) {

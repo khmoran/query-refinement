@@ -29,6 +29,10 @@ public class OfflineSimulatorBowRankSvmTwoTier extends
   protected static final int POS_L1 = 2;
   /** The negative class label. */
   protected static final int NEG = 3;
+  /** The pseduo document positive class label. */
+  protected static final int PSEUDO_POS = 0;
+  /** The pseduo document negative class label. */
+  protected static final int PSEUDO_NEG = 4;
 
   /**
    * Default constructor.
